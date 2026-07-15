@@ -1,40 +1,40 @@
 // Color
-$body-color: #919aa3; 
-$body-color-40: #697689; 
-$body-color-50: #7E8999; 
-$body-color-60: #8E8DA1; 
-$body-bg: #eff3f9; 
-$primary: #0f79f3; 
-$primary-30: #138BFD; 
-$primary-40: #f1f2fd; 
-$primary-50: #796df6; 
-$primary-60: #978bff; 
+$body-color: #919aa3;
+$body-color-40: #697689;
+$body-color-50: #7e8999;
+$body-color-60: #8e8da1;
+$body-bg: #eff3f9;
+$primary: #ef4923;
+$primary-30: #138bfd;
+$primary-40: #f1f2fd;
+$primary-50: #796df6;
+$primary-60: #978bff;
 $secondary: #475569;
 $secondary-40: #314055;
-$secondary-50: #2B2A3F;
+$secondary-50: #2b2a3f;
 $info: #00cae3;
-$info-40: #2AA9FF;
-$info-50: #52C7FF;
+$info-40: #2aa9ff;
+$info-50: #52c7ff;
 $success: #2ed47e;
 $success-40: #eafbf2;
 $success-50: #00b69b;
 $success-60: #2ecc71;
-$success-70: #0EAC5D;
-$success-80: #06B48A;
-$success-90: #52D689;
+$success-70: #0eac5d;
+$success-80: #06b48a;
+$success-90: #52d689;
 $warning: #ffb264;
-$warning-40: #F1B31C;
-$warning-50: #FC7013;
-$warning-60: #FE9039;
-$danger: #e74c3c; 
-$danger-40: #fdebf3; 
-$danger-50: #ee368c; 
-$danger-60: #FD5812; 
+$warning-40: #f1b31c;
+$warning-50: #fc7013;
+$warning-60: #fe9039;
+$danger: #e74c3c;
+$danger-40: #fdebf3;
+$danger-50: #ee368c;
+$danger-60: #fd5812;
 $light: #f4f6fc;
 $light-40: #ddddef;
 $light-50: #e7effd;
-$light-60: #E6E1F8;
-$light-70: #D2D2E4;
+$light-60: #e6e1f8;
+$light-70: #d2d2e4;
 $dark: #000000;
 $border-color: #e7e2e2;
 $border-color-40: #eeeeee;
@@ -42,8 +42,8 @@ $border-color-50: #e0e0e0;
 $border-color-60: #eaecf2;
 $border-color-70: #c2cada;
 $border-color-80: #e0e2ec;
-$border-color-90: #F5F5F5;
-$transition: all ease .5s;
+$border-color-90: #f5f5f5;
+$transition: all ease 0.5s;
 $box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 $body-font-family: "Outfit", sans-serif;
 
@@ -57,8 +57,8 @@ $dark-btn-bg: #293542;
 
 // Font Size
 $font-size-root: null;
-$font-size-base: .88rem; // Assumes the browser default, typically `16px`
-$font-size-sm: $font-size-base * .875;
+$font-size-base: 0.88rem; // Assumes the browser default, typically `16px`
+$font-size-sm: $font-size-base * 0.875;
 $font-size-lg: $font-size-base * 1.25;
 
 $h1-font-size: $font-size-base * 2.5; // Updated 43.2px
