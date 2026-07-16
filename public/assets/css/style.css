@@ -25182,6 +25182,18 @@ Dark Mode SCSS
     flex: 0 0 auto;
 }
 
+.top-selling-filter-input {
+    background-color: #fff;
+    border: 1px solid #dae0ec;
+    height: 45px;
+    color: #475569 !important;
+    font-size: 16px;
+    padding: 10px 15px;
+    width: 100%;
+    transition: all ease 0.5s;
+    border-radius: 5px;
+}
+
 .best-seller-card {
     overflow: hidden;
 }

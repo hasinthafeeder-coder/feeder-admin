@@ -417,19 +417,19 @@
                         </div>
                     </div>
 
-                    <div class="col-lg-6 col-xxl-3 col-xxxl-6">
+                    <div class="col-lg-6">
                         <div class="row">
                             <div class="col-md-6 col-lg-12">
                                 <div class="card bg-white p-20 rounded-10 border border-white mb-4">
                                     <div class="d-flex">
                                         <div class="flex-grow-1">
-                                            <h3 class="mb-10">Total Orders</h3>
-                                            <h2 class="fs-26 fw-medium mb-0 lh-1">20,705</h2>
+                                            <h3 class="mb-10">Today Total Sale</h3>
+                                            <h2 class="fs-26 fw-medium mb-0 lh-1">$20,705</h2>
                                         </div>
                                         <div class="flex-shrink-0 ms-3">
                                             <div
                                                 class="text-white text-center rounded-circle d-block theme-basic theme-basic-icon">
-                                                <i class="material-symbols-outlined fs-40">receipt_long</i>
+                                                <i class="material-symbols-outlined fs-40">point_of_sale</i>
                                             </div>
                                         </div>
                                     </div>
@@ -451,13 +451,13 @@
                                 <div class="card bg-white p-20 rounded-10 border border-white mb-4">
                                     <div class="d-flex">
                                         <div class="flex-grow-1">
-                                            <h3 class="mb-10">Total Customers</h3>
-                                            <h2 class="fs-26 fw-medium mb-0 lh-1">84,127</h2>
+                                            <h3 class="mb-10">Paid Orders Value</h3>
+                                            <h2 class="fs-26 fw-medium mb-0 lh-1">$84,127</h2>
                                         </div>
                                         <div class="flex-shrink-0 ms-3">
                                             <div
                                                 class="text-white text-center rounded-circle d-block theme-basic theme-basic-icon">
-                                                <i class="material-symbols-outlined fs-40">groups</i>
+                                                <i class="material-symbols-outlined fs-40">payments</i>
                                             </div>
                                         </div>
                                     </div>
@@ -478,19 +478,19 @@
                         </div>
                     </div>
 
-                    <div class="col-xl-12 col-xxl-3 col-xxxl-12">
+                    <div class="col-xl-12">
                         <div class="row">
-                            <div class="col-md-6 col-xxxl-6 col-xxl-12">
+                            <div class="col-md-6">
                                 <div class="card bg-white p-20 rounded-10 border border-white mb-4">
                                     <div class="d-flex">
                                         <div class="flex-grow-1">
-                                            <h3 class="mb-10">Total Revenue</h3>
-                                            <h2 class="fs-26 fw-medium mb-0 lh-1">$15,278</h2>
+                                            <h3 class="mb-10">Paid Orders</h3>
+                                            <h2 class="fs-26 fw-medium mb-0 lh-1">5,278</h2>
                                         </div>
                                         <div class="flex-shrink-0 ms-3">
                                             <div
                                                 class="text-white text-center rounded-circle d-block theme-basic theme-basic-icon-revenue">
-                                                <i class="material-symbols-outlined fs-50">account_balance_wallet</i>
+                                                <i class="material-symbols-outlined fs-50">shopping_bag</i>
                                             </div>
                                         </div>
                                     </div>
@@ -506,24 +506,24 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-6 col-xxxl-6 col-xxl-12">
+                            <div class="col-md-6">
                                 <div class="p-20 border rounded-10 mb-4 theme-basic">
-                                    <h3 class="text-white mb-12">Sales Overview</h3>
+                                    <h3 class="text-white mb-12">Orders Overview</h3>
                                     <div class="d-flex flex-wrap gap-2 justify-content-between mb-14">
                                         <div>
-                                            <span class="fs-14 text-white mb-1 d-block">Total Sales</span>
+                                            <span class="fs-14 text-white mb-1 d-block">Pending</span>
                                             <h2 class="fs-20 fw-medium lh-1 text-white mb-0">
                                                 9,586
                                             </h2>
                                         </div>
                                         <div>
-                                            <span class="fs-14 text-white mb-1 d-block">Monthly Sales</span>
+                                            <span class="fs-14 text-white mb-1 d-block">Confirmed</span>
                                             <h2 class="fs-20 fw-medium lh-1 text-white mb-0">
                                                 3,507
                                             </h2>
                                         </div>
                                         <div>
-                                            <span class="fs-14 text-white mb-1 d-block">Today’s Sales</span>
+                                            <span class="fs-14 text-white mb-1 d-block">Dispatched</span>
                                             <h2 class="fs-20 fw-medium lh-1 text-white mb-0">
                                                 357
                                             </h2>
@@ -541,9 +541,66 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="col-xl-12">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="card bg-white p-20 rounded-10 border border-white mb-4">
+                                    <div class="d-flex">
+                                        <div class="flex-grow-1">
+                                            <h3 class="mb-10">Money Recived Orders</h3>
+                                            <h2 class="fs-26 fw-medium mb-0 lh-1">278</h2>
+                                        </div>
+                                        <div class="flex-shrink-0 ms-3">
+                                            <div
+                                                class="text-white text-center rounded-circle d-block theme-basic theme-basic-icon-revenue">
+                                                <i class="material-symbols-outlined fs-50">paid</i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex justify-content-between align-items-center"
+                                        style="margin-top: 23px">
+                                        <p class="mb-0 fs-14">Revenue increases this month</p>
+                                        <span
+                                            class="d-flex align-content-center gap-1 bg-success bg-opacity-10 border border-success"
+                                            style="padding: 3px 5px">
+                                            <i class="material-symbols-outlined fs-14 text-success">trending_up</i>
+                                            <span class="lh-1 fs-14 text-success">3.15%</span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card bg-white p-20 rounded-10 border border-white mb-4">
+                                    <div class="d-flex">
+                                        <div class="flex-grow-1">
+                                            <h3 class="mb-10">Deliverd Orders</h3>
+                                            <h2 class="fs-26 fw-medium mb-0 lh-1">578</h2>
+                                        </div>
+                                        <div class="flex-shrink-0 ms-3">
+                                            <div
+                                                class="text-white text-center rounded-circle d-block theme-basic theme-basic-icon-revenue">
+                                                <i class="material-symbols-outlined fs-50">local_shipping</i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex justify-content-between align-items-center"
+                                        style="margin-top: 23px">
+                                        <p class="mb-0 fs-14">Revenue increases this month</p>
+                                        <span
+                                            class="d-flex align-content-center gap-1 bg-success bg-opacity-10 border border-success"
+                                            style="padding: 3px 5px">
+                                            <i class="material-symbols-outlined fs-14 text-success">trending_up</i>
+                                            <span class="lh-1 fs-14 text-success">3.15%</span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="row">
-                    <div class="col-xxl-6 col-xxxl-12">
+                    <div class="col-12">
                         <div class="row">
                             <div class="col-lg-6">
                                 <div class="card bg-white p-20 rounded-10 border border-white mb-4">
@@ -591,31 +648,64 @@
                             </div>
                             <div class="col-lg-6">
                                 <div class="card bg-white p-20 rounded-10 border border-white mb-4">
-                                    <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-20">
-                                        <h3>Average Daily Sales</h3>
-
+                                    <div class="d-flex">
+                                        <div class="flex-grow-1">
+                                            <h3 class="mb-10">Today Company Bonus</h3>
+                                            <h2 class="fs-26 fw-medium mb-0 lh-1">$15,278</h2>
+                                        </div>
+                                        <div class="flex-shrink-0 ms-3">
+                                            <div
+                                                class="text-white text-center rounded-circle d-block theme-basic theme-basic-icon-revenue">
+                                                <i class="material-symbols-outlined fs-50">workspace_premium</i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex justify-content-between align-items-center"
+                                        style="margin-top: 23px">
+                                        <p class="mb-0 fs-14">Revenue increases this month</p>
                                         <span
                                             class="d-flex align-content-center gap-1 bg-success bg-opacity-10 border border-success"
                                             style="padding: 3px 5px">
                                             <i class="material-symbols-outlined fs-14 text-success">trending_up</i>
-                                            <span class="lh-1 fs-14 text-success">5.25%</span>
+                                            <span class="lh-1 fs-14 text-success">3.15%</span>
                                         </span>
                                     </div>
-
-                                    <h2 class="lh-1 fs-26 fw-medium mb-0">$5K+</h2>
-
-                                    <div id="average_daily_sales_chart" style="margin-bottom: -17px"></div>
+                                </div>
+                                <div class="card bg-white p-20 rounded-10 border border-white mb-4">
+                                    <div class="d-flex">
+                                        <div class="flex-grow-1">
+                                            <h3 class="mb-10">Collected Service Charge</h3>
+                                            <h2 class="fs-26 fw-medium mb-0 lh-1">$15,278</h2>
+                                        </div>
+                                        <div class="flex-shrink-0 ms-3">
+                                            <div
+                                                class="text-white text-center rounded-circle d-block theme-basic theme-basic-icon-revenue">
+                                                <i class="material-symbols-outlined fs-50">receipt</i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex justify-content-between align-items-center"
+                                        style="margin-top: 23px">
+                                        <p class="mb-0 fs-14">Revenue increases this month</p>
+                                        <span
+                                            class="d-flex align-content-center gap-1 bg-success bg-opacity-10 border border-success"
+                                            style="padding: 3px 5px">
+                                            <i class="material-symbols-outlined fs-14 text-success">trending_up</i>
+                                            <span class="lh-1 fs-14 text-success">3.15%</span>
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
-
+                        </div>
+                        <div class="row">
                             {{-- Best Seller Card --}}
                             <div class="col-md-6">
                                 <div class="card p-20 bg-light-40 rounded-10 border-light-40 mb-4 best-seller-card">
                                     <div class="d-flex align-items-start justify-content-between gap-3 mb-18">
                                         <div>
                                             <h3 class="mb-12">Best Seller Of The Month</h3>
-                                            <h2 class="mt-3 best-seller-name">Michael Marquez</h3>
-                                                <span class="best-seller-role">Top Performer</span>
+                                            <h2 class="mt-3 best-seller-name">Michael Marquez</h2>
+                                            <span class="best-seller-role">Top Performer</span>
                                         </div>
                                         <div class="pe-3 pt-3">
                                             <div class="best-seller-avatar-wrap">
@@ -641,7 +731,7 @@
                             <div class="col-md-6">
                                 <div class="card p-20 bg-white rounded-10 border border-white mb-4 position-relative z-1">
                                     <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-20">
-                                        <h3>New Customers This Month</h3>
+                                        <h3>Pending Sellers</h3>
 
                                         <span
                                             class="d-flex align-content-center gap-1 bg-success bg-opacity-10 border border-success"
@@ -652,7 +742,6 @@
                                     </div>
                                     <h2 class="lh-1 fs-26 fw-medium">2,537</h2>
                                     <div style="margin-top: 55px">
-                                        <span class="fs-16 text-body d-block mb-10">Join Today</span>
                                         <ul class="p-0 mb-0 list-unstyled d-flex last-child-none global-right-list">
                                             <li style="margin-right: -20px">
                                                 <img src="{{ asset('assets/images/user12.jpg') }}"
@@ -680,21 +769,18 @@
                                                     style="width: 52px; height: 52px" alt="user16" />
                                             </li>
                                             <li class="border border-3 border-white rounded-circle bg-primary text-center"
-                                                style="
-                            margin-right: -20px;
-                            width: 52px;
-                            height: 52px;
-                            line-height: 49px;
-                          ">
+                                                style="margin-right: -20px;width: 52px;height: 52px;line-height: 49px; ">
                                                 <span class="text-white fs-16 fw-medium">27</span>
                                             </li>
                                         </ul>
+                                        <a href="/"><span class="fs-16 text-body d-block mb-10">Review
+                                                Requests</span></a>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-xxl-6 col-xxxl-12">
+                    <div class="col-12">
                         <div class="card bg-white p-20 rounded-10 border border-white mb-4">
                             <div class="d-flex justify-content-between align-items-start flex-wrap gap-3 mb-20">
                                 <div>
@@ -716,7 +802,8 @@
                                                     <div class="top-selling-date-control">
 
                                                         <input type="date" id="top-selling-start-date"
-                                                            name="start_date" class="form-control"
+                                                            name="start_date"
+                                                            class="form-control top-selling-filter-input"
                                                             aria-label="Start date" />
                                                     </div>
                                                 </div>
@@ -727,7 +814,8 @@
                                                     <div class="top-selling-date-control">
 
                                                         <input type="date" id="top-selling-end-date" name="end_date"
-                                                            class="form-control" aria-label="End date" />
+                                                            class="form-control top-selling-filter-input"
+                                                            aria-label="End date" />
                                                     </div>
                                                 </div>
 
@@ -742,40 +830,6 @@
                                                     </a>
                                                 </div>
                                             </form>
-
-                                            {{-- <div class="dropdown select-dropdown without-border top-selling-range-select flex-shrink-0">
-                                                <button class="dropdown-toggle bg-transparent text-secondary fs-15"
-                                                    data-bs-toggle="dropdown" aria-expanded="false">
-                                                    <span class="d-inline-flex align-items-center gap-2">
-                                                        <i class="ri-time-line fs-16"></i>
-                                                        This Week
-                                                    </span>
-                                                </button>
-
-                                                <ul class="dropdown-menu dropdown-menu-end bg-white border-0 box-shadow rounded-10"
-                                                    data-simplebar>
-                                                    <li>
-                                                        <button class="dropdown-item text-secondary">
-                                                            This Day
-                                                        </button>
-                                                    </li>
-                                                    <li>
-                                                        <button class="dropdown-item text-secondary">
-                                                            This Week
-                                                        </button>
-                                                    </li>
-                                                    <li>
-                                                        <button class="dropdown-item text-secondary">
-                                                            This Month
-                                                        </button>
-                                                    </li>
-                                                    <li>
-                                                        <button class="dropdown-item text-secondary">
-                                                            This Year
-                                                        </button>
-                                                    </li>
-                                                </ul>
-                                            </div> --}}
                                         </div>
                                     </div>
                                 </div>
@@ -950,53 +1004,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-lg-6 col-xxl-4 col-xxxl-6 mb-4">
-                        <div class="card bg-white p-20 rounded-10 border border-white">
-                            <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-20">
-                                <h3>Order Summary</h3>
-
-                                <div class="dropdown select-dropdown without-border">
-                                    <button class="dropdown-toggle bg-transparent text-secondary fs-15"
-                                        data-bs-toggle="dropdown" aria-expanded="false">
-                                        This Week
-                                    </button>
-
-                                    <ul class="dropdown-menu dropdown-menu-end bg-white border-0 box-shadow rounded-10"
-                                        data-simplebar>
-                                        <li>
-                                            <button class="dropdown-item text-secondary">
-                                                This Day
-                                            </button>
-                                        </li>
-                                        <li>
-                                            <button class="dropdown-item text-secondary">
-                                                This Week
-                                            </button>
-                                        </li>
-                                        <li>
-                                            <button class="dropdown-item text-secondary">
-                                                This Month
-                                            </button>
-                                        </li>
-                                        <li>
-                                            <button class="dropdown-item text-secondary">
-                                                This Year
-                                            </button>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-
-                            <div class="d-flex justify-content-between align-items-center mb-20">
-                                <span class="fs-15 text-secondary">Completed 60%</span>
-                                <span class="fs-15 text-secondary">New Order 30%</span>
-                                <span class="fs-15 text-secondary">Pending 10%</span>
-                            </div>
-
-                            <div id="order_summary_chart"></div>
-                        </div>
-                    </div>
-                    <div class="col-lg-6 col-xxl-4 col-xxxl-6">
+                    <div class="col-lg-6">
                         <div class="card bg-white p-20 rounded-10 border border-white mb-4">
                             <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-20">
                                 <h3>Top Sellers</h3>
@@ -1047,34 +1055,18 @@
                                                                 alt="user6" />
                                                         </div>
                                                         <div class="flex-grow-1 ms-12">
-                                                            <h3 class="fw-normal">Mark Stjohn</h3>
-                                                            <span class="fs-14 text-body fw-normal">Customer ID
-                                                                #76431</span>
+                                                            <h3 class="fw-normal mb-1">Mark Stjohn
+                                                                <span class="fs-13 text-body">(#76431)</span>
+                                                            </h3>
+                                                            <span class="fs-14 text-body fw-normal">342 Orders</span>
                                                         </div>
                                                     </div>
                                                 </td>
-                                                <td>
-                                                    <ul class="p-0 mb-0 list-unstyled d-flex align-items-center justify-content-end"
-                                                        style="gap: 2px">
-                                                        <li>
-                                                            <i class="ri-star-fill text-warning fs-16"></i>
-                                                        </li>
-                                                        <li>
-                                                            <i class="ri-star-fill text-warning fs-16"></i>
-                                                        </li>
-                                                        <li>
-                                                            <i class="ri-star-fill text-warning fs-16"></i>
-                                                        </li>
-                                                        <li>
-                                                            <i class="ri-star-fill text-warning fs-16"></i>
-                                                        </li>
-                                                        <li>
-                                                            <i class="ri-star-fill text-warning fs-16"></i>
-                                                        </li>
-                                                        <li>
-                                                            <span class="fs-14 text-body fw-normal">(5)</span>
-                                                        </li>
-                                                    </ul>
+                                                <td class="text-end">
+                                                    <h3 class="fs-16 fw-medium text-secondary mb-1">$128,400</h3>
+                                                    <span
+                                                        class="text-success bg-success bg-opacity-10 fs-13 fw-medium d-inline-block default-badge">Return:
+                                                        1.8%</span>
                                                 </td>
                                             </tr>
                                             <tr>
@@ -1087,34 +1079,18 @@
                                                                 alt="user7" />
                                                         </div>
                                                         <div class="flex-grow-1 ms-12">
-                                                            <h3 class="fw-normal">Joan Stanley</h3>
-                                                            <span class="fs-14 text-body fw-normal">Customer ID
-                                                                #64815</span>
+                                                            <h3 class="fw-normal mb-1">Joan Stanley
+                                                                <span class="fs-13 text-body">(#64815)</span>
+                                                            </h3>
+                                                            <span class="fs-14 text-body fw-normal">318 Orders</span>
                                                         </div>
                                                     </div>
                                                 </td>
-                                                <td>
-                                                    <ul class="p-0 mb-0 list-unstyled d-flex align-items-center justify-content-end"
-                                                        style="gap: 2px">
-                                                        <li>
-                                                            <i class="ri-star-fill text-warning fs-16"></i>
-                                                        </li>
-                                                        <li>
-                                                            <i class="ri-star-fill text-warning fs-16"></i>
-                                                        </li>
-                                                        <li>
-                                                            <i class="ri-star-fill text-warning fs-16"></i>
-                                                        </li>
-                                                        <li>
-                                                            <i class="ri-star-fill text-warning fs-16"></i>
-                                                        </li>
-                                                        <li>
-                                                            <i class="ri-star-half-fill text-warning fs-16"></i>
-                                                        </li>
-                                                        <li>
-                                                            <span class="fs-14 text-body fw-normal">(4.5)</span>
-                                                        </li>
-                                                    </ul>
+                                                <td class="text-end">
+                                                    <h3 class="fs-16 fw-medium text-secondary mb-1">$117,950</h3>
+                                                    <span
+                                                        class="text-success bg-success bg-opacity-10 fs-13 fw-medium d-inline-block default-badge">Return:
+                                                        2.3%</span>
                                                 </td>
                                             </tr>
                                             <tr>
@@ -1127,34 +1103,18 @@
                                                                 alt="user8" />
                                                         </div>
                                                         <div class="flex-grow-1 ms-12">
-                                                            <h3 class="fw-normal">Jacob Bell</h3>
-                                                            <span class="fs-14 text-body fw-normal">Customer ID
-                                                                #34581</span>
+                                                            <h3 class="fw-normal mb-1">Jacob Bell
+                                                                <span class="fs-13 text-body">(#34581)</span>
+                                                            </h3>
+                                                            <span class="fs-14 text-body fw-normal">286 Orders</span>
                                                         </div>
                                                     </div>
                                                 </td>
-                                                <td>
-                                                    <ul class="p-0 mb-0 list-unstyled d-flex align-items-center justify-content-end"
-                                                        style="gap: 2px">
-                                                        <li>
-                                                            <i class="ri-star-fill text-warning fs-16"></i>
-                                                        </li>
-                                                        <li>
-                                                            <i class="ri-star-fill text-warning fs-16"></i>
-                                                        </li>
-                                                        <li>
-                                                            <i class="ri-star-fill text-warning fs-16"></i>
-                                                        </li>
-                                                        <li>
-                                                            <i class="ri-star-fill text-warning fs-16"></i>
-                                                        </li>
-                                                        <li>
-                                                            <i class="ri-star-line text-warning fs-16"></i>
-                                                        </li>
-                                                        <li>
-                                                            <span class="fs-14 text-body fw-normal">(4)</span>
-                                                        </li>
-                                                    </ul>
+                                                <td class="text-end">
+                                                    <h3 class="fs-16 fw-medium text-secondary mb-1">$104,720</h3>
+                                                    <span
+                                                        class="text-warning bg-warning bg-opacity-10 fs-13 fw-medium d-inline-block default-badge">Return:
+                                                        3.1%</span>
                                                 </td>
                                             </tr>
                                             <tr>
@@ -1167,34 +1127,18 @@
                                                                 alt="user9" />
                                                         </div>
                                                         <div class="flex-grow-1 ms-12">
-                                                            <h3 class="fw-normal">Donald Bryan</h3>
-                                                            <span class="fs-14 text-body fw-normal">Customer ID
-                                                                #67941</span>
+                                                            <h3 class="fw-normal mb-1">Donald Bryan
+                                                                <span class="fs-13 text-body">(#67941)</span>
+                                                            </h3>
+                                                            <span class="fs-14 text-body fw-normal">264 Orders</span>
                                                         </div>
                                                     </div>
                                                 </td>
-                                                <td>
-                                                    <ul class="p-0 mb-0 list-unstyled d-flex align-items-center justify-content-end"
-                                                        style="gap: 2px">
-                                                        <li>
-                                                            <i class="ri-star-fill text-warning fs-16"></i>
-                                                        </li>
-                                                        <li>
-                                                            <i class="ri-star-fill text-warning fs-16"></i>
-                                                        </li>
-                                                        <li>
-                                                            <i class="ri-star-fill text-warning fs-16"></i>
-                                                        </li>
-                                                        <li>
-                                                            <i class="ri-star-fill text-warning fs-16"></i>
-                                                        </li>
-                                                        <li>
-                                                            <i class="ri-star-fill text-warning fs-16"></i>
-                                                        </li>
-                                                        <li>
-                                                            <span class="fs-14 text-body fw-normal">(5)</span>
-                                                        </li>
-                                                    </ul>
+                                                <td class="text-end">
+                                                    <h3 class="fs-16 fw-medium text-secondary mb-1">$98,460</h3>
+                                                    <span
+                                                        class="text-warning bg-warning bg-opacity-10 fs-13 fw-medium d-inline-block default-badge">Return:
+                                                        3.8%</span>
                                                 </td>
                                             </tr>
                                             <tr>
@@ -1207,34 +1151,18 @@
                                                                 alt="user10" />
                                                         </div>
                                                         <div class="flex-grow-1 ms-12">
-                                                            <h3 class="fw-normal">Kristina Blomquist</h3>
-                                                            <span class="fs-14 text-body fw-normal">Customer ID
-                                                                #36985</span>
+                                                            <h3 class="fw-normal mb-1">Kristina Blomquist
+                                                                <span class="fs-13 text-body">(#36985)</span>
+                                                            </h3>
+                                                            <span class="fs-14 text-body fw-normal">239 Orders</span>
                                                         </div>
                                                     </div>
                                                 </td>
-                                                <td>
-                                                    <ul class="p-0 mb-0 list-unstyled d-flex align-items-center justify-content-end"
-                                                        style="gap: 2px">
-                                                        <li>
-                                                            <i class="ri-star-fill text-warning fs-16"></i>
-                                                        </li>
-                                                        <li>
-                                                            <i class="ri-star-fill text-warning fs-16"></i>
-                                                        </li>
-                                                        <li>
-                                                            <i class="ri-star-fill text-warning fs-16"></i>
-                                                        </li>
-                                                        <li>
-                                                            <i class="ri-star-fill text-warning fs-16"></i>
-                                                        </li>
-                                                        <li>
-                                                            <i class="ri-star-fill text-warning fs-16"></i>
-                                                        </li>
-                                                        <li>
-                                                            <span class="fs-14 text-body fw-normal">(5)</span>
-                                                        </li>
-                                                    </ul>
+                                                <td class="text-end">
+                                                    <h3 class="fs-16 fw-medium text-secondary mb-1">$90,315</h3>
+                                                    <span
+                                                        class="text-danger bg-danger bg-opacity-10 fs-13 fw-medium d-inline-block default-badge">Return:
+                                                        4.6%</span>
                                                 </td>
                                             </tr>
                                             <tr class="last-child-border-none">
@@ -1247,411 +1175,18 @@
                                                                 alt="user11" />
                                                         </div>
                                                         <div class="flex-grow-1 ms-12">
-                                                            <h3 class="fw-normal">Jeffrey Morrison</h3>
-                                                            <span class="fs-14 text-body fw-normal">Customer ID
-                                                                #26985</span>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <ul class="p-0 mb-0 list-unstyled d-flex align-items-center justify-content-end"
-                                                        style="gap: 2px">
-                                                        <li>
-                                                            <i class="ri-star-fill text-warning fs-16"></i>
-                                                        </li>
-                                                        <li>
-                                                            <i class="ri-star-fill text-warning fs-16"></i>
-                                                        </li>
-                                                        <li>
-                                                            <i class="ri-star-fill text-warning fs-16"></i>
-                                                        </li>
-                                                        <li>
-                                                            <i class="ri-star-half-fill text-warning fs-16"></i>
-                                                        </li>
-                                                        <li>
-                                                            <i class="ri-star-line text-warning fs-16"></i>
-                                                        </li>
-                                                        <li>
-                                                            <span class="fs-14 text-body fw-normal">(3.5)</span>
-                                                        </li>
-                                                    </ul>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-12 col-xxl-4 col-xxxl-12">
-                        <div class="row">
-                            <div class="col-xxl-12 col-lg-6 col-xxxl-6">
-                                <div class="card bg-white p-20 rounded-10 border border-white mb-4">
-                                    <h3 class="mb-20">Top Sales Locations</h3>
-                                    <div class="row align-items-center">
-                                        <div class="col-lg-7 col-sm-6">
-                                            <div class="text-center">
-                                                <div id="sales_by_locations_map"></div>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-5 col-sm-6">
-                                            <ul class="p-0 mb-0 list-unstyled last-child-none mt-4 mt-sm-0">
-                                                <li class="d-flex align-items-center gap-2 mb-9">
-                                                    <img src="{{ asset('assets/images/usa.png') }}"
-                                                        class="rounded-circle" style="width: 20px; height: 20px"
-                                                        alt="usa" />
-                                                    <span class="fs-15">United States
-                                                        <span class="text-secondary">85%</span></span>
-                                                </li>
-                                                <li class="d-flex align-items-center gap-2 mb-9">
-                                                    <img src="{{ asset('assets/images/china.png') }}"
-                                                        class="rounded-circle" style="width: 20px; height: 20px"
-                                                        alt="china" />
-                                                    <span class="fs-15">China
-                                                        <span class="text-secondary">60%</span></span>
-                                                </li>
-                                                <li class="d-flex align-items-center gap-2 mb-9">
-                                                    <img src="{{ asset('assets/images/australia.png') }}"
-                                                        class="rounded-circle" style="width: 20px; height: 20px"
-                                                        alt="australia" />
-                                                    <span class="fs-15">Australia
-                                                        <span class="text-secondary">85%</span></span>
-                                                </li>
-                                                <li class="d-flex align-items-center gap-2 mb-9">
-                                                    <img src="{{ asset('assets/images/germany.png') }}"
-                                                        class="rounded-circle" style="width: 20px; height: 20px"
-                                                        alt="germany" />
-                                                    <span class="fs-15">Germany
-                                                        <span class="text-secondary">75%</span></span>
-                                                </li>
-                                                <li class="d-flex align-items-center gap-2 mb-9">
-                                                    <img src="{{ asset('assets/images/canada.png') }}"
-                                                        class="rounded-circle" style="width: 20px; height: 20px"
-                                                        alt="canada" />
-                                                    <span class="fs-15">Canada
-                                                        <span class="text-secondary">80%</span></span>
-                                                </li>
-                                                <li class="d-flex align-items-center gap-2 mb-9">
-                                                    <img src="{{ asset('assets/images/france.png') }}"
-                                                        class="rounded-circle" style="width: 20px; height: 20px"
-                                                        alt="france" />
-                                                    <span class="fs-15">France
-                                                        <span class="text-secondary">65%</span></span>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xxl-12 col-lg-6 col-xxxl-6">
-                                <div class="card bg-white p-20 rounded-10 border border border-white mb-4">
-                                    <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-0">
-                                        <h3>Revenue</h3>
-
-                                        <div class="dropdown select-dropdown without-border">
-                                            <button class="dropdown-toggle bg-transparent text-secondary fs-15"
-                                                data-bs-toggle="dropdown" aria-expanded="false">
-                                                This Week
-                                            </button>
-
-                                            <ul class="dropdown-menu dropdown-menu-end bg-white border-0 box-shadow rounded-10"
-                                                data-simplebar>
-                                                <li>
-                                                    <button class="dropdown-item text-secondary">
-                                                        This Day
-                                                    </button>
-                                                </li>
-                                                <li>
-                                                    <button class="dropdown-item text-secondary">
-                                                        This Week
-                                                    </button>
-                                                </li>
-                                                <li>
-                                                    <button class="dropdown-item text-secondary">
-                                                        This Month
-                                                    </button>
-                                                </li>
-                                                <li>
-                                                    <button class="dropdown-item text-secondary">
-                                                        This Year
-                                                    </button>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-
-                                    <div id="revenue_chart" style="margin-bottom: -17px"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-xxl-8 col-xxxxl-12">
-                        <div class="card bg-white rounded-10 border border-white mb-4">
-                            <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 p-20">
-                                <h3>Recent Orders</h3>
-
-                                <div class="d-flex align-items-center">
-                                    <div class="dropdown select-dropdown without-border">
-                                        <button class="dropdown-toggle bg-transparent text-secondary fs-15"
-                                            data-bs-toggle="dropdown" aria-expanded="false">
-                                            Show All
-                                        </button>
-
-                                        <ul class="dropdown-menu dropdown-menu-end bg-white border-0 box-shadow rounded-10"
-                                            data-simplebar>
-                                            <li>
-                                                <button class="dropdown-item text-secondary">
-                                                    Shipped
-                                                </button>
-                                            </li>
-                                            <li>
-                                                <button class="dropdown-item text-secondary">
-                                                    Confirmed
-                                                </button>
-                                            </li>
-                                            <li>
-                                                <button class="dropdown-item text-secondary">
-                                                    Pending
-                                                </button>
-                                            </li>
-                                            <li>
-                                                <button class="dropdown-item text-secondary">
-                                                    Rejected
-                                                </button>
-                                            </li>
-                                        </ul>
-                                    </div>
-
-                                    <form class="table-src-form position-relative">
-                                        <input type="text" class="form-control" placeholder="Search here..." />
-                                        <div
-                                            class="src-btn position-absolute top-50 start-0 translate-middle-y bg-transparent p-0 border-0">
-                                            <span class="material-symbols-outlined">search</span>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-
-                            <div class="default-table-area mx-minus-1 table-recent-orders">
-                                <div class="table-responsive">
-                                    <table class="table align-middle">
-                                        <thead>
-                                            <tr>
-                                                <th scope="col" class="fw-medium">Order ID</th>
-                                                <th scope="col" class="fw-medium">Customer</th>
-                                                <th scope="col" class="fw-medium">Created</th>
-                                                <th scope="col" class="fw-medium">Total</th>
-                                                <th scope="col" class="fw-medium">Profit</th>
-                                                <th scope="col" class="fw-medium">Status</th>
-                                                <th scope="col" class="fw-medium">Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td class="text-body">#ARP-1217</td>
-                                                <td>
-                                                    <a href="customers.html"
-                                                        class="d-flex align-items-center text-decoration-none">
-                                                        <div class="flex-shrink-0">
-                                                            <img src="{{ asset('assets/images/user1.jpg') }}"
-                                                                class="rounded-circle" style="width: 50px; height: 50px"
-                                                                alt="user1" />
-                                                        </div>
-                                                        <div class="flex-grow-1 ms-12">
-                                                            <h3 class="fw-medium hover-text mb-0 fs-16">
-                                                                Carlos Daley
+                                                            <h3 class="fw-normal mb-1">Jeffrey Morrison
+                                                                <span class="fs-13 text-body">(#26985)</span>
                                                             </h3>
+                                                            <span class="fs-14 text-body fw-normal">221 Orders</span>
                                                         </div>
-                                                    </a>
-                                                </td>
-                                                <td class="text-body">15 Nov, 2025</td>
-                                                <td class="text-body">$9,095</td>
-                                                <td class="text-body">$1,254</td>
-                                                <td>
-                                                    <span
-                                                        class="text-primary bg-primary bg-opacity-10 fs-15 fw-normal d-inline-block default-badge">Shipped</span>
-                                                </td>
-                                                <td>
-                                                    <div class="d-flex justify-content-end" style="gap: 12px">
-                                                        <button class="bg-transparent p-0 border-0"
-                                                            data-bs-toggle="tooltip" data-bs-placement="top"
-                                                            data-bs-title="View">
-                                                            <i
-                                                                class="material-symbols-outlined fs-16 fw-normal text-primary">visibility</i>
-                                                        </button>
-                                                        <button class="bg-transparent p-0 border-0 hover-text-danger"
-                                                            data-bs-toggle="tooltip" data-bs-placement="top"
-                                                            data-bs-title="Delete">
-                                                            <i
-                                                                class="material-symbols-outlined fs-16 fw-normal text-body">delete</i>
-                                                        </button>
                                                     </div>
                                                 </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="text-body">#ARP-9513</td>
-                                                <td>
-                                                    <a href="customers.html"
-                                                        class="d-flex align-items-center text-decoration-none">
-                                                        <div class="flex-shrink-0">
-                                                            <img src="{{ asset('assets/images/user2.jpg') }}"
-                                                                class="rounded-circle" style="width: 50px; height: 50px"
-                                                                alt="user2" />
-                                                        </div>
-                                                        <div class="flex-grow-1 ms-12">
-                                                            <h3 class="fw-medium hover-text mb-0 fs-16">
-                                                                Dorothy Young
-                                                            </h3>
-                                                        </div>
-                                                    </a>
-                                                </td>
-                                                <td class="text-body">14 Nov, 2025</td>
-                                                <td class="text-body">$8,564</td>
-                                                <td class="text-body">$973</td>
-                                                <td>
+                                                <td class="text-end">
+                                                    <h3 class="fs-16 fw-medium text-secondary mb-1">$82,740</h3>
                                                     <span
-                                                        class="text-success bg-success bg-opacity-10 fs-15 fw-normal d-inline-block default-badge">Confirmed</span>
-                                                </td>
-                                                <td>
-                                                    <div class="d-flex justify-content-end" style="gap: 12px">
-                                                        <button class="bg-transparent p-0 border-0"
-                                                            data-bs-toggle="tooltip" data-bs-placement="top"
-                                                            data-bs-title="View">
-                                                            <i
-                                                                class="material-symbols-outlined fs-16 fw-normal text-primary">visibility</i>
-                                                        </button>
-                                                        <button class="bg-transparent p-0 border-0 hover-text-danger"
-                                                            data-bs-toggle="tooltip" data-bs-placement="top"
-                                                            data-bs-title="Delete">
-                                                            <i
-                                                                class="material-symbols-outlined fs-16 fw-normal text-body">delete</i>
-                                                        </button>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="text-body">#ARP-7513</td>
-                                                <td>
-                                                    <a href="customers.html"
-                                                        class="d-flex align-items-center text-decoration-none">
-                                                        <div class="flex-shrink-0">
-                                                            <img src="{{ asset('assets/images/user3.jpg') }}"
-                                                                class="rounded-circle" style="width: 50px; height: 50px"
-                                                                alt="user3" />
-                                                        </div>
-                                                        <div class="flex-grow-1 ms-12">
-                                                            <h3 class="fw-medium hover-text mb-0 fs-16">
-                                                                Greg Woody
-                                                            </h3>
-                                                        </div>
-                                                    </a>
-                                                </td>
-                                                <td class="text-body">13 Nov, 2025</td>
-                                                <td class="text-body">$7,985</td>
-                                                <td class="text-body">$852</td>
-                                                <td>
-                                                    <span
-                                                        class="text-warning bg-warning bg-opacity-10 fs-15 fw-normal d-inline-block default-badge">Pending</span>
-                                                </td>
-                                                <td>
-                                                    <div class="d-flex justify-content-end" style="gap: 12px">
-                                                        <button class="bg-transparent p-0 border-0"
-                                                            data-bs-toggle="tooltip" data-bs-placement="top"
-                                                            data-bs-title="View">
-                                                            <i
-                                                                class="material-symbols-outlined fs-16 fw-normal text-primary">visibility</i>
-                                                        </button>
-                                                        <button class="bg-transparent p-0 border-0 hover-text-danger"
-                                                            data-bs-toggle="tooltip" data-bs-placement="top"
-                                                            data-bs-title="Delete">
-                                                            <i
-                                                                class="material-symbols-outlined fs-16 fw-normal text-body">delete</i>
-                                                        </button>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="text-body">#ARP-3579</td>
-                                                <td>
-                                                    <a href="customers.html"
-                                                        class="d-flex align-items-center text-decoration-none">
-                                                        <div class="flex-shrink-0">
-                                                            <img src="{{ asset('assets/images/user4.jpg') }}"
-                                                                class="rounded-circle" style="width: 50px; height: 50px"
-                                                                alt="user4" />
-                                                        </div>
-                                                        <div class="flex-grow-1 ms-12">
-                                                            <h3 class="fw-medium hover-text mb-0 fs-16">
-                                                                Deborah Rosol
-                                                            </h3>
-                                                        </div>
-                                                    </a>
-                                                </td>
-                                                <td class="text-body">12 Nov, 2025</td>
-                                                <td class="text-body">$7,362</td>
-                                                <td class="text-body">$793</td>
-                                                <td>
-                                                    <span
-                                                        class="text-danger bg-danger bg-opacity-10 fs-15 fw-normal d-inline-block default-badge">Rejected</span>
-                                                </td>
-                                                <td>
-                                                    <div class="d-flex justify-content-end" style="gap: 12px">
-                                                        <button class="bg-transparent p-0 border-0"
-                                                            data-bs-toggle="tooltip" data-bs-placement="top"
-                                                            data-bs-title="View">
-                                                            <i
-                                                                class="material-symbols-outlined fs-16 fw-normal text-primary">visibility</i>
-                                                        </button>
-                                                        <button class="bg-transparent p-0 border-0 hover-text-danger"
-                                                            data-bs-toggle="tooltip" data-bs-placement="top"
-                                                            data-bs-title="Delete">
-                                                            <i
-                                                                class="material-symbols-outlined fs-16 fw-normal text-body">delete</i>
-                                                        </button>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="text-body">#ARP-4826</td>
-                                                <td>
-                                                    <a href="customers.html"
-                                                        class="d-flex align-items-center text-decoration-none">
-                                                        <div class="flex-shrink-0">
-                                                            <img src="{{ asset('assets/images/user5.jpg') }}"
-                                                                class="rounded-circle" style="width: 50px; height: 50px"
-                                                                alt="user1" />
-                                                        </div>
-                                                        <div class="flex-grow-1 ms-12">
-                                                            <h3 class="fw-medium hover-text mb-0 fs-16">
-                                                                Kendall Allen
-                                                            </h3>
-                                                        </div>
-                                                    </a>
-                                                </td>
-                                                <td class="text-body">11 Nov, 2025</td>
-                                                <td class="text-body">$6,597</td>
-                                                <td class="text-body">$674</td>
-                                                <td>
-                                                    <span
-                                                        class="text-primary bg-primary bg-opacity-10 fs-15 fw-normal d-inline-block default-badge">Shipped</span>
-                                                </td>
-                                                <td>
-                                                    <div class="d-flex justify-content-end" style="gap: 12px">
-                                                        <button class="bg-transparent p-0 border-0"
-                                                            data-bs-toggle="tooltip" data-bs-placement="top"
-                                                            data-bs-title="View">
-                                                            <i
-                                                                class="material-symbols-outlined fs-16 fw-normal text-primary">visibility</i>
-                                                        </button>
-                                                        <button class="bg-transparent p-0 border-0 hover-text-danger"
-                                                            data-bs-toggle="tooltip" data-bs-placement="top"
-                                                            data-bs-title="Delete">
-                                                            <i
-                                                                class="material-symbols-outlined fs-16 fw-normal text-body">delete</i>
-                                                        </button>
-                                                    </div>
+                                                        class="text-danger bg-danger bg-opacity-10 fs-13 fw-medium d-inline-block default-badge">Return:
+                                                        5.4%</span>
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -1659,10 +1194,10 @@
                                 </div>
 
                                 <div
-                                    class="d-flex justify-content-center justify-content-sm-between align-items-center text-center flex-wrap gap-2 showing-wrap pt-15 p-20">
-                                    <span class="fs-15">Showing 1 to 5 of 50 entries</span>
+                                    class="d-flex justify-content-center justify-content-sm-between align-items-center text-center flex-wrap gap-2 showing-wrap pt-15">
+                                    <span class="fs-15">Showing 1 to 6 of 24 entries</span>
 
-                                    <nav class="custom-pagination" aria-label="Page navigation example">
+                                    <nav class="custom-pagination" aria-label="Top sellers pagination">
                                         <ul class="pagination mb-0 justify-content-center">
                                             <li class="page-item">
                                                 <button class="page-link icon" aria-label="Previous">
@@ -1689,197 +1224,392 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-xxl-4 col-xxxxl-12">
+
+                    <div class="col-lg-6">
                         <div class="card bg-white p-20 rounded-10 border border-white mb-4">
                             <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-20">
-                                <h3>Transactions History</h3>
+                                <h3>Bottom Sellers</h3>
 
                                 <div class="dropdown select-dropdown without-border">
                                     <button class="dropdown-toggle bg-transparent text-secondary fs-15"
                                         data-bs-toggle="dropdown" aria-expanded="false">
-                                        Last Month
+                                        This Week
                                     </button>
 
                                     <ul class="dropdown-menu dropdown-menu-end bg-white border-0 box-shadow rounded-10"
                                         data-simplebar>
                                         <li>
                                             <button class="dropdown-item text-secondary">
-                                                Last Day
+                                                This Day
                                             </button>
                                         </li>
                                         <li>
                                             <button class="dropdown-item text-secondary">
-                                                Last Week
+                                                This Week
                                             </button>
                                         </li>
                                         <li>
                                             <button class="dropdown-item text-secondary">
-                                                Last Month
+                                                This Month
                                             </button>
                                         </li>
                                         <li>
                                             <button class="dropdown-item text-secondary">
-                                                Last Year
+                                                This Year
                                             </button>
                                         </li>
                                     </ul>
                                 </div>
                             </div>
 
-                            <div class="default-table-area without-header table-transactions-history">
+                            <div class="default-table-area without-header table-top-sellers">
                                 <div class="table-responsive">
                                     <table class="table align-middle">
                                         <tbody>
                                             <tr>
+                                                <td class="text-body fw-medium">01.</td>
                                                 <td class="ps-0">
                                                     <div class="d-flex align-items-center text-decoration-none">
                                                         <div class="flex-shrink-0">
-                                                            <div class="text-primary text-center rounded-circle"
-                                                                style="
-                                    width: 50px;
-                                    height: 50px;
-                                    line-height: 62px;
-                                    background-color: #dbeafd;
-                                  ">
-                                                                <i
-                                                                    class="material-symbols-outlined fs-24">settings_backup_restore</i>
-                                                            </div>
+                                                            <img src="{{ asset('assets/images/user6.jpg') }}"
+                                                                class="rounded-circle" style="width: 50px; height: 50px"
+                                                                alt="user6" />
                                                         </div>
-                                                        <div class="flex-grow-1 ms-15">
-                                                            <h3 class="fw-normal">Refund Bill payment</h3>
-                                                            <span class="fs-14 text-body fw-normal">15 Nov 2025 -
-                                                                11:40am</span>
+                                                        <div class="flex-grow-1 ms-12">
+                                                            <h3 class="fw-normal mb-1">Mark Stjohn
+                                                                <span class="fs-13 text-body">(#76431)</span>
+                                                            </h3>
+                                                            <span class="fs-14 text-body fw-normal">126 Orders</span>
                                                         </div>
                                                     </div>
                                                 </td>
-                                                <td class="fw-normal text-success fs-16">+$995</td>
+                                                <td class="text-end">
+                                                    <h3 class="fs-16 fw-medium text-secondary mb-1">$42,680</h3>
+                                                    <span
+                                                        class="text-warning bg-warning bg-opacity-10 fs-13 fw-medium d-inline-block default-badge">Return:
+                                                        6.1%</span>
+                                                </td>
                                             </tr>
                                             <tr>
+                                                <td class="text-body fw-medium">02.</td>
                                                 <td class="ps-0">
                                                     <div class="d-flex align-items-center text-decoration-none">
                                                         <div class="flex-shrink-0">
-                                                            <div class="text-danger text-center rounded-circle"
-                                                                style="
-                                    width: 50px;
-                                    height: 50px;
-                                    line-height: 62px;
-                                    background-color: #fce4e2;
-                                  ">
-                                                                <i
-                                                                    class="material-symbols-outlined fs-24">account_balance</i>
-                                                            </div>
+                                                            <img src="{{ asset('assets/images/user7.jpg') }}"
+                                                                class="rounded-circle" style="width: 50px; height: 50px"
+                                                                alt="user7" />
                                                         </div>
-                                                        <div class="flex-grow-1 ms-15">
-                                                            <h3 class="fw-normal">Bank Transfer</h3>
-                                                            <span class="fs-14 text-body fw-normal">15 Nov 2025 -
-                                                                8:20am</span>
+                                                        <div class="flex-grow-1 ms-12">
+                                                            <h3 class="fw-normal mb-1">Joan Stanley
+                                                                <span class="fs-13 text-body">(#64815)</span>
+                                                            </h3>
+                                                            <span class="fs-14 text-body fw-normal">119 Orders</span>
                                                         </div>
                                                     </div>
                                                 </td>
-                                                <td class="fw-normal text-danger fs-16">-$1,550</td>
+                                                <td class="text-end">
+                                                    <h3 class="fs-16 fw-medium text-secondary mb-1">$39,210</h3>
+                                                    <span
+                                                        class="text-warning bg-warning bg-opacity-10 fs-13 fw-medium d-inline-block default-badge">Return:
+                                                        6.8%</span>
+                                                </td>
                                             </tr>
                                             <tr>
+                                                <td class="text-body fw-medium">03.</td>
                                                 <td class="ps-0">
                                                     <div class="d-flex align-items-center text-decoration-none">
                                                         <div class="flex-shrink-0">
-                                                            <div class="text-primary-50 text-center rounded-circle"
-                                                                style="
-                                    width: 50px;
-                                    height: 50px;
-                                    line-height: 62px;
-                                    background-color: #ebe9fe;
-                                  ">
-                                                                <i class="material-symbols-outlined fs-24">credit_card</i>
-                                                            </div>
+                                                            <img src="{{ asset('assets/images/user8.jpg') }}"
+                                                                class="rounded-circle" style="width: 50px; height: 50px"
+                                                                alt="user8" />
                                                         </div>
-                                                        <div class="flex-grow-1 ms-15">
-                                                            <h3 class="fw-normal">Master Card</h3>
-                                                            <span class="fs-14 text-body fw-normal">14 Nov 2025 -
-                                                                11:40am</span>
+                                                        <div class="flex-grow-1 ms-12">
+                                                            <h3 class="fw-normal mb-1">Jacob Bell
+                                                                <span class="fs-13 text-body">(#34581)</span>
+                                                            </h3>
+                                                            <span class="fs-14 text-body fw-normal">108 Orders</span>
                                                         </div>
                                                     </div>
                                                 </td>
-                                                <td class="fw-normal text-success fs-16">+$862</td>
+                                                <td class="text-end">
+                                                    <h3 class="fs-16 fw-medium text-secondary mb-1">$35,540</h3>
+                                                    <span
+                                                        class="text-danger bg-danger bg-opacity-10 fs-13 fw-medium d-inline-block default-badge">Return:
+                                                        7.5%</span>
+                                                </td>
                                             </tr>
                                             <tr>
+                                                <td class="text-body fw-medium">04.</td>
                                                 <td class="ps-0">
                                                     <div class="d-flex align-items-center text-decoration-none">
                                                         <div class="flex-shrink-0">
-                                                            <div class="text-info text-center rounded-circle"
-                                                                style="
-                                    width: 50px;
-                                    height: 50px;
-                                    line-height: 62px;
-                                    background-color: #daf7fb;
-                                  ">
-                                                                <i
-                                                                    class="material-symbols-outlined fs-24">account_balance_wallet</i>
-                                                            </div>
+                                                            <img src="{{ asset('assets/images/user9.jpg') }}"
+                                                                class="rounded-circle" style="width: 50px; height: 50px"
+                                                                alt="user9" />
                                                         </div>
-                                                        <div class="flex-grow-1 ms-15">
-                                                            <h3 class="fw-normal">Wallet</h3>
-                                                            <span class="fs-14 text-body fw-normal">10 Nov 2025 -
-                                                                10:10am</span>
+                                                        <div class="flex-grow-1 ms-12">
+                                                            <h3 class="fw-normal mb-1">Donald Bryan
+                                                                <span class="fs-13 text-body">(#67941)</span>
+                                                            </h3>
+                                                            <span class="fs-14 text-body fw-normal">97 Orders</span>
                                                         </div>
                                                     </div>
                                                 </td>
-                                                <td class="fw-normal text-success fs-16">+$974</td>
+                                                <td class="text-end">
+                                                    <h3 class="fs-16 fw-medium text-secondary mb-1">$32,980</h3>
+                                                    <span
+                                                        class="text-danger bg-danger bg-opacity-10 fs-13 fw-medium d-inline-block default-badge">Return:
+                                                        8.2%</span>
+                                                </td>
                                             </tr>
                                             <tr>
+                                                <td class="text-body fw-medium">05.</td>
                                                 <td class="ps-0">
                                                     <div class="d-flex align-items-center text-decoration-none">
                                                         <div class="flex-shrink-0">
-                                                            <div class="text-warning text-center rounded-circle"
-                                                                style="
-                                    width: 50px;
-                                    height: 50px;
-                                    line-height: 62px;
-                                    background-color: #fff4e8;
-                                  ">
-                                                                <i
-                                                                    class="material-symbols-outlined fs-24">attach_money</i>
-                                                            </div>
+                                                            <img src="{{ asset('assets/images/user10.jpg') }}"
+                                                                class="rounded-circle" style="width: 50px; height: 50px"
+                                                                alt="user10" />
                                                         </div>
-                                                        <div class="flex-grow-1 ms-15">
-                                                            <h3 class="fw-normal">Cash Withdrawal</h3>
-                                                            <span class="fs-14 text-body fw-normal">09 Nov 2025 -
-                                                                1:30pm</span>
+                                                        <div class="flex-grow-1 ms-12">
+                                                            <h3 class="fw-normal mb-1">Kristina Blomquist
+                                                                <span class="fs-13 text-body">(#36985)</span>
+                                                            </h3>
+                                                            <span class="fs-14 text-body fw-normal">88 Orders</span>
                                                         </div>
                                                     </div>
                                                 </td>
-                                                <td class="fw-normal text-danger fs-16">-$250</td>
+                                                <td class="text-end">
+                                                    <h3 class="fs-16 fw-medium text-secondary mb-1">$29,640</h3>
+                                                    <span
+                                                        class="text-danger bg-danger bg-opacity-10 fs-13 fw-medium d-inline-block default-badge">Return:
+                                                        9.1%</span>
+                                                </td>
                                             </tr>
-                                            <tr>
+                                            <tr class="last-child-border-none">
+                                                <td class="text-body fw-medium">06.</td>
                                                 <td class="ps-0">
                                                     <div class="d-flex align-items-center text-decoration-none">
                                                         <div class="flex-shrink-0">
-                                                            <div class="text-success-60 text-center rounded-circle"
-                                                                style="
-                                    width: 50px;
-                                    height: 50px;
-                                    line-height: 62px;
-                                    background-color: #e0f8ea;
-                                  ">
-                                                                <i class="material-symbols-outlined fs-24">payments</i>
-                                                            </div>
+                                                            <img src="{{ asset('assets/images/user11.jpg') }}"
+                                                                class="rounded-circle" style="width: 50px; height: 50px"
+                                                                alt="user11" />
                                                         </div>
-                                                        <div class="flex-grow-1 ms-15">
-                                                            <h3 class="fw-normal">Payment</h3>
-                                                            <span class="fs-14 text-body fw-normal">8 Nov 2025 -
-                                                                12:34pm</span>
+                                                        <div class="flex-grow-1 ms-12">
+                                                            <h3 class="fw-normal mb-1">Jeffrey Morrison
+                                                                <span class="fs-13 text-body">(#26985)</span>
+                                                            </h3>
+                                                            <span class="fs-14 text-body fw-normal">79 Orders</span>
                                                         </div>
                                                     </div>
                                                 </td>
-                                                <td class="fw-normal text-danger fs-16">-$657</td>
+                                                <td class="text-end">
+                                                    <h3 class="fs-16 fw-medium text-secondary mb-1">$26,170</h3>
+                                                    <span
+                                                        class="text-danger bg-danger bg-opacity-10 fs-13 fw-medium d-inline-block default-badge">Return:
+                                                        10.4%</span>
+                                                </td>
                                             </tr>
                                         </tbody>
                                     </table>
                                 </div>
+
                                 <div
                                     class="d-flex justify-content-center justify-content-sm-between align-items-center text-center flex-wrap gap-2 showing-wrap pt-15">
-                                    <span class="fs-15">Showing 1 to 5 of 50 entries</span>
+                                    <span class="fs-15">Showing 1 to 6 of 24 entries</span>
 
-                                    <nav class="custom-pagination" aria-label="Page navigation example">
+                                    <nav class="custom-pagination" aria-label="Bottom sellers pagination">
+                                        <ul class="pagination mb-0 justify-content-center">
+                                            <li class="page-item">
+                                                <button class="page-link icon" aria-label="Previous">
+                                                    <i class="material-symbols-outlined">west</i>
+                                                </button>
+                                            </li>
+                                            <li class="page-item">
+                                                <button class="page-link active">1</button>
+                                            </li>
+                                            <li class="page-item">
+                                                <button class="page-link">2</button>
+                                            </li>
+                                            <li class="page-item">
+                                                <button class="page-link">3</button>
+                                            </li>
+                                            <li class="page-item">
+                                                <button class="page-link icon" aria-label="Next">
+                                                    <i class="material-symbols-outlined">east</i>
+                                                </button>
+                                            </li>
+                                        </ul>
+                                    </nav>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-12">
+                        <div class="card bg-white p-20 rounded-10 border border-white mb-4">
+                            <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-20">
+                                <h3>Supplier Details</h3>
+
+                                <div class="dropdown select-dropdown without-border">
+                                    <button class="dropdown-toggle bg-transparent text-secondary fs-15"
+                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                        This Week
+                                    </button>
+
+                                    <ul class="dropdown-menu dropdown-menu-end bg-white border-0 box-shadow rounded-10"
+                                        data-simplebar>
+                                        <li>
+                                            <button class="dropdown-item text-secondary">
+                                                This Day
+                                            </button>
+                                        </li>
+                                        <li>
+                                            <button class="dropdown-item text-secondary">
+                                                This Week
+                                            </button>
+                                        </li>
+                                        <li>
+                                            <button class="dropdown-item text-secondary">
+                                                This Month
+                                            </button>
+                                        </li>
+                                        <li>
+                                            <button class="dropdown-item text-secondary">
+                                                This Year
+                                            </button>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="default-table-area without-header table-top-sellers">
+                                <div class="table-responsive">
+                                    <table class="table align-middle">
+                                        <tbody>
+                                            <tr>
+                                                <td class="text-body fw-medium">01.</td>
+                                                <td class="ps-0">
+                                                    <h3 class="fw-normal mb-0">Nova Supply Co.</h3>
+                                                </td>
+                                                <td class="text-body">421 Orders</td>
+                                                <td class="text-body">Pending: 39</td>
+                                                <td class="text-body">Dispatch: 382</td>
+                                                <td class="text-end">
+                                                    <h3 class="fs-16 fw-medium text-secondary mb-0">$164,820</h3>
+                                                </td>
+                                                <td class="text-end">
+                                                    <a href="#"
+                                                        class="text-decoration-none text-secondary hover-text"
+                                                        aria-label="View report for Nova Supply Co.">
+                                                        <i class="material-symbols-outlined fs-20">assessment</i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-body fw-medium">02.</td>
+                                                <td class="ps-0">
+                                                    <h3 class="fw-normal mb-0">Prime Source Ltd.</h3>
+                                                </td>
+                                                <td class="text-body">389 Orders</td>
+                                                <td class="text-body">Pending: 34</td>
+                                                <td class="text-body">Dispatch: 355</td>
+                                                <td class="text-end">
+                                                    <h3 class="fs-16 fw-medium text-secondary mb-0">$152,970</h3>
+                                                </td>
+                                                <td class="text-end">
+                                                    <a href="#"
+                                                        class="text-decoration-none text-secondary hover-text"
+                                                        aria-label="View report for Prime Source Ltd.">
+                                                        <i class="material-symbols-outlined fs-20">assessment</i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-body fw-medium">03.</td>
+                                                <td class="ps-0">
+                                                    <h3 class="fw-normal mb-0">Eastline Traders</h3>
+                                                </td>
+                                                <td class="text-body">347 Orders</td>
+                                                <td class="text-body">Pending: 31</td>
+                                                <td class="text-body">Dispatch: 316</td>
+                                                <td class="text-end">
+                                                    <h3 class="fs-16 fw-medium text-secondary mb-0">$138,560</h3>
+                                                </td>
+                                                <td class="text-end">
+                                                    <a href="#"
+                                                        class="text-decoration-none text-secondary hover-text"
+                                                        aria-label="View report for Eastline Traders">
+                                                        <i class="material-symbols-outlined fs-20">assessment</i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-body fw-medium">04.</td>
+                                                <td class="ps-0">
+                                                    <h3 class="fw-normal mb-0">BluePeak Wholesale</h3>
+                                                </td>
+                                                <td class="text-body">316 Orders</td>
+                                                <td class="text-body">Pending: 27</td>
+                                                <td class="text-body">Dispatch: 289</td>
+                                                <td class="text-end">
+                                                    <h3 class="fs-16 fw-medium text-secondary mb-0">$124,905</h3>
+                                                </td>
+                                                <td class="text-end">
+                                                    <a href="#"
+                                                        class="text-decoration-none text-secondary hover-text"
+                                                        aria-label="View report for BluePeak Wholesale">
+                                                        <i class="material-symbols-outlined fs-20">assessment</i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-body fw-medium">05.</td>
+                                                <td class="ps-0">
+                                                    <h3 class="fw-normal mb-0">Atlas Vendor Hub</h3>
+                                                </td>
+                                                <td class="text-body">284 Orders</td>
+                                                <td class="text-body">Pending: 24</td>
+                                                <td class="text-body">Dispatch: 260</td>
+                                                <td class="text-end">
+                                                    <h3 class="fs-16 fw-medium text-secondary mb-0">$112,440</h3>
+                                                </td>
+                                                <td class="text-end">
+                                                    <a href="#"
+                                                        class="text-decoration-none text-secondary hover-text"
+                                                        aria-label="View report for Atlas Vendor Hub">
+                                                        <i class="material-symbols-outlined fs-20">assessment</i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            <tr class="last-child-border-none">
+                                                <td class="text-body fw-medium">06.</td>
+                                                <td class="ps-0">
+                                                    <h3 class="fw-normal mb-0">Sterling Imports</h3>
+                                                </td>
+                                                <td class="text-body">251 Orders</td>
+                                                <td class="text-body">Pending: 22</td>
+                                                <td class="text-body">Dispatch: 229</td>
+                                                <td class="text-end">
+                                                    <h3 class="fs-16 fw-medium text-secondary mb-0">$97,615</h3>
+                                                </td>
+                                                <td class="text-end">
+                                                    <a href="#"
+                                                        class="text-decoration-none text-secondary hover-text"
+                                                        aria-label="View report for Sterling Imports">
+                                                        <i class="material-symbols-outlined fs-20">assessment</i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <div
+                                    class="d-flex justify-content-center justify-content-sm-between align-items-center text-center flex-wrap gap-2 showing-wrap pt-15">
+                                    <span class="fs-15">Showing 1 to 6 of 18 entries</span>
+
+                                    <nav class="custom-pagination" aria-label="Supplier details pagination">
                                         <ul class="pagination mb-0 justify-content-center">
                                             <li class="page-item">
                                                 <button class="page-link icon" aria-label="Previous">
