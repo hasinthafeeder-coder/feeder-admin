@@ -17500,9 +17500,9 @@ img {
 .form-control {
     background-color: #fff;
     border: 1px solid #dae0ec;
-    height: 45px;
+    height: 46px;
     color: #475569 !important;
-    font-size: 16px;
+    font-size: 15px;
     padding: 14px 15px;
     width: 100%;
     transition: all ease 0.5s;

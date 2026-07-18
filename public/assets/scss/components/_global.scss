@@ -6,15 +6,26 @@ body {
 a {
     transition: $transition;
     color: $body-color;
-	&:hover {
-       color: $primary;
-	}
+    &:hover {
+        color: $primary;
+    }
 }
-.h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
     color: $secondary;
-	font: {
-		weight: 700;
-	}
+    font: {
+        weight: 700;
+    }
 }
 h3 {
     font-size: 18px;
@@ -22,13 +33,13 @@ h3 {
     margin-bottom: 0;
 }
 p {
-	margin-bottom: 15px;
+    margin-bottom: 15px;
     line-height: 1.3;
 
-	&:last-child {
+    &:last-child {
         margin-bottom: 0;
     }
-} 
+}
 img {
     max-width: 100%;
     height: auto;
@@ -42,36 +53,39 @@ img {
     color: $secondary;
 }
 .form-control {
-	background-color: $white; 
-	border: 1px solid #dae0ec; 
-    height: 56px;
-    color: $secondary !important;
-	font-size: 16px;
-	padding: 14px 15px;
-	width: 100%;
-	transition: $transition;
+    background-color: $white;
+    border: 1px solid #dae0ec;
+    height: 46px;
+    color: #475569 !important;
+    font-size: 15px;
+    padding: 14px 15px;
+    width: 100%;
+    transition: all ease 0.5s;
     border-radius: 5px;
-	&::placeholder {
-		color: $body-color;
-		font-size: 16px;
-	}
-	&:focus {
-		background-color: $white;
-		box-shadow: unset;
-		outline: 0;
+    &::placeholder {
+        color: $body-color;
+        font-size: 16px;
+    }
+    &:focus {
+        background-color: $white;
+        box-shadow: unset;
+        outline: 0;
         border-color: #dae0ec;
-		border-bottom: 2px solid $primary;
-        color: #8695AA;
-	}
-	&.form-select  {
-		cursor: pointer;
-        color: #8695AA;
-	}
+        border-bottom: 2px solid $primary;
+        color: #8695aa;
+    }
+    &.form-select {
+        cursor: pointer;
+        color: #8695aa;
+    }
     &.file {
         padding-top: 12px;
     }
 }
-.form-floating > .form-control:focus ~ label::after, .form-floating > .form-control:not(:placeholder-shown) ~ label::after, .form-floating > .form-control-plaintext ~ label::after, .form-floating > .form-select ~ label::after {
+.form-floating > .form-control:focus ~ label::after,
+.form-floating > .form-control:not(:placeholder-shown) ~ label::after,
+.form-floating > .form-control-plaintext ~ label::after,
+.form-floating > .form-select ~ label::after {
     background-color: transparent;
 }
 .form-floating {
@@ -80,7 +94,7 @@ img {
         padding: 14px 15px;
     }
 }
-textarea {   
+textarea {
     &.form-control {
         height: auto;
     }
@@ -99,21 +113,21 @@ textarea {
             border-color: $primary;
         }
     }
-    .form-check-input:checked[type=checkbox] {
+    .form-check-input:checked[type="checkbox"] {
         border-color: $primary;
         background-color: $primary;
     }
     .form-check-label {
         padding-left: 5px;
     }
-    .form-check-input:checked[type=radio] {
+    .form-check-input:checked[type="radio"] {
         border-color: $primary;
         background-color: $primary;
     }
 }
 .filter-check {
     .form-check {
-        .form-check-input:checked[type=checkbox] {
+        .form-check-input:checked[type="checkbox"] {
             border-color: $primary !important;
             background-color: $primary !important;
         }
@@ -131,7 +145,6 @@ textarea {
     }
 }
 
-
 /* BG Image Area Style
 ============================================*/
 .bg-img {
@@ -140,16 +153,16 @@ textarea {
     background-size: cover;
 }
 .gradient-bg {
-    background: linear-gradient(180deg, #5c4edb, #796df6)
+    background: linear-gradient(180deg, #5c4edb, #796df6);
 }
 .gradient-bg-2 {
-    background: linear-gradient(93deg, #5034CE 0%, #5D41EA 100%);
+    background: linear-gradient(93deg, #5034ce 0%, #5d41ea 100%);
 }
 .gradient-bg-3 {
-    background: linear-gradient(180deg, #333B47 0%, #394453 100%);
+    background: linear-gradient(180deg, #333b47 0%, #394453 100%);
 }
 .gradient-bg-4 {
-    background: linear-gradient(180deg, #817EFB 0%, #412DA6 100%);
+    background: linear-gradient(180deg, #817efb 0%, #412da6 100%);
 }
 
 /* Preloader Area Style
@@ -178,12 +191,13 @@ textarea {
             margin: {
                 left: auto;
                 right: auto;
-            };
+            }
             div {
                 height: 100%;
             }
         }
-        .loader, .loader div {
+        .loader,
+        .loader div {
             padding: 8px;
             border-radius: 50%;
             border: 2px solid transparent;
@@ -191,34 +205,35 @@ textarea {
             border: {
                 top-color: $primary;
                 border-bottom: $primary;
-            };
+            }
         }
         .waviy {
             position: relative;
             text-align: center;
-            -webkit-box-reflect: below -47px linear-gradient(transparent, rgba(0, 0, 0, .2));
+            -webkit-box-reflect: below -47px
+                linear-gradient(transparent, rgba(0, 0, 0, 0.2));
             font: {
                 size: 50px;
                 weight: 700;
-            };
+            }
             span {
                 position: relative;
                 color: $dark;
-                animation-delay: .1s;
+                animation-delay: 0.1s;
                 display: inline-block;
                 animation: waviy 1s infinite;
 
                 &:nth-child(2) {
-                    animation-delay: .2s;
+                    animation-delay: 0.2s;
                 }
                 &:nth-child(3) {
-                    animation-delay: .3s;
+                    animation-delay: 0.3s;
                 }
                 &:nth-child(4) {
-                    animation-delay: .4s;
+                    animation-delay: 0.4s;
                 }
                 &:nth-child(5) {
-                    animation-delay: .5s;
+                    animation-delay: 0.5s;
                 }
             }
         }
@@ -236,66 +251,68 @@ textarea {
     }
 }
 @keyframes waviy {
-    0%, 40%, 100% {
-        transform: translateY(0)
+    0%,
+    40%,
+    100% {
+        transform: translateY(0);
     }
     20% {
-        transform: translateY(-20px)
+        transform: translateY(-20px);
     }
 }
 /*
 Action Opt Style
 ======================================================*/
 .action-opt {
-	.btn {
-		border: none;
-		svg {
-			width: 20px;
+    .btn {
+        border: none;
+        svg {
+            width: 20px;
             height: 20px;
-			stroke: #8F9DBD;
+            stroke: #8f9dbd;
             position: relative;
             top: -1.6px;
-		}
-		&:focus {
-			border: none;
-			box-shadow: none;
-		}
+        }
+        &:focus {
+            border: none;
+            box-shadow: none;
+        }
         &.bg {
             width: 30px;
             height: 30px;
             line-height: 30px;
             text-align: center;
-            background-color: #F3F6F9;
+            background-color: #f3f6f9;
             border-radius: 4px;
             svg {
                 margin-right: 0 !important;
                 stroke: $body-color !important;
             }
         }
-	}
-	.dropdown-menu {
+    }
+    .dropdown-menu {
         box-shadow: 0 4px 34px #6560f01a;
-		li {
-			.dropdown-item {
-				font-size: 16px;
+        li {
+            .dropdown-item {
+                font-size: 16px;
                 font-weight: 500;
                 padding: 5px 15px;
                 display: flex;
                 align-items: center;
                 gap: 8px;
                 color: $secondary;
-				i {
-					color: $primary;
-                    font-size: 16px;
-				}
-				&:hover {
-					background: rgba(92, 97, 242, 0.05);
+                i {
                     color: $primary;
-					svg {
-						color: $primary;
-					}
-				}
-			}
+                    font-size: 16px;
+                }
+                &:hover {
+                    background: rgba(92, 97, 242, 0.05);
+                    color: $primary;
+                    svg {
+                        color: $primary;
+                    }
+                }
+            }
             &:last-child {
                 .dropdown-item {
                     svg {
@@ -303,20 +320,20 @@ Action Opt Style
                     }
                 }
             }
-		}
-	}
-	&.hover {
-		.dropdown-menu {
-			display: block !important;
-			opacity: 0;
-			transition: $transition;
-		}
-		&:hover {
-			.dropdown-menu {
-				opacity: 1;
-			}
-		}
-	}
+        }
+    }
+    &.hover {
+        .dropdown-menu {
+            display: block !important;
+            opacity: 0;
+            transition: $transition;
+        }
+        &:hover {
+            .dropdown-menu {
+                opacity: 1;
+            }
+        }
+    }
 }
 .select-dropdown {
     position: relative;
@@ -331,7 +348,7 @@ Action Opt Style
             top: 50%;
             right: 0;
             content: "\ea4e";
-            margin-top: -.5px;
+            margin-top: -0.5px;
             position: absolute;
             color: $primary;
             transform: translateY(-50%);
@@ -533,7 +550,6 @@ Custom Font Size Area Style
     font-size: 100px;
 }
 
-
 /*
 Custom Padding & Margin Area Style
 ======================================================*/
@@ -662,7 +678,7 @@ Custom Hover Area Style
     &:hover {
         color: $primary !important;
         i {
-            color: $primary !important; 
+            color: $primary !important;
         }
     }
 }
@@ -671,7 +687,7 @@ Custom Hover Area Style
     &:hover {
         color: $danger !important;
         i {
-            color: $danger !important; 
+            color: $danger !important;
         }
     }
 }
@@ -680,7 +696,7 @@ Custom Hover Area Style
     &:hover {
         color: $success !important;
         i {
-            color: $success !important; 
+            color: $success !important;
         }
     }
 }
@@ -689,7 +705,7 @@ Custom Hover Area Style
     &:hover {
         color: $white !important;
         i {
-            color: $white !important; 
+            color: $white !important;
         }
     }
 }
@@ -699,7 +715,7 @@ Custom Hover Area Style
         background-color: $primary !important;
         color: $white !important;
         i {
-            color: $white !important; 
+            color: $white !important;
         }
     }
 }
@@ -709,7 +725,7 @@ Custom Hover Area Style
         background-color: $danger !important;
         color: $white !important;
         i {
-            color: $white !important; 
+            color: $white !important;
         }
     }
 }
@@ -720,17 +736,17 @@ Custom Hover Area Style
     cursor: move;
 }
 .product-upload {
-	input[type=file] {
-		display: none;
-	}
-	.file-upload {
-		display: inline-block;
-		cursor: pointer;
-		line-height: 40px;
-		text-align: center;
-		font-size: 16px;
-		width: 100%;
-	}
+    input[type="file"] {
+        display: none;
+    }
+    .file-upload {
+        display: inline-block;
+        cursor: pointer;
+        line-height: 40px;
+        text-align: center;
+        font-size: 16px;
+        width: 100%;
+    }
 }
 .top-1 {
     top: 1px;
@@ -831,49 +847,49 @@ Scroll Bar Style
 .scroll-bar {
     margin-top: 0 !important;
     overflow: auto;
-	padding-right: 5px;
+    padding-right: 5px;
     /* width */
     &::-webkit-scrollbar {
         width: 6px;
-		height: 6px;
+        height: 6px;
         transition: $transition;
-		border-radius: 0;
+        border-radius: 0;
     }
     /* Track */
     &::-webkit-scrollbar-track {
-        background: #F0F0F4;
-		transition: $transition;
-		border-radius: 0;
+        background: #f0f0f4;
+        transition: $transition;
+        border-radius: 0;
     }
     /* Handle */
     &::-webkit-scrollbar-thumb {
         background: #e0e0e2;
-		transition: $transition;
-		border-radius: 0;
+        transition: $transition;
+        border-radius: 0;
     }
     /* Handle on hover */
-    &::-webkit-scrollbar-thumb:hover {  
+    &::-webkit-scrollbar-thumb:hover {
         background: $primary;
-		border-radius: 0;
+        border-radius: 0;
     }
-	&.active {
-		&::-webkit-scrollbar-track {
-			background: #F0F0F4;
-			transition: $transition;
-			border-radius: 0;
-		}
-		/* Handle */
-		&::-webkit-scrollbar-thumb {
-			background: $primary;
-			transition: $transition;
-			border-radius: 0;
-		}
-		/* Handle on hover */
-		&::-webkit-scrollbar-thumb:hover {  
-			background: $primary;
-			border-radius: 0;
-		}
-	}
+    &.active {
+        &::-webkit-scrollbar-track {
+            background: #f0f0f4;
+            transition: $transition;
+            border-radius: 0;
+        }
+        /* Handle */
+        &::-webkit-scrollbar-thumb {
+            background: $primary;
+            transition: $transition;
+            border-radius: 0;
+        }
+        /* Handle on hover */
+        &::-webkit-scrollbar-thumb:hover {
+            background: $primary;
+            border-radius: 0;
+        }
+    }
 }
 .tag-container {
     display: flex;
@@ -911,10 +927,10 @@ Theme Settings Style
 }
 @keyframes rotation {
     from {
-      transform: rotate(0deg);
+        transform: rotate(0deg);
     }
     to {
-      transform: rotate(359deg);
+        transform: rotate(359deg);
     }
 }
 
@@ -1001,7 +1017,7 @@ simplebar Style
     right: 0;
     &::before {
         border-radius: 0;
-        background-color: #cccccc;           
+        background-color: #cccccc;
     }
 }
 
@@ -1263,7 +1279,7 @@ Countdown Add To cart Style
         right: 0;
         width: 100%;
         height: 1px;
-        background-color: #A9A9C8;
+        background-color: #a9a9c8;
         opacity: 0.1;
         z-index: -1;
     }
@@ -1294,7 +1310,7 @@ Countdown Add To cart Style
         right: 0;
         width: 100%;
         height: 2px;
-        background-color: #A9A9C8;
+        background-color: #a9a9c8;
         opacity: 0.1;
         z-index: -1;
     }
@@ -1381,7 +1397,6 @@ Countdown Add To cart Style
             right: -30px;
             top: 50%;
             transform: translateY(-56%);
-
         }
         &:last-child {
             &::before {
@@ -1394,10 +1409,10 @@ Countdown Add To cart Style
 /* Default Badge Area Style
 ============================================*/
 .default-badge {
-    padding: 3px 10.24px; 
+    padding: 3px 10.24px;
     border-radius: 3px;
     &.style-two {
-        padding: 1px 11.5px; 
+        padding: 1px 11.5px;
     }
 }
 
@@ -1422,7 +1437,7 @@ Countdown Add To cart Style
             border: none;
             border-radius: 100px;
             padding: 18px 17px;
-            background-color: #EFF3F9;
+            background-color: #eff3f9;
             span {
                 transition: $transition;
             }
@@ -1455,10 +1470,10 @@ Countdown Add To cart Style
         right: 0;
         width: 100%;
         height: 50%;
-        background-color: #796DF6;
+        background-color: #796df6;
         z-index: -1;
         border-radius: 10px;
-    }   
+    }
 }
 .quick-view-bg {
     position: relative;
@@ -1471,25 +1486,21 @@ Countdown Add To cart Style
         right: 0;
         width: 100%;
         height: 50%;
-        background-color: #2ED47E;
+        background-color: #2ed47e;
         z-index: -1;
         border-radius: 10px;
-    } 
+    }
 }
-
 
 /* Max width 576px */
 @media only screen and (max-width: 576px) {
-
     .ms-80 {
         margin-left: 0;
     }
-
 }
 
 /* Max width 767px */
 @media only screen and (max-width: 767px) {
-
     h3 {
         font-size: 16px;
     }
@@ -1564,37 +1575,30 @@ Countdown Add To cart Style
             padding: 15px !important;
         }
     }
-
 }
 
 /* Min width 1199px */
-@media only screen and (max-width:1199px) {
-
+@media only screen and (max-width: 1199px) {
     .fs-100 {
         font-size: 50px;
     }
     .pe-60 {
         padding-right: 0;
     }
-
 }
 
 /* Min width 1600px */
-@media only screen and (max-width:1600px) {
-
+@media only screen and (max-width: 1600px) {
     .for-responsive-board {
         overflow: auto;
         .width-1600 {
             width: 1280px;
-            
         }
     }
-    
 }
 
 /* Min width 768px to Max width 992px */
 @media only screen and (min-width: 768px) and (max-width: 991px) {
-
     h3 {
         font-size: 16px;
     }
@@ -1605,30 +1609,24 @@ Countdown Add To cart Style
         padding-top: 20px;
         padding-bottom: 20px;
     }
-
 }
 
 /* Min width 992px to Max width 1199px */
-@media only screen and (min-width: 992px) and (max-width: 1199px)  {
-
+@media only screen and (min-width: 992px) and (max-width: 1199px) {
     .fs-100 {
         font-size: 50px;
     }
-
 }
 
 /* Min width 1200px to Max width 1399px */
 @media only screen and (min-width: 1200px) and (max-width: 1399px) {
-
     .fs-100 {
         font-size: 50px;
     }
-
 }
 
 /* Min width 1400px to Max width 1799px */
 @media only screen and (min-width: 992px) and (max-width: 1599px) {
-
     .col-xxxl-12 {
         width: 100%;
     }
@@ -1641,30 +1639,24 @@ Countdown Add To cart Style
     .order-custom-2 {
         order: 2 !important;
     }
-
 }
 
 /* Min width 992px to Max width 1650px */
-@media only screen and (min-width: 992px) and (max-width: 1650px)  {
-
+@media only screen and (min-width: 992px) and (max-width: 1650px) {
     .col-xxxxl-12 {
         width: 100%;
     }
-
 }
 
 /* Min width 1200px to Max width 1700px */
-@media only screen and (min-width: 1200px) and (max-width: 1700px)  {
-
+@media only screen and (min-width: 1200px) and (max-width: 1700px) {
     .col-xxxl-4 {
         width: 33.33%;
     }
-
 }
 
 /* Min width 1600px to Max width 1700px */
 @media only screen and (min-width: 1600px) and (max-width: 1700px) {
-
     .schedule-tabs {
         .nav-item {
             .nav-link {
@@ -1672,43 +1664,37 @@ Countdown Add To cart Style
             }
         }
     }
-
 }
 
 /* Min width 992px to Max width 1840px */
 @media only screen and (min-width: 768px) and (max-width: 1840px) {
-
     .col-xxxxl-6 {
         width: 50%;
     }
     .col-xxxxxl-12 {
         width: 100%;
     }
-
 }
 
 /* Min width 992px */
 @media only screen and (min-width: 992px) {
-
     .w-930 {
         width: 930px;
     }
     .py-100 {
         padding-top: 100px;
         padding-bottom: 100px;
-    } 
+    }
     .px-130 {
         padding-left: 130px;
         padding-right: 130px;
     }
-
 }
 
-/* 
-Dark Mode SCSS 
+/*
+Dark Mode SCSS
 ===================================================*/
-[data-theme=dark] {
-
+[data-theme="dark"] {
     .light {
         display: inline-block;
         .material-symbols-outlined {
@@ -1733,7 +1719,18 @@ Dark Mode SCSS
             color: $dark-body-color !important;
         }
     }
-    .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
+    .h1,
+    .h2,
+    .h3,
+    .h4,
+    .h5,
+    .h6,
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
         color: $white;
     }
     .text-secondary {
@@ -1753,7 +1750,7 @@ Dark Mode SCSS
                 border-color: $dark-border;
                 .nav-link {
                     &.active {
-                        background-color: $dark-body-bg!important;
+                        background-color: $dark-body-bg !important;
                         border-color: $dark-card-bg !important;
                         color: $white !important;
                     }
@@ -1796,10 +1793,10 @@ Dark Mode SCSS
         }
         .btn-close {
             filter: invert(1);
-            opacity: 1
+            opacity: 1;
         }
     }
-    .border-white  {
+    .border-white {
         border-color: $dark-card-bg !important;
     }
     .card {
@@ -1837,7 +1834,9 @@ Dark Mode SCSS
     .label {
         color: $white;
     }
-    ::-webkit-calendar-picker-indicator{filter:invert(1)}
+    ::-webkit-calendar-picker-indicator {
+        filter: invert(1);
+    }
     .btn-close {
         opacity: 1;
         filter: invert(1);
@@ -1944,7 +1943,7 @@ Dark Mode SCSS
         .accordion-button {
             background-color: $dark-body-bg !important;
         }
-        .accordion-body  {
+        .accordion-body {
             background-color: $dark-body-bg !important;
         }
     }
@@ -1978,7 +1977,7 @@ Dark Mode SCSS
     .find-btn {
         .btn {
             background-color: $dark-btn-bg;
-            border: $dark-border
+            border: $dark-border;
         }
     }
     .dark-circles {
@@ -1986,16 +1985,16 @@ Dark Mode SCSS
             background-color: $dark-body-bg !important;
         }
         .for-dark1 {
-            background: conic-gradient(#1CDFF4 60%, #000 60%) !important;
+            background: conic-gradient(#1cdff4 60%, #000 60%) !important;
         }
         .for-dark2 {
-            background: conic-gradient(#FC7013 28%, #000 28%) !important;
+            background: conic-gradient(#fc7013 28%, #000 28%) !important;
         }
         .for-dark3 {
-            background: conic-gradient(#2ECC71 10%, #000 10%) !important;
+            background: conic-gradient(#2ecc71 10%, #000 10%) !important;
         }
         .for-dark4 {
-            background: conic-gradient(#E74C3C 2%, #000 2%) !important;
+            background: conic-gradient(#e74c3c 2%, #000 2%) !important;
         }
     }
     .schedule-card-for-dark {
@@ -2149,7 +2148,7 @@ Dark Mode SCSS
     }
     .ps-20 {
         padding-left: 0;
-        padding-right: 20px;;
+        padding-right: 20px;
     }
     .ps-28 {
         padding-left: 0;
@@ -2298,7 +2297,7 @@ Dark Mode SCSS
             padding-left: 0;
             padding-right: 30px;
             border-left: none;
-            border-right: 1px dashed #D5D9E2;
+            border-right: 1px dashed #d5d9e2;
             &::before {
                 left: auto;
                 right: -6px;
