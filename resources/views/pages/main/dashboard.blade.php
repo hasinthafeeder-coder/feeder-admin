@@ -829,7 +829,7 @@
                 </div>
 
                 <div class="row">
-                    <div class="col-xxl-6 col-xxxl-12">
+                    <div class="col-xxl-12 col-xxxl-12 col-lg-12">
                         <div class="card bg-white p-20 rounded-10 border border-white mb-4">
                             <div
                                 class="d-flex justify-content-between align-items-center flex-wrap flex-md-nowrap gap-3 mb-20">
