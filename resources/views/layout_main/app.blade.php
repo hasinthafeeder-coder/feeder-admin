@@ -15,6 +15,9 @@
     <link rel="stylesheet" href="{{ asset('assets/css/swiper-bundle.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/jsvectormap.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}" />
+    
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" />
 
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="{{ asset('assets/images/favicon.png') }}" />
@@ -879,6 +882,9 @@
     </div>
 
     <!-- Link Of JS File -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
     <script src="{{ asset('assets/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('assets/js/sidebar-menu.js') }}"></script>
     <script src="{{ asset('assets/js/quill.min.js') }}"></script>

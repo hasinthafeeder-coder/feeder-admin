@@ -11,7 +11,10 @@
     "repositories": [
         {
             "type": "path",
-            "url": "../feeder-core"
+            "url": "../feeder-core",
+            "options": {
+                "symlink": true
+            }
         }
     ],
     "require": {

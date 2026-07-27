@@ -11,6 +11,15 @@ Route::get('main/dashboard', function () {
 })->name('main.dashboard');
 
 
+// PROFILE
+Route::get('reseller/profile', function () {
+    return view('pages.reseller.profile');
+})->name('reseller.profile');
+
+Route::get('reseller/list', function () {
+    return view('pages.reseller.list');
+})->name('reseller.list');
+
 Route::get('package-test', function () {
     return Test::hello();
 });
