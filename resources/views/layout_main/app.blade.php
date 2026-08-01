@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="{{ asset('assets/css/swiper-bundle.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/jsvectormap.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}" />
-    
+
     <!-- DataTables CSS -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" />
 
@@ -306,7 +306,7 @@
 
                     <ul class="menu-sub">
                         <li class="menu-item">
-                            <a href="index.html" class="menu-link">Reseller Profile Manage</a>
+                            <a href="{{ route('reseller.list') }}" class="menu-link">Reseller Profile Manage</a>
                         </li>
                         <li class="menu-item">
                             <a href="crm.html" class="menu-link">Supplier Profile Manage</a>
@@ -415,10 +415,14 @@
 
 
                 <li class="menu-item">
-                    <a href="logout.html" class="menu-link">
-                        <span class="material-symbols-outlined menu-icon">logout</span>
-                        <span class="title">Logout</span>
-                    </a>
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <a href="{{ route('logout') }}" class="menu-link"
+                            onclick="event.preventDefault(); this.closest('form').submit();">
+                            <span class="material-symbols-outlined menu-icon">logout</span>
+                            <span class="title">Logout</span>
+                        </a>
+                    </form>
                 </li>
             </ul>
         </aside>
@@ -522,92 +526,6 @@
                         <div class="right-header-content mt-3 mt-md-0">
                             <ul
                                 class="d-flex align-items-center justify-content-center justify-content-md-end ps-0 mb-0 list-unstyled">
-                                <li class="header-right-item language-item">
-                                    <div class="dropdown notifications language">
-                                        <button
-                                            class="btn btn-secondary dropdown-toggle border-0 p-0 position-relative"
-                                            type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                            <span class="material-symbols-outlined"
-                                                style="font-size: 19px">translate</span>
-                                        </button>
-                                        <div class="dropdown-menu dropdown-lg p-0 border-0 dropdown-menu-end">
-                                            <span class="fw-medium fs-16 text-secondary d-block title"
-                                                style="padding-top: 20px; padding-bottom: 20px">Choose Language</span>
-                                            <div class="max-h-275" data-simplebar>
-                                                <div class="notification-menu">
-                                                    <a href="javascript:void(0);" class="dropdown-item">
-                                                        <div class="d-flex align-items-center">
-                                                            <div class="flex-shrink-0">
-                                                                <img src="{{ asset('assets/images/usa.png') }}"
-                                                                    class="wh-30 rounded-circle" alt="usa" />
-                                                            </div>
-                                                            <div class="flex-grow-1 ms-10">
-                                                                <span
-                                                                    class="text-secondary fw-medium fs-15">English</span>
-                                                            </div>
-                                                        </div>
-                                                    </a>
-                                                </div>
-                                                <div class="notification-menu">
-                                                    <a href="javascript:void(0);" class="dropdown-item">
-                                                        <div class="d-flex align-items-center">
-                                                            <div class="flex-shrink-0">
-                                                                <img src="{{ asset('assets/images/australia.png') }}"
-                                                                    class="wh-30 rounded-circle" alt="australia" />
-                                                            </div>
-                                                            <div class="flex-grow-1 ms-10">
-                                                                <span
-                                                                    class="text-secondary fw-medium fs-15">Australia</span>
-                                                            </div>
-                                                        </div>
-                                                    </a>
-                                                </div>
-                                                <div class="notification-menu">
-                                                    <a href="javascript:void(0);" class="dropdown-item">
-                                                        <div class="d-flex align-items-center">
-                                                            <div class="flex-shrink-0">
-                                                                <img src="{{ asset('assets/images/spain.png') }}"
-                                                                    class="wh-30 rounded-circle" alt="spain" />
-                                                            </div>
-                                                            <div class="flex-grow-1 ms-10">
-                                                                <span
-                                                                    class="text-secondary fw-medium fs-15">Spanish</span>
-                                                            </div>
-                                                        </div>
-                                                    </a>
-                                                </div>
-                                                <div class="notification-menu">
-                                                    <a href="javascript:void(0);" class="dropdown-item">
-                                                        <div class="d-flex align-items-center">
-                                                            <div class="flex-shrink-0">
-                                                                <img src="{{ asset('assets/images/france.png') }}"
-                                                                    class="wh-30 rounded-circle" alt="portugal" />
-                                                            </div>
-                                                            <div class="flex-grow-1 ms-10">
-                                                                <span
-                                                                    class="text-secondary fw-medium fs-15">France</span>
-                                                            </div>
-                                                        </div>
-                                                    </a>
-                                                </div>
-                                                <div class="notification-menu mb-0">
-                                                    <a href="javascript:void(0);" class="dropdown-item">
-                                                        <div class="d-flex align-items-center">
-                                                            <div class="flex-shrink-0">
-                                                                <img src="{{ asset('assets/images/germany.png') }}"
-                                                                    class="wh-30 rounded-circle" alt="Germany" />
-                                                            </div>
-                                                            <div class="flex-grow-1 ms-10">
-                                                                <span
-                                                                    class="text-secondary fw-medium fs-15">Spain</span>
-                                                            </div>
-                                                        </div>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
                                 <li class="header-right-item light-dark-item">
                                     <div class="light-dark">
                                         <button class="switch-toggle dark-btn p-0 bg-transparent lh-0 border-0"
@@ -617,15 +535,6 @@
                                             <span class="light"><i
                                                     class="material-symbols-outlined">light_mode</i></span>
                                         </button>
-                                    </div>
-                                </li>
-                                <li class="header-right-item calendar-item">
-                                    <div class="dropdown notifications">
-                                        <a href="calendar.html"
-                                            class="btn btn-secondary border-0 p-0 position-relative">
-                                            <span class="material-symbols-outlined"
-                                                style="font-size: 19px">calendar_today</span>
-                                        </a>
                                     </div>
                                 </li>
                                 <li class="header-right-item messages-item">
@@ -834,25 +743,15 @@
                                                     </a>
                                                 </li>
                                                 <li>
-                                                    <a class="dropdown-item admin-item-link d-flex align-items-center text-body"
-                                                        href="settings.html">
-                                                        <i class="material-symbols-outlined">settings</i>
-                                                        <span class="ms-2">Settings</span>
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a class="dropdown-item admin-item-link d-flex align-items-center text-body"
-                                                        href="tickets.html">
-                                                        <i class="material-symbols-outlined">info</i>
-                                                        <span class="ms-2">Support</span>
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a class="dropdown-item admin-item-link d-flex align-items-center text-body"
-                                                        href="logout.html">
-                                                        <i class="material-symbols-outlined">logout</i>
-                                                        <span class="ms-2">Logout</span>
-                                                    </a>
+                                                    <form method="POST" action="{{ route('logout') }}">
+                                                        @csrf
+                                                        <a href="{{ route('logout') }}"
+                                                            class="dropdown-item admin-item-link d-flex align-items-center text-body"
+                                                            onclick="event.preventDefault(); this.closest('form').submit();">
+                                                            <i class="material-symbols-outlined">logout</i>
+                                                            <span class="ms-2">Logout</span>
+                                                        </a>
+                                                    </form>
                                                 </li>
                                             </ul>
                                         </div>
