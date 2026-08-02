@@ -300,36 +300,19 @@
                 <li class="menu-item">
                     <a href="javascript:void(0);" class="menu-link menu-toggle">
                         <span class="material-symbols-outlined menu-icon">manage_accounts</span>
-                        <span class="title">Manage Account</span>
-                        <span class="count">2</span>
-                    </a>
-
-                    <ul class="menu-sub">
-                        <li class="menu-item">
-                            <a href="{{ route('reseller.list') }}" class="menu-link">Reseller Profile Manage</a>
-                        </li>
-                        <li class="menu-item">
-                            <a href="crm.html" class="menu-link">Supplier Profile Manage</a>
-                        </li>
-                    </ul>
-                </li>
-
-                <li class="menu-item">
-                    <a href="javascript:void(0);" class="menu-link menu-toggle">
-                        <span class="material-symbols-outlined menu-icon">supervisor_account</span>
                         <span class="title">Manage Profiles</span>
                         <span class="count">3</span>
                     </a>
 
                     <ul class="menu-sub">
                         <li class="menu-item">
-                            <a href="index.html" class="menu-link">Reseller User Profile</a>
+                            <a href="{{ route('resellers.index') }}" class="menu-link">Reseller Profile Manage</a>
                         </li>
                         <li class="menu-item">
-                            <a href="crm.html" class="menu-link">Supplier User Profile</a>
+                            <a href="crm.html" class="menu-link">Supplier Profile Manage</a>
                         </li>
                         <li class="menu-item">
-                            <a href="index.html" class="menu-link">Feeder User Profile</a>
+                            <a href="crm.html" class="menu-link">Feeder Profile Manage</a>
                         </li>
                     </ul>
                 </li>

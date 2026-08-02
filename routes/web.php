@@ -1,6 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\FileProxyController;
+use App\Http\Controllers\Reseller\ResellerController;
+use App\Http\Controllers\Reseller\ResellerApprovalController;
 
 require __DIR__ . '/auth.php';
 
@@ -9,13 +12,39 @@ Route::middleware('auth')->group(function () {
         return view('pages.main.dashboard');
     })->name('dashboard');
 
-    Route::get('reseller/profile', function () {
-        return view('pages.reseller.profile');
-    })->name('reseller.profile');
+    // Reseller Management Routes
+    Route::prefix('resellers')
+        ->name('resellers.')
+        ->group(function () {
+            Route::get('/', [ResellerController::class, 'index'])
+                ->name('index');
 
-    Route::get('reseller/list', function () {
-        return view('pages.reseller.list');
-    })->name('reseller.list');
+            Route::get('/{user}', [ResellerController::class, 'show'])
+                ->name('show');
+
+            Route::post('/{user}/approve', [ResellerApprovalController::class, 'approve'])
+                ->name('approve');
+
+            Route::post('/{user}/reject', [ResellerApprovalController::class, 'reject'])
+                ->name('reject');
+
+            Route::post('/{user}/suspend', [ResellerApprovalController::class, 'suspend'])
+                ->name('suspend');
+
+            Route::post('/{user}/activate', [ResellerApprovalController::class, 'activate'])
+                ->name('activate');
+
+            Route::post('/{user}/delete', [ResellerApprovalController::class, 'delete'])
+                ->name('delete');
+        });
+
+    Route::get('/files/{uuid}/thumbnail/{size?}', [FileProxyController::class, 'thumbnail'])
+        ->where([
+            'uuid' => '[A-Za-z0-9]+',
+            'size' => 'sm|md|lg',
+        ])
+        ->name('files.thumbnail');
+
 });
 
 
