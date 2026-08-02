@@ -144,6 +144,75 @@
                 <div class="card bg-white rounded-10 border border-white mb-4">
                     <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 p-20">
                         <h3>Bank Details</h3>
+                        <form>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="mb-20">
+                                        <div class="form-floating">
+                                            <input type="text" class="form-control" id="floatingInput1"
+                                                placeholder="First Name">
+                                            <label for="floatingInput1">Account Name</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="mb-20">
+                                        <div class="form-floating">
+                                            <input type="text" class="form-control" id="floatingInput2"
+                                                placeholder="Last Name">
+                                            <label for="floatingInput2">Account Number</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="mb-20">
+                                        <div class="form-floating">
+                                            <select class="form-select form-control" id="floatingSelect7"
+                                                aria-label="Floating label select example">
+                                                <option selected>Select</option>
+                                                <option value="1">Peoples'Bank</option>
+                                                <option value="2">Bank of Ceylon</option>
+                                                <option value="3">Sampath Bank</option>
+                                                <option value="4">Commercial Bank</option>
+                                                <option value="5">Hatton National Bank</option>
+                                            </select>
+                                            <label for="floatingSelect7">Bank Name</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="mb-20">
+                                        <div class="form-floating">
+                                            <input type="text" class="form-control" id="floatingInput4"
+                                                placeholder="Phone">
+                                            <label for="floatingInput4">Bank Code</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="mb-20">
+                                        <div class="form-floating">
+                                            <input type="text" class="form-control" id="floatingInput5"
+                                                placeholder="Address">
+                                            <label for="floatingInput5">Branch</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="mb-20">
+                                        <div class="form-floating">
+                                            <input type="text" class="form-control" id="floatingInput6"
+                                                placeholder="Country">
+                                            <label for="floatingInput6">Branch Code</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-end align-items-center gap-2 mb-20">
+                                <button type="button" class="btn btn-primary text-white">Add</button>
+                                <button type="reset" class="btn btn-outline-secondary">Clear</button>
+                            </div>
+                        </form>
                     </div>
 
                     <div class="default-table-area mx-minus-1 table-all-projects">
@@ -167,9 +236,11 @@
                                                 {{ $reseller->company->bankAccount->account_name ?? 'N/A' }}</td>
                                             <td class="text-body">
                                                 {{ $reseller->company->bankAccount->account_number ?? 'N/A' }}</td>
-                                            <td class="text-body">{{ $reseller->company->bankAccount->bank_name ?? 'N/A' }}
+                                            <td class="text-body">
+                                                {{ $reseller->company->bankAccount->bank_name ?? 'N/A' }}
                                             </td>
-                                            <td class="text-body">{{ $reseller->company->bankAccount->bank_code ?? 'N/A' }}
+                                            <td class="text-body">
+                                                {{ $reseller->company->bankAccount->bank_code ?? 'N/A' }}
                                             </td>
                                             <td class="text-body">
                                                 {{ $reseller->company->bankAccount->branch_name ?? 'N/A' }}
