@@ -62,6 +62,6 @@ class ResellerService
 
     public function getProfile(User $user): User
     {
-        return $user->load(['profile', 'company.address', 'company.bankAccount']);
+        return $user->load(['profile', 'company.address', 'company.bankAccounts']);
     }
 }

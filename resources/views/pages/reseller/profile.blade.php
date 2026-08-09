@@ -104,6 +104,23 @@
                                     href="#">{{ $reseller->company?->registration_number ?? 'N/A' }}</a></span></li>
                     </ul>
                 </div>
+
+                <div class="card bg-white border border-white rounded-10 p-20 mb-4">
+                    <h3 class="">Introducer Information</h3>
+
+                    <hr class="my-3">
+                    <ul class="p-0 mb-0 list-unstyled last-child-none">
+                        <li class="mb-10 fs-16 d-flex justify-content-between gap-2">ID: <span
+                                class="text-secondary text-end">7001</span></li>
+
+                        <li class="mb-10 fs-16 d-flex justify-content-between gap-2">Name: <span
+                                class="text-secondary text-end">John Doe</span></li>
+                        <li class="mb-10 fs-16 d-flex justify-content-between gap-2">Reseller Company: <span
+                                class="text-secondary text-end">BuySmart</span></li>
+                        <li class="mb-10 fs-16 d-flex justify-content-between gap-2">Active Member: <span
+                                class="text-secondary text-end">05</span></li>
+                    </ul>
+                </div>
             </div>
 
             <div class="col-xxl-9 col-xxxl-9">
@@ -140,79 +157,107 @@
                     </div>
                 @endif
 
+                @if ($reseller->status === 'SUSPENDED')
+                    <div class="card bg-white rounded-10 border border-white mb-4">
+                        <div class="p-20">
+                            <div class="row">
+                                <div class="col-lg-8">
+                                    <h2>Reactivate this seller</h2>
+                                    <p class="text-muted">Please review the seller information and reactivate their
+                                        account.</p>
+                                </div>
+                                <div class="col-lg-4 d-flex gap-2">
+                                    <form action="{{ route('resellers.approve', $reseller->uuid) }}" method="POST"
+                                        style="flex: 1;">
+                                        @csrf
+                                        <button type="button" class="btn btn-primary mt-2 text-white w-100 h-100"
+                                            data-bs-toggle="modal" data-bs-target="#approveModal">
+                                            Reactivate
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endif
+
                 <!-- Bank Details Card -->
                 <div class="card bg-white rounded-10 border border-white mb-4">
                     <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 p-20">
                         <h3>Bank Details</h3>
-                        <form>
-                            <div class="row">
-                                <div class="col-lg-6">
-                                    <div class="mb-20">
-                                        <div class="form-floating">
-                                            <input type="text" class="form-control" id="floatingInput1"
-                                                placeholder="First Name">
-                                            <label for="floatingInput1">Account Name</label>
+                        @if ($reseller->status === 'ACTIVE')
+                            <form class="mb-0"
+                                action="{{ route('companies.bank-accounts.store', $reseller->company) }}" method="POST">
+                                @csrf
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="mb-20">
+                                            <div class="form-floating">
+                                                <input type="text" class="form-control" id="floatingInput1"
+                                                    name="account_name" placeholder="First Name">
+                                                <label for="floatingInput1">Account Name</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="mb-20">
+                                            <div class="form-floating">
+                                                <input type="text" class="form-control" id="floatingInput2"
+                                                    name="account_number" placeholder="Last Name">
+                                                <label for="floatingInput2">Account Number</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="mb-20">
+                                            <div class="form-floating">
+                                                <select class="form-select form-control" id="floatingSelect7"
+                                                    name="bank_name" aria-label="Floating label select example">
+                                                    <option selected disabled>Select</option>
+                                                    <option value="Peoples'Bank">Peoples'Bank</option>
+                                                    <option value="Bank of Ceylon">Bank of Ceylon</option>
+                                                    <option value="Sampath Bank">Sampath Bank</option>
+                                                    <option value="Commercial Bank">Commercial Bank</option>
+                                                    <option value="Hatton National Bank">Hatton National Bank</option>
+                                                </select>
+                                                <label for="floatingSelect7">Bank Name</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="mb-20">
+                                            <div class="form-floating">
+                                                <input type="text" class="form-control" id="floatingInput4"
+                                                    name="bank_code" placeholder="Phone">
+                                                <label for="floatingInput4">Bank Code</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="mb-20">
+                                            <div class="form-floating">
+                                                <input type="text" class="form-control" id="floatingInput5"
+                                                    name="branch_name" placeholder="Address">
+                                                <label for="floatingInput5">Branch</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="mb-20">
+                                            <div class="form-floating">
+                                                <input type="text" class="form-control" id="floatingInput6"
+                                                    name="branch_code" placeholder="Country">
+                                                <label for="floatingInput6">Branch Code</label>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-lg-6">
-                                    <div class="mb-20">
-                                        <div class="form-floating">
-                                            <input type="text" class="form-control" id="floatingInput2"
-                                                placeholder="Last Name">
-                                            <label for="floatingInput2">Account Number</label>
-                                        </div>
-                                    </div>
+                                <div class="d-flex justify-content-end align-items-center gap-2 mb-20">
+                                    <button type="submit" class="btn btn-primary text-white">Add</button>
+                                    <button type="reset" class="btn btn-outline-secondary">Clear</button>
                                 </div>
-                                <div class="col-lg-6">
-                                    <div class="mb-20">
-                                        <div class="form-floating">
-                                            <select class="form-select form-control" id="floatingSelect7"
-                                                aria-label="Floating label select example">
-                                                <option selected>Select</option>
-                                                <option value="1">Peoples'Bank</option>
-                                                <option value="2">Bank of Ceylon</option>
-                                                <option value="3">Sampath Bank</option>
-                                                <option value="4">Commercial Bank</option>
-                                                <option value="5">Hatton National Bank</option>
-                                            </select>
-                                            <label for="floatingSelect7">Bank Name</label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6">
-                                    <div class="mb-20">
-                                        <div class="form-floating">
-                                            <input type="text" class="form-control" id="floatingInput4"
-                                                placeholder="Phone">
-                                            <label for="floatingInput4">Bank Code</label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6">
-                                    <div class="mb-20">
-                                        <div class="form-floating">
-                                            <input type="text" class="form-control" id="floatingInput5"
-                                                placeholder="Address">
-                                            <label for="floatingInput5">Branch</label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6">
-                                    <div class="mb-20">
-                                        <div class="form-floating">
-                                            <input type="text" class="form-control" id="floatingInput6"
-                                                placeholder="Country">
-                                            <label for="floatingInput6">Branch Code</label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="d-flex justify-content-end align-items-center gap-2 mb-20">
-                                <button type="button" class="btn btn-primary text-white">Add</button>
-                                <button type="reset" class="btn btn-outline-secondary">Clear</button>
-                            </div>
-                        </form>
+                            </form>
+                        @endif
                     </div>
 
                     <div class="default-table-area mx-minus-1 table-all-projects">
@@ -230,48 +275,192 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @if ($reseller->company?->bankAccount)
+                                    @forelse($reseller->company?->bankAccounts ?? [] as $account)
                                         <tr>
-                                            <td class="text-body">
-                                                {{ $reseller->company->bankAccount->account_name ?? 'N/A' }}</td>
-                                            <td class="text-body">
-                                                {{ $reseller->company->bankAccount->account_number ?? 'N/A' }}</td>
-                                            <td class="text-body">
-                                                {{ $reseller->company->bankAccount->bank_name ?? 'N/A' }}
-                                            </td>
-                                            <td class="text-body">
-                                                {{ $reseller->company->bankAccount->bank_code ?? 'N/A' }}
-                                            </td>
-                                            <td class="text-body">
-                                                {{ $reseller->company->bankAccount->branch_name ?? 'N/A' }}
-                                            </td>
-                                            <td class="text-body">
-                                                {{ $reseller->company->bankAccount->branch_code ?? 'N/A' }}</td>
-                                            {{-- <td class="text-body text-end">
-                                                <a href="#" class="btn btn-sm btn-outline-secondary">Edit</a>
-                                            </td> --}}
+                                            <td>{{ $account->account_name }}</td>
+                                            <td>{{ $account->account_number }}</td>
+                                            <td>{{ $account->bank_name }}</td>
+                                            <td>{{ $account->bank_code }}</td>
+                                            <td>{{ $account->branch_name }}</td>
+                                            <td>{{ $account->branch_code }}</td>
                                             <td>
-                                                <div class="d-flex justify-content-end" style="gap: 12px;">
-                                                    <button class="bg-transparent p-0 border-0 hover-text-danger"
-                                                        data-bs-toggle="tooltip" data-bs-placement="top"
-                                                        data-bs-title="Edit">
+                                                <div class="d-flex justify-content-end" style="gap:12px;">
+                                                    <button class="bg-transparent border-0" data-bs-toggle="tooltip"
+                                                        title="Edit">
                                                         <i
                                                             class="material-symbols-outlined fs-16 fw-normal text-body">edit</i>
                                                     </button>
-                                                    <button class="bg-transparent p-0 border-0 hover-text-danger"
-                                                        data-bs-toggle="tooltip" data-bs-placement="top"
-                                                        data-bs-title="Delete">
-                                                        <i
-                                                            class="material-symbols-outlined fs-16 fw-normal text-body">delete</i>
-                                                    </button>
+                                                    <form
+                                                        action="{{ route('companies.bank-accounts.destroy', $account) }}"
+                                                        method="POST">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button class="bg-transparent mt-3 p-0 border-0 hover-text-danger"
+                                                            onclick="return confirm('Delete this bank account?')">
+                                                            <i
+                                                                class="material-symbols-outlined fs-16 fw-normal text-body">delete</i>
+                                                        </button>
+                                                    </form>
                                                 </div>
                                             </td>
                                         </tr>
-                                    @else
+                                    @empty
                                         <tr>
-                                            <td colspan="4" class="text-center text-muted">No bank account found</td>
+                                            <td colspan="7" class="text-center">
+                                                No bank accounts found.
+                                            </td>
                                         </tr>
-                                    @endif
+                                    @endforelse
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card bg-white rounded-10 border border-white mb-4">
+                    <div class="ustify-content-between align-items-center flex-wrap gap-3 p-20">
+                        <h3>Suppliers</h3>
+
+                        <div class="row">
+                            <form class="d-flex align-items-stretch justify-content-between mt-3 w-100">
+                                <div class="col-lg-8">
+                                    <div class="form-floating h-100">
+                                        <select class="form-select form-control h-100" id="floatingSelectSupplier1"
+                                            aria-label="Floating label select example">
+                                            <option selected>Select</option>
+                                            <option value="1">ABC Supplier</option>
+                                            <option value="2">XYZ Supplier</option>
+                                            <option value="3">LMN Supplier</option>
+                                            <option value="4">OPQ Supplier</option>
+                                            <option value="5">RST Supplier</option>
+                                        </select>
+                                        <label for="floatingSelectSupplier1">Supplier Name</label>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <button type="button" class="btn btn-primary text-white w-100 h-100">Add</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="default-table-area mx-minus-1 table-all-projects">
+                        <div class="table-responsive">
+                            <table class="table align-middle">
+                                <thead>
+                                    <tr>
+                                        <th scope="col" class="fw-medium">#</th>
+                                        <th scope="col" class="fw-medium">Supplier Name</th>
+                                        <th scope="col" class="fw-medium">Supplier #</th>
+                                        <th scope="col" class="fw-medium">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="text-body">#951</td>
+                                        <td class="text-body">Hotel management system</td>
+                                        <td class="text-secondary">12</td>
+                                        <td>
+                                            <div class="d-flex justify-content-end" style="gap: 12px;">
+                                                <button class="bg-transparent p-0 border-0 hover-text-danger"
+                                                    data-bs-toggle="tooltip" data-bs-placement="top"
+                                                    data-bs-title="Delete">
+                                                    <i
+                                                        class="material-symbols-outlined fs-16 fw-normal text-body">delete</i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-body">#547</td>
+                                        <td class="text-body">Product development</td>
+                                        <td class="text-secondary">Beja Ltd</td>
+                                        <td>
+                                            <div class="d-flex justify-content-end" style="gap: 12px;">
+                                                <button class="bg-transparent p-0 border-0 hover-text-danger"
+                                                    data-bs-toggle="tooltip" data-bs-placement="top"
+                                                    data-bs-title="Delete">
+                                                    <i
+                                                        class="material-symbols-outlined fs-16 fw-normal text-body">delete</i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-body">#658</td>
+                                        <td class="text-body">Python upgrade</td>
+                                        <td class="text-secondary">Aegis Industries</td>
+                                        <td>
+                                            <div class="d-flex justify-content-end" style="gap: 12px;">
+                                                <button class="bg-transparent p-0 border-0 hover-text-danger"
+                                                    data-bs-toggle="tooltip" data-bs-placement="top"
+                                                    data-bs-title="Delete">
+                                                    <i
+                                                        class="material-symbols-outlined fs-16 fw-normal text-body">delete</i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-body">#658</td>
+                                        <td class="text-body">Python upgrade</td>
+                                        <td class="text-secondary">Aegis Industries</td>
+                                        <td>
+                                            <div class="d-flex justify-content-end" style="gap: 12px;">
+                                                <button class="bg-transparent p-0 border-0 hover-text-danger"
+                                                    data-bs-toggle="tooltip" data-bs-placement="top"
+                                                    data-bs-title="Delete">
+                                                    <i
+                                                        class="material-symbols-outlined fs-16 fw-normal text-body">delete</i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-body">#658</td>
+                                        <td class="text-body">Python upgrade</td>
+                                        <td class="text-secondary">Aegis Industries</td>
+                                        <td>
+                                            <div class="d-flex justify-content-end" style="gap: 12px;">
+                                                <button class="bg-transparent p-0 border-0 hover-text-danger"
+                                                    data-bs-toggle="tooltip" data-bs-placement="top"
+                                                    data-bs-title="Delete">
+                                                    <i
+                                                        class="material-symbols-outlined fs-16 fw-normal text-body">delete</i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-body">#658</td>
+                                        <td class="text-body">Python upgrade</td>
+                                        <td class="text-secondary">Aegis Industries</td>
+                                        <td>
+                                            <div class="d-flex justify-content-end" style="gap: 12px;">
+                                                <button class="bg-transparent p-0 border-0 hover-text-danger"
+                                                    data-bs-toggle="tooltip" data-bs-placement="top"
+                                                    data-bs-title="Delete">
+                                                    <i
+                                                        class="material-symbols-outlined fs-16 fw-normal text-body">delete</i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-body">#658</td>
+                                        <td class="text-body">Python upgrade</td>
+                                        <td class="text-secondary">Aegis Industries</td>
+                                        <td>
+                                            <div class="d-flex justify-content-end" style="gap: 12px;">
+                                                <button class="bg-transparent p-0 border-0 hover-text-danger"
+                                                    data-bs-toggle="tooltip" data-bs-placement="top"
+                                                    data-bs-title="Delete">
+                                                    <i
+                                                        class="material-symbols-outlined fs-16 fw-normal text-body">delete</i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>

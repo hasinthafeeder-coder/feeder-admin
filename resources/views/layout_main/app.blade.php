@@ -102,301 +102,74 @@
 
         <aside id="layout-menu" class="layout-menu menu-vertical menu active" data-simplebar>
             <ul class="menu-inner">
-                <li class="menu-title small text-uppercase">
-                    <span class="menu-title-text">MAIN</span>
-                </li>
-                <li class="menu-item open">
-                    <a href="javascript:void(0);" class="menu-link">
-                        <span class="material-symbols-outlined menu-icon">dashboard</span>
-                        <span class="title">Dashboard</span>
-                    </a>
+                @foreach ($menu->getSections() as $section)
+                    <li class="menu-title small text-uppercase">
+                        <span class="menu-title-text">{{ $section->getTitle() }}</span>
+                    </li>
 
-                </li>
+                    @foreach ($section->getItems() as $item)
+                        @if ($item->hasChildren())
+                            <li class="menu-item">
+                                <a href="javascript:void(0);" class="menu-link menu-toggle">
+                                    @if ($item->getIcon())
+                                        <span class="material-symbols-outlined menu-icon">{{ $item->getIcon() }}</span>
+                                    @endif
 
-                {{-- ORDERS --}}
-                <li class="menu-title small text-uppercase">
-                    <span class="menu-title-text">ORDERS</span>
-                </li>
+                                    <span class="title">{{ $item->getTitle() }}</span>
 
-                <li class="menu-item">
-                    <a href="javascript:void(0);" class="menu-link menu-toggle">
-                        <span class="material-symbols-outlined menu-icon">shopping_cart</span>
-                        <span class="title">Order Management</span>
-                        <span class="count">2</span>
-                    </a>
+                                    @php
+                                        $badge = $item->getBadge(auth()->user());
+                                    @endphp
 
-                    <ul class="menu-sub">
-                        <li class="menu-item">
-                            <a href="index.html" class="menu-link">All Orders</a>
-                        </li>
-                        <li class="menu-item">
-                            <a href="crm.html" class="menu-link"> Customer CRIB </a>
-                        </li>
-                    </ul>
-                </li>
+                                    @if ($badge !== null)
+                                        <span class="count">{{ $badge }}</span>
+                                    @endif
+                                </a>
 
+                                <ul class="menu-sub">
+                                    @foreach ($item->getChildren() as $child)
+                                        @if ($child->getRoute() && Route::has($child->getRoute()))
+                                            <li class="menu-item">
+                                                <a href="{{ route($child->getRoute()) }}" class="menu-link">
+                                                    {{ $child->getTitle() }}
+                                                </a>
+                                            </li>
+                                        @elseif(!$child->getRoute())
+                                            <li class="menu-item">
+                                                <span class="menu-link">
+                                                    {{ $child->getTitle() }}
+                                                </span>
+                                            </li>
+                                        @endif
+                                    @endforeach
+                                </ul>
+                            </li>
+                        @else
+                            @if ($item->getRoute() && Route::has($item->getRoute()))
+                                <li class="menu-item">
+                                    <a href="{{ route($item->getRoute()) }}" class="menu-link">
+                                        @if ($item->getIcon())
+                                            <span
+                                                class="material-symbols-outlined menu-icon">{{ $item->getIcon() }}</span>
+                                        @endif
 
-                <li class="menu-item ">
-                    <a href="javascript:void(0);" class="menu-link menu-toggle">
-                        <span class="material-symbols-outlined menu-icon">published_with_changes</span>
-                        <span class="title">Status Update</span>
-                        <span class="count">2</span>
-                    </a>
+                                        <span class="title">{{ $item->getTitle() }}</span>
 
-                    <ul class="menu-sub">
-                        <li class="menu-item">
-                            <a href="index.html" class="menu-link">Bulk Delivery Update</a>
-                        </li>
-                        <li class="menu-item">
-                            <a href="crm.html" class="menu-link"> Bulk Remind Orders Update </a>
-                        </li>
-                    </ul>
-                </li>
+                                        @php
+                                            $badge = $item->getBadge(auth()->user());
+                                        @endphp
 
-                {{-- PAYMENTS --}}
-                <li class="menu-title small text-uppercase">
-                    <span class="menu-title-text">PAYMENTS</span>
-                </li>
+                                        @if ($badge !== null)
+                                            <span class="count">{{ $badge }}</span>
+                                        @endif
+                                    </a>
+                                </li>
+                            @endif
+                        @endif
+                    @endforeach
+                @endforeach
 
-                <li class="menu-item">
-                    <a href="javascript:void(0);" class="menu-link menu-toggle">
-                        <span class="material-symbols-outlined menu-icon">payments</span>
-                        <span class="title">Generate Payments</span>
-                        <span class="count">1</span>
-                    </a>
-
-                    <ul class="menu-sub">
-                        <li class="menu-item">
-                            <a href="index.html" class="menu-link">Courier Payment Generate</a>
-                        </li>
-                    </ul>
-                </li>
-                {{-- End PAYMENTS --}}
-
-                {{-- Start PAYOUTS --}}
-                <li class="menu-title small text-uppercase">
-                    <span class="menu-title-text">PAYOUTS</span>
-                </li>
-
-                <li class="menu-item">
-                    <a href="javascript:void(0);" class="menu-link menu-toggle">
-                        <span class="material-symbols-outlined menu-icon">account_balance_wallet</span>
-                        <span class="title">Generate Payouts</span>
-                        <span class="count">3</span>
-                    </a>
-
-                    <ul class="menu-sub">
-                        <li class="menu-item">
-                            <a href="index.html" class="menu-link"> Reseller Payouts </a>
-                        </li>
-                        <li class="menu-item">
-                            <a href="crm.html" class="menu-link"> Supplier Payouts </a>
-                        </li>
-                        <li class="menu-item">
-                            <a href="project-management.html" class="menu-link">
-                                Company Bonus Payouts
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-
-                <li class="menu-item">
-                    <a href="javascript:void(0);" class="menu-link menu-toggle">
-                        <span class="material-symbols-outlined menu-icon">receipt_long</span>
-                        <span class="title">Payout Invoice</span>
-                        <span class="count">3</span>
-                    </a>
-
-                    <ul class="menu-sub">
-                        <li class="menu-item">
-                            <a href="index.html" class="menu-link"> Reseller Invoice </a>
-                        </li>
-                        <li class="menu-item">
-                            <a href="crm.html" class="menu-link"> Supplier Invoice </a>
-                        </li>
-                        <li class="menu-item">
-                            <a href="project-management.html" class="menu-link">
-                                Company Bonus Invoice
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-                {{-- End PAYOUTS --}}
-
-                {{-- Start PRODUCTS --}}
-                <li class="menu-title small text-uppercase">
-                    <span class="menu-title-text">PRODUCTS</span>
-                </li>
-
-                <li class="menu-item">
-                    <a href="javascript:void(0);" class="menu-link menu-toggle">
-                        <span class="material-symbols-outlined menu-icon">inventory_2</span>
-                        <span class="title">Product Management</span>
-                        <span class="count">2</span>
-                    </a>
-
-                    <ul class="menu-sub">
-                        <li class="menu-item">
-                            <a href="index.html" class="menu-link"> Manage Products </a>
-                        </li>
-                        <li class="menu-item">
-                            <a href="crm.html" class="menu-link"> Product Details </a>
-                        </li>
-                    </ul>
-                </li>
-                {{-- End PRODUCTS --}}
-
-                {{-- Start CREATE --}}
-                <li class="menu-title small text-uppercase">
-                    <span class="menu-title-text">CREATE</span>
-                </li>
-
-                <li class="menu-item">
-                    <a href="javascript:void(0);" class="menu-link menu-toggle">
-                        <span class="material-symbols-outlined menu-icon">add_circle</span>
-                        <span class="title">Create Options</span>
-                        <span class="count">3</span>
-                    </a>
-
-                    <ul class="menu-sub">
-                        <li class="menu-item">
-                            <a href="index.html" class="menu-link"> Create Delivery Services </a>
-                        </li>
-                        <li class="menu-item">
-                            <a href="crm.html" class="menu-link"> Create Note </a>
-                        </li>
-                        <li class="menu-item">
-                            <a href="index.html" class="menu-link"> Create Ban Customer </a>
-                        </li>
-                    </ul>
-                </li>
-
-                <li class="menu-item">
-                    <a href="javascript:void(0);" class="menu-link menu-toggle">
-                        <span class="material-symbols-outlined menu-icon">person_add</span>
-                        <span class="title">Create Profiles</span>
-                        <span class="count">3</span>
-                    </a>
-
-                    <ul class="menu-sub">
-                        <li class="menu-item">
-                            <a href="index.html" class="menu-link"> Create Company Profile </a>
-                        </li>
-                        <li class="menu-item">
-                            <a href="crm.html" class="menu-link"> Create Reseller Profile </a>
-                        </li>
-                        <li class="menu-item">
-                            <a href="index.html" class="menu-link"> Create Supplier Profile </a>
-                        </li>
-                    </ul>
-                </li>
-                {{-- End PRODUCTS --}}
-
-                {{-- Start ACCOUNTS --}}
-                <li class="menu-title small text-uppercase">
-                    <span class="menu-title-text">ACCOUNTS</span>
-                </li>
-
-                <li class="menu-item">
-                    <a href="javascript:void(0);" class="menu-link menu-toggle">
-                        <span class="material-symbols-outlined menu-icon">manage_accounts</span>
-                        <span class="title">Manage Profiles</span>
-                        <span class="count">3</span>
-                    </a>
-
-                    <ul class="menu-sub">
-                        <li class="menu-item">
-                            <a href="{{ route('resellers.index') }}" class="menu-link">Reseller Profile Manage</a>
-                        </li>
-                        <li class="menu-item">
-                            <a href="crm.html" class="menu-link">Supplier Profile Manage</a>
-                        </li>
-                        <li class="menu-item">
-                            <a href="crm.html" class="menu-link">Feeder Profile Manage</a>
-                        </li>
-                    </ul>
-                </li>
-                {{-- End ACCOUNTS --}}
-
-                {{-- Start OVERVIEW --}}
-                <li class="menu-title small text-uppercase">
-                    <span class="menu-title-text">OVERVIEW</span>
-                </li>
-
-                <li class="menu-item">
-                    <a href="javascript:void(0);" class="menu-link menu-toggle">
-                        <span class="material-symbols-outlined menu-icon">insights</span>
-                        <span class="title">Orders Overview</span>
-                        <span class="count">2</span>
-                    </a>
-
-                    <ul class="menu-sub">
-                        <li class="menu-item">
-                            <a href="index.html" class="menu-link">Supplier Orders Overview</a>
-                        </li>
-                        <li class="menu-item">
-                            <a href="crm.html" class="menu-link">Reseller Orders Overview</a>
-                        </li>
-                    </ul>
-                </li>
-
-                <li class="menu-item">
-                    <a href="contacts.html" class="menu-link">
-                        <span class="material-symbols-outlined menu-icon">groups</span>
-                        <span class="title">Team Structure Overview</span>
-                    </a>
-                </li>
-                {{-- End OVERVIEW --}}
-
-                {{-- Start REPORTS --}}
-                <li class="menu-title small text-uppercase">
-                    <span class="menu-title-text">REPORTS</span>
-                </li>
-
-                <li class="menu-item">
-                    <a href="javascript:void(0);" class="menu-link menu-toggle">
-                        <span class="material-symbols-outlined menu-icon">bar_chart</span>
-                        <span class="title">Reports & Analytics</span>
-                        <span class="count">4</span>
-                    </a>
-
-                    <ul class="menu-sub">
-                        <li class="menu-item">
-                            <a href="index.html" class="menu-link">Delivery Services Report</a>
-                        </li>
-                        <li class="menu-item">
-                            <a href="crm.html" class="menu-link">Supplier Reports</a>
-                        </li>
-                        <li class="menu-item">
-                            <a href="crm.html" class="menu-link">Reseller Reports</a>
-                        </li>
-                        <li class="menu-item">
-                            <a href="crm.html" class="menu-link">Feeder Earning Report</a>
-                        </li>
-                    </ul>
-                </li>
-                {{-- End REPORTS --}}
-
-                {{-- Start TAX & VAT --}}
-                <li class="menu-title small text-uppercase">
-                    <span class="menu-title-text">TAX & VAT</span>
-                </li>
-
-                <li class="menu-item">
-                    <a href="to-do-list.html" class="menu-link">
-                        <span class="material-symbols-outlined menu-icon">gavel</span>
-                        <span class="title">TAX</span>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="to-do-list.html" class="menu-link">
-                        <span class="material-symbols-outlined menu-icon">request_quote</span>
-                        <span class="title">VAT</span>
-                    </a>
-                </li>
-                {{-- End TAX & VAT --}}
-
-
+                {{-- Logout Button --}}
                 <li class="menu-item">
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
