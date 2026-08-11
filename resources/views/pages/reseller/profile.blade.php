@@ -1,6 +1,10 @@
 @extends('layout_main.app')
 
 @section('content')
+    @php
+        use Feeder\Core\Enums\UserStatus;
+    @endphp
+
     <div class="main-content-container overflow-hidden">
         @php
             $profilePhoto = $reseller->profile?->profile_photo
@@ -33,14 +37,17 @@
                             </h3>
                             <span class="fs-16 me-2">{{ $reseller->phone ?? 'N/A' }}</span>
                             @php
-                                $statusClass = match ($reseller->status) {
+                                $status = $reseller->status->value;
+
+                                $statusClass = match ($status) {
                                     'ACTIVE' => 'text-success bg-success',
                                     'PENDING' => 'text-danger bg-danger',
                                     'REJECTED' => 'text-danger bg-danger',
                                     'SUSPENDED' => 'text-warning bg-warning',
                                     default => 'text-secondary bg-secondary',
                                 };
-                                $statusText = ucfirst(strtolower($reseller->status));
+
+                                $statusText = ucfirst(strtolower($status));
                             @endphp
                             <span
                                 class="{{ $statusClass }} bg-opacity-10 mt-2 fs-15 fw-normal d-inline-block default-badge">
@@ -75,15 +82,19 @@
                             <h3 class="fs-18" style="margin-bottom: 2px;">{{ $reseller->company?->name ?? 'N/A' }}</h3>
                             <span class="fs-16 me-2">{{ $reseller->company?->phone ?? 'N/A' }}</span>
                             @php
-                                $statusClass2 = match ($reseller->company?->status) {
+                                $companyStatus = $reseller->company?->status?->value;
+
+                                $statusClass2 = match ($companyStatus) {
                                     'ACTIVE' => 'text-success bg-success',
                                     'PENDING' => 'text-danger bg-danger',
                                     'REJECTED' => 'text-danger bg-danger',
                                     'SUSPENDED' => 'text-warning bg-warning',
                                     default => 'text-secondary bg-secondary',
                                 };
-                                $statusText2 = ucfirst(strtolower($reseller->company?->status));
+
+                                $statusText2 = $companyStatus ? ucfirst(strtolower($companyStatus)) : 'N/A';
                             @endphp
+
                             <span
                                 class="{{ $statusClass2 }} bg-opacity-10 mt-2 fs-15 fw-normal d-inline-block default-badge">
                                 {{ $statusText2 }}
@@ -125,7 +136,7 @@
 
             <div class="col-xxl-9 col-xxxl-9">
                 <!-- Approval Card for Pending Users -->
-                @if ($reseller->status === 'PENDING')
+                @if ($reseller->status === UserStatus::PENDING)
                     <div class="card bg-white rounded-10 border border-white mb-4">
                         <div class="p-20">
                             <div class="row">
@@ -157,7 +168,7 @@
                     </div>
                 @endif
 
-                @if ($reseller->status === 'SUSPENDED')
+                @if ($reseller->status === UserStatus::SUSPENDED)
                     <div class="card bg-white rounded-10 border border-white mb-4">
                         <div class="p-20">
                             <div class="row">
@@ -185,7 +196,7 @@
                 <div class="card bg-white rounded-10 border border-white mb-4">
                     <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 p-20">
                         <h3>Bank Details</h3>
-                        @if ($reseller->status === 'ACTIVE')
+                        @if ($reseller->status === UserStatus::ACTIVE && $reseller->company)
                             <form class="mb-0"
                                 action="{{ route('companies.bank-accounts.store', $reseller->company) }}" method="POST">
                                 @csrf

@@ -17,7 +17,10 @@
                     @foreach ($resellers as $reseller)
                         @php
                             $profilePhoto = $reseller->profile?->profile_photo
-                                ? route('files.thumbnail', ['uuid' => $reseller->profile->profile_photo, 'size' => 'sm'])
+                                ? route('files.thumbnail', [
+                                    'uuid' => $reseller->profile->profile_photo,
+                                    'size' => 'sm',
+                                ])
                                 : asset('assets/images/user15.jpg');
                         @endphp
                         <tr>
@@ -28,8 +31,8 @@
                             <td>
                                 <div class="d-flex align-items-center">
                                     <div class="flex-shrink-0">
-                                        <img src="{{ $profilePhoto }}"
-                                            class="rounded-circle" style="width: 35px; height: 35px;" alt="user">
+                                        <img src="{{ $profilePhoto }}" class="rounded-circle"
+                                            style="width: 35px; height: 35px;" alt="user">
                                     </div>
                                     <div class="flex-grow-1 ms-12">
                                         <h4 class="fw-medium fs-16 mb-0">
@@ -43,17 +46,21 @@
                             <td class="text-body">{{ $reseller->phone ?? 'N/A' }}</td>
                             <td>
                                 @php
-                                    $statusClass = match ($reseller->status) {
+                                    $status = $reseller->status->value;
+
+                                    $statusClass = match ($status) {
                                         'ACTIVE' => 'text-success bg-success',
-                                        'PENDING' => 'text-white bg-primary',
+                                        'PENDING' => 'text-danger bg-danger',
                                         'REJECTED' => 'text-danger bg-danger',
                                         'SUSPENDED' => 'text-warning bg-warning',
                                         default => 'text-secondary bg-secondary',
                                     };
-                                    $statusText = ucfirst(strtolower($reseller->status));
+
+                                    $statusText = ucfirst(strtolower($status));
                                 @endphp
+
                                 <span
-                                    class="{{ $statusClass }} bg-opacity-10 fs-15 fw-normal d-inline-block default-badge">
+                                    class="{{ $statusClass }} bg-opacity-10 mt-2 fs-15 fw-normal d-inline-block default-badge">
                                     {{ $statusText }}
                                 </span>
                             </td>
