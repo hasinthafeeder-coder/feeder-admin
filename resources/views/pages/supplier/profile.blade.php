@@ -7,18 +7,18 @@
 
     <div class="main-content-container overflow-hidden">
         @php
-            $profilePhoto = $reseller->profile?->profile_photo
-                ? route('files.thumbnail', ['uuid' => $reseller->profile->profile_photo, 'size' => 'md'])
+            $profilePhoto = $supplier->profile?->profile_photo
+                ? route('files.thumbnail', ['uuid' => $supplier->profile->profile_photo, 'size' => 'md'])
                 : asset('assets/images/profile.jpg');
 
-            $companyLogo = $reseller->company?->logo_uuid
-                ? route('files.thumbnail', ['uuid' => $reseller->company->logo_uuid, 'size' => 'md'])
+            $companyLogo = $supplier->company?->logo_uuid
+                ? route('files.thumbnail', ['uuid' => $supplier->company->logo_uuid, 'size' => 'md'])
                 : asset('assets/images/profile.jpg');
         @endphp
 
         <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-4 mt-1">
             <h3 class="mb-0">User Profile</h3>
-            <a href="{{ route('resellers.index') }}" class="btn btn-outline-secondary">Back to List</a>
+            <a href="{{ route('suppliers.index') }}" class="btn btn-outline-secondary">Back to List</a>
         </div>
 
         <div class="row">
@@ -33,11 +33,11 @@
                         </div>
                         <div class="flex-grow-1 ms-3">
                             <h3 class="fs-18" style="margin-bottom: 2px;">
-                                {{ $reseller->profile?->first_name ?? '' }} {{ $reseller->profile?->last_name ?? '' }}
+                                {{ $supplier->profile?->first_name ?? '' }} {{ $supplier->profile?->last_name ?? '' }}
                             </h3>
-                            <span class="fs-16 me-2">{{ $reseller->phone ?? 'N/A' }}</span>
+                            <span class="fs-16 me-2">{{ $supplier->phone ?? 'N/A' }}</span>
                             @php
-                                $status = $reseller->status->value;
+                                $status = $supplier->status->value;
 
                                 $statusClass = match ($status) {
                                     'ACTIVE' => 'text-success bg-success',
@@ -58,15 +58,15 @@
                     <hr class="my-3">
                     <ul class="p-0 mb-0 list-unstyled last-child-none">
                         <li class="mb-10 fs-16 d-flex justify-content-between gap-2">ID: <span
-                                class="text-secondary text-end">{{ $reseller->id }}</span></li>
+                                class="text-secondary text-end">{{ $supplier->id }}</span></li>
                         <li class="mb-10 fs-16 d-flex justify-content-between gap-2">Email: <span
-                                class="text-secondary text-end">{{ $reseller->email }}</span></li>
+                                class="text-secondary text-end">{{ $supplier->email }}</span></li>
                         <li class="mb-10 fs-16 d-flex justify-content-between gap-2">NIC: <span
-                                class="text-secondary text-end">{{ $reseller->profile?->nic ?? 'N/A' }}</span></li>
+                                class="text-secondary text-end">{{ $supplier->profile?->nic ?? 'N/A' }}</span></li>
                         <li class="mb-10 fs-16 d-flex justify-content-between gap-2">Address: <span
-                                class="text-secondary text-end">{{ $reseller->profile?->address ?? 'N/A' }}</span></li>
+                                class="text-secondary text-end">{{ $supplier->profile?->address ?? 'N/A' }}</span></li>
                         <li class="mb-10 fs-16 d-flex justify-content-between gap-2">Join Date: <span
-                                class="text-secondary text-end">{{ $reseller->created_at->format('M d, Y') }}</span></li>
+                                class="text-secondary text-end">{{ $supplier->created_at->format('M d, Y') }}</span></li>
                     </ul>
                 </div>
 
@@ -79,10 +79,10 @@
                                 style="width: 75px; height: 75px;" alt="profile">
                         </div>
                         <div class="flex-grow-1 ms-3">
-                            <h3 class="fs-18" style="margin-bottom: 2px;">{{ $reseller->company?->name ?? 'N/A' }}</h3>
-                            <span class="fs-16 me-2">{{ $reseller->company?->phone ?? 'N/A' }}</span>
+                            <h3 class="fs-18" style="margin-bottom: 2px;">{{ $supplier->company?->name ?? 'N/A' }}</h3>
+                            <span class="fs-16 me-2">{{ $supplier->company?->phone ?? 'N/A' }}</span>
                             @php
-                                $companyStatus = $reseller->company?->status?->value;
+                                $companyStatus = $supplier->company?->status?->value;
 
                                 $statusClass2 = match ($companyStatus) {
                                     'ACTIVE' => 'text-success bg-success',
@@ -104,89 +104,16 @@
                     <hr class="my-3">
                     <ul class="p-0 mb-0 list-unstyled last-child-none">
                         <li class="mb-10 fs-16 d-flex justify-content-between gap-2">ID: <span
-                                class="text-secondary text-end">{{ $reseller->company?->id ?? 'N/A' }}</span></li>
+                                class="text-secondary text-end">{{ $supplier->company?->id ?? 'N/A' }}</span></li>
                         <li class="mb-10 fs-16 d-flex justify-content-between gap-2">Email: <span
-                                class="text-secondary text-end">{{ $reseller->company?->email ?? 'N/A' }}</span></li>
+                                class="text-secondary text-end">{{ $supplier->company?->email ?? 'N/A' }}</span></li>
                         <li class="mb-10 fs-16 d-flex justify-content-between gap-2">Address: <span
-                                class="text-secondary text-end">{{ $reseller->company?->address?->address ?? 'N/A' }}</span>
+                                class="text-secondary text-end">{{ $supplier->company?->address?->address ?? 'N/A' }}</span>
                         </li>
                         <li class="mb-10 fs-16 d-flex justify-content-between gap-2">BR: <span
                                 class="text-secondary text-end"><a
-                                    href="#">{{ $reseller->company?->registration_number ?? 'N/A' }}</a></span></li>
+                                    href="#">{{ $supplier->company?->registration_number ?? 'N/A' }}</a></span></li>
                     </ul>
-                </div>
-
-                @php
-                    $referralCode = $reseller->referralCode;
-                    $referralLink = $referralCode ? url('/auth/register?ref=' . urlencode($referralCode->code)) : null;
-                    $referralStatusClass = $referralCode && $referralCode->is_active
-                        ? 'text-success bg-success'
-                        : 'text-warning bg-warning';
-                    $referralStatusText = $referralCode ? ($referralCode->is_active ? 'Active' : 'Inactive') : 'Not Created';
-                    $activatedBy = $referralCode?->activatedByUser;
-                    $lastChangedBy = $referralCode?->lastChangedByUser;
-                    $activatedByText = $activatedBy
-                        ? ($activatedBy->profile?->first_name . ' ' . $activatedBy->profile?->last_name ?: $activatedBy->email)
-                        : 'System';
-                    $lastChangedByText = $lastChangedBy
-                        ? ($lastChangedBy->profile?->first_name . ' ' . $lastChangedBy->profile?->last_name ?: $lastChangedBy->email)
-                        : 'System';
-                @endphp
-
-                <div class="card bg-white border border-white rounded-10 p-20 mb-4">
-                    <h3 class="mb-20">Referral Link</h3>
-
-                    <div class="mb-3">
-                        <label class="form-label text-muted small">Referral Code</label>
-                        <div class="input-group">
-                            <input type="text" class="form-control" readonly value="{{ $referralCode?->code ?? 'Not created' }}">
-                        </div>
-                    </div>
-
-                    <div class="mb-3">
-                        <label class="form-label text-muted small">Registration URL</label>
-                        <div class="input-group">
-                            <input type="text" class="form-control" readonly value="{{ $referralLink ?? 'Not available' }}">
-                        </div>
-                    </div>
-
-                    <div class="d-flex justify-content-between align-items-center mb-2">
-                        <span class="text-muted">Status</span>
-                        <span class="{{ $referralStatusClass }} bg-opacity-10 mt-1 fs-14 fw-normal d-inline-block default-badge">
-                            {{ $referralStatusText }}
-                        </span>
-                    </div>
-
-                    <div class="d-flex justify-content-between align-items-center mb-2">
-                        <span class="text-muted">Activated by</span>
-                        <span class="text-secondary text-end">{{ $activatedByText }}</span>
-                    </div>
-
-                    <div class="d-flex justify-content-between align-items-center mb-2">
-                        <span class="text-muted">Last changed by</span>
-                        <span class="text-secondary text-end">{{ $lastChangedByText }}</span>
-                    </div>
-
-                    @if ($referralCode)
-                        <div class="d-flex gap-2 mt-3">
-                            @can('referrals.activate')
-                                @if (! $referralCode->is_active)
-                                    <form action="{{ route('resellers.referral.activate', $reseller->uuid) }}" method="POST" class="flex-fill">
-                                        @csrf
-                                        <button type="submit" class="btn btn-primary text-white w-100">Activate Link</button>
-                                    </form>
-                                @endif
-                            @endcan
-                            @can('referrals.deactivate')
-                                @if ($referralCode->is_active)
-                                    <form action="{{ route('resellers.referral.deactivate', $reseller->uuid) }}" method="POST" class="flex-fill">
-                                        @csrf
-                                        <button type="submit" class="btn btn-outline-secondary w-100">Deactivate Link</button>
-                                    </form>
-                                @endif
-                            @endcan
-                        </div>
-                    @endif
                 </div>
 
                 <div class="card bg-white border border-white rounded-10 p-20 mb-4">
@@ -195,31 +122,31 @@
                     <hr class="my-3">
                     <ul class="p-0 mb-0 list-unstyled last-child-none">
                         <li class="mb-10 fs-16 d-flex justify-content-between gap-2">ID: <span
-                                class="text-secondary text-end">{{ $reseller->parentReseller?->parent?->id ?? 'N/A' }}</span></li>
+                                class="text-secondary text-end">7001</span></li>
 
                         <li class="mb-10 fs-16 d-flex justify-content-between gap-2">Name: <span
-                                class="text-secondary text-end">{{ $reseller->parentReseller?->parent?->profile?->first_name ?? '' }} {{ $reseller->parentReseller?->parent?->profile?->last_name ?? '' }}</span></li>
-                        <li class="mb-10 fs-16 d-flex justify-content-between gap-2">Reseller Company: <span
-                                class="text-secondary text-end">{{ $reseller->parentReseller?->parent?->company?->name ?? 'N/A' }}</span></li>
+                                class="text-secondary text-end">John Doe</span></li>
+                        <li class="mb-10 fs-16 d-flex justify-content-between gap-2">Supplier Company: <span
+                                class="text-secondary text-end">BuySmart</span></li>
                         <li class="mb-10 fs-16 d-flex justify-content-between gap-2">Active Member: <span
-                                class="text-secondary text-end">{{ $reseller->parentReseller?->parent?->status?->value ?? 'N/A' }}</span></li>
+                                class="text-secondary text-end">05</span></li>
                     </ul>
                 </div>
             </div>
 
             <div class="col-xxl-9 col-xxxl-9">
                 <!-- Approval Card for Pending Users -->
-                @if ($reseller->status === UserStatus::PENDING)
+                @if ($supplier->status === UserStatus::PENDING)
                     <div class="card bg-white rounded-10 border border-white mb-4">
                         <div class="p-20">
                             <div class="row">
                                 <div class="col-lg-8">
-                                    <h2>Seller waiting for approval</h2>
-                                    <p class="text-muted">Please review the seller information and approve or reject their
+                                    <h2>Supplier waiting for approval</h2>
+                                    <p class="text-muted">Please review the supplier information and approve or reject their
                                         registration.</p>
                                 </div>
                                 <div class="col-lg-4 d-flex gap-2">
-                                    <form action="{{ route('resellers.approve', $reseller->uuid) }}" method="POST"
+                                    <form action="{{ route('suppliers.approve', $supplier->uuid) }}" method="POST"
                                         style="flex: 1;">
                                         @csrf
                                         <button type="button" class="btn btn-primary text-white w-100 h-100"
@@ -227,7 +154,7 @@
                                             Approve
                                         </button>
                                     </form>
-                                    <form action="{{ route('resellers.reject', $reseller->uuid) }}" method="POST"
+                                    <form action="{{ route('suppliers.reject', $supplier->uuid) }}" method="POST"
                                         style="flex: 1;">
                                         @csrf
                                         <button type="button" class="btn btn-outline-secondary w-100 h-100"
@@ -241,17 +168,17 @@
                     </div>
                 @endif
 
-                @if ($reseller->status === UserStatus::SUSPENDED)
+                @if ($supplier->status === UserStatus::SUSPENDED)
                     <div class="card bg-white rounded-10 border border-white mb-4">
                         <div class="p-20">
                             <div class="row">
                                 <div class="col-lg-8">
-                                    <h2>Reactivate this seller</h2>
-                                    <p class="text-muted">Please review the seller information and reactivate their
+                                    <h2>Reactivate this supplier</h2>
+                                    <p class="text-muted">Please review the supplier information and reactivate their
                                         account.</p>
                                 </div>
                                 <div class="col-lg-4 d-flex gap-2">
-                                    <form action="{{ route('resellers.approve', $reseller->uuid) }}" method="POST"
+                                    <form action="{{ route('suppliers.approve', $supplier->uuid) }}" method="POST"
                                         style="flex: 1;">
                                         @csrf
                                         <button type="button" class="btn btn-primary mt-2 text-white w-100 h-100"
@@ -269,9 +196,9 @@
                 <div class="card bg-white rounded-10 border border-white mb-4">
                     <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 p-20">
                         <h3>Bank Details</h3>
-                        @if ($reseller->status === UserStatus::ACTIVE && $reseller->company)
+                        @if ($supplier->status === UserStatus::ACTIVE && $supplier->company)
                             <form class="mb-0"
-                                action="{{ route('companies.bank-accounts.store', $reseller->company) }}" method="POST">
+                                action="{{ route('companies.bank-accounts.store', $supplier->company) }}" method="POST">
                                 @csrf
                                 <div class="row">
                                     <div class="col-lg-6">
@@ -359,7 +286,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @forelse($reseller->company?->bankAccounts ?? [] as $account)
+                                    @forelse($supplier->company?->bankAccounts ?? [] as $account)
                                         <tr>
                                             <td>{{ $account->account_name }}</td>
                                             <td>{{ $account->account_number }}</td>
@@ -552,13 +479,13 @@
                 </div>
 
                 <!-- Action Card for Active Users -->
-                @if ($reseller->status === 'ACTIVE')
+                @if ($supplier->status === 'ACTIVE')
                     <div class="card bg-white rounded-10 border border-white mb-4">
                         <div class="p-20">
                             <div class="row">
                                 <div class="col-lg-8">
-                                    <h2>Manage Active Seller</h2>
-                                    <p class="text-muted">You can suspend or delete this seller account.</p>
+                                    <h2>Manage Active Supplier</h2>
+                                    <p class="text-muted">You can suspend or delete this supplier account.</p>
                                 </div>
                                 <div class="col-lg-4 d-flex gap-2">
                                     <form style="flex: 1;">
@@ -592,12 +519,12 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <p>Are you sure you want to approve this seller?</p>
+                    <p>Are you sure you want to approve this supplier?</p>
                     <p class="text-muted">Once approved, they will have access to the platform.</p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <form action="{{ route('resellers.approve', $reseller->uuid) }}" method="POST"
+                    <form action="{{ route('suppliers.approve', $supplier->uuid) }}" method="POST"
                         style="display: inline;">
                         @csrf
                         <button type="submit" class="btn btn-primary text-white">Approve</button>
@@ -616,12 +543,12 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <p>Are you sure you want to reject this seller?</p>
+                    <p>Are you sure you want to reject this supplier?</p>
                     <p class="text-muted">They will not be able to access the platform.</p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <form action="{{ route('resellers.reject', $reseller->uuid) }}" method="POST"
+                    <form action="{{ route('suppliers.reject', $supplier->uuid) }}" method="POST"
                         style="display: inline;">
                         @csrf
                         <button type="submit" class="btn text-white btn-danger">Reject</button>
@@ -640,12 +567,12 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <p>Are you sure you want to suspend this seller?</p>
+                    <p>Are you sure you want to suspend this supplier?</p>
                     <p class="text-muted">They will not be able to access the platform until they are activated again.</p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <form action="{{ route('resellers.suspend', $reseller->uuid) }}" method="POST"
+                    <form action="{{ route('suppliers.suspend', $supplier->uuid) }}" method="POST"
                         style="display: inline;">
                         @csrf
                         <button type="submit" class="btn text-white btn-danger">Suspend</button>
@@ -664,13 +591,12 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <p><strong>Warning:</strong> Are you sure you want to delete this seller?</p>
-                    <p class="text-muted">This action cannot be undone. The seller will be permanently removed from the
-                        system.</p>
+                    <p><strong>Warning:</strong> Are you sure you want to delete this supplier?</p>
+                    <p class="text-muted">This action cannot be undone. The supplier will be permanently removed from the system.</p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <form action="{{ route('resellers.delete', $reseller->uuid) }}" method="POST"
+                    <form action="{{ route('suppliers.delete', $supplier->uuid) }}" method="POST"
                         style="display: inline;">
                         @csrf
                         <button type="submit" class="btn text-white btn-danger">Delete</button>
@@ -697,3 +623,6 @@
         color: #6c757d;
     }
 </style>
+
+
+

@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Services\Reseller;
+namespace App\Services\Supplier;
 
-use Feeder\Core\Models\User;
 use Feeder\Core\Enums\PortalCode;
-use Feeder\Core\Enums\UserType;
 use Feeder\Core\Enums\UserStatus;
+use Feeder\Core\Enums\UserType;
+use Feeder\Core\Models\User;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
-class ResellerService
+class SupplierService
 {
     public function getList(): array
     {
@@ -37,7 +37,7 @@ class ResellerService
             ])
             ->where('user_type', UserType::OWNER->value)
             ->whereHas('company.portal', function ($query) {
-                $query->where('code', PortalCode::RESELLER->value);
+                $query->where('code', PortalCode::SUPPLIER->value);
             })
             ->where('status', $status->value)
             ->when(request('search'), function ($query) {
@@ -66,15 +66,6 @@ class ResellerService
 
     public function getProfile(User $user): User
     {
-        return $user->load([
-            'profile',
-            'company.address',
-            'company.bankAccounts',
-            'referralCode',
-            'referralCode.activatedByUser.profile',
-            'referralCode.lastChangedByUser.profile',
-            'parentReseller.parent.profile',
-            'parentReseller.parent.company',
-        ]);
+        return $user->load(['profile', 'company.address', 'company.bankAccounts']);
     }
 }

@@ -24,6 +24,7 @@
 
     <!-- Title -->
     <title>Fila - Bootstrap 5 Admin Dashboard Template</title>
+    @stack('styles')
     <style>
         #layout-menu .menu-item>.menu-toggle::after {
             transform: translateY(-50%) rotate(45deg);
@@ -616,6 +617,7 @@
             });
         });
     </script>
+    @stack('scripts')
 </body>
 
 </html>

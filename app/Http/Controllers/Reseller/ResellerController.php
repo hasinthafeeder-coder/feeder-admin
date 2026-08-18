@@ -5,11 +5,16 @@ namespace App\Http\Controllers\Reseller;
 use App\Http\Controllers\Controller;
 use App\Services\Reseller\ResellerService;
 use Feeder\Core\Models\User;
+use Feeder\Core\Services\Referral\ReferralService;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 
 class ResellerController extends Controller
 {
-    public function __construct(protected ResellerService $resellerService) {}
+    public function __construct(
+        protected ResellerService $resellerService,
+        protected ReferralService $referralService,
+    ) {}
 
     public function index(): View
     {
@@ -28,5 +33,19 @@ class ResellerController extends Controller
         return view('pages.reseller.profile', [
             'reseller' => $this->resellerService->getProfile($user),
         ]);
+    }
+
+    public function activateReferralLink(User $user): RedirectResponse
+    {
+        $this->referralService->toggleActivation($user, true, auth()->user());
+
+        return redirect()->route('resellers.show', $user)->with('success', 'Referral link activated.');
+    }
+
+    public function deactivateReferralLink(User $user): RedirectResponse
+    {
+        $this->referralService->toggleActivation($user, false, auth()->user());
+
+        return redirect()->route('resellers.show', $user)->with('success', 'Referral link deactivated.');
     }
 }

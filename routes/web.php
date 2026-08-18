@@ -4,7 +4,10 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FileProxyController;
 use App\Http\Controllers\Reseller\ResellerController;
 use App\Http\Controllers\Reseller\ResellerApprovalController;
+use App\Http\Controllers\Supplier\SupplierController;
+use App\Http\Controllers\Supplier\SupplierApprovalController;
 use App\Http\Controllers\Company\CompanyBankAccountController;
+use App\Http\Controllers\Team\TeamTreeController;
 
 require __DIR__ . '/auth.php';
 
@@ -53,6 +56,54 @@ Route::middleware('auth')->group(function () {
             Route::post('/{user}/delete', [ResellerApprovalController::class, 'delete'])
                 ->middleware('permission:resellers.reject')
                 ->name('delete');
+
+            Route::post('/{user}/referral/activate', [ResellerController::class, 'activateReferralLink'])
+                ->middleware('permission:referrals.activate')
+                ->name('referral.activate');
+
+            Route::post('/{user}/referral/deactivate', [ResellerController::class, 'deactivateReferralLink'])
+                ->middleware('permission:referrals.deactivate')
+                ->name('referral.deactivate');
+        });
+
+    // Supplier Management Routes
+    Route::prefix('suppliers')
+        ->name('suppliers.')
+        ->group(function () {
+
+            Route::get('/', [SupplierController::class, 'index'])
+                ->middleware('permission:suppliers.view')
+                ->name('index');
+
+
+            Route::get('/{user}', [SupplierController::class, 'show'])
+                ->middleware('permission:suppliers.view')
+                ->name('show');
+
+
+            Route::post('/{user}/approve', [SupplierApprovalController::class, 'approve'])
+                ->middleware('permission:suppliers.approve')
+                ->name('approve');
+
+
+            Route::post('/{user}/reject', [SupplierApprovalController::class, 'reject'])
+                ->middleware('permission:suppliers.reject')
+                ->name('reject');
+
+
+            Route::post('/{user}/suspend', [SupplierApprovalController::class, 'suspend'])
+                ->middleware('permission:suppliers.suspend')
+                ->name('suspend');
+
+
+            Route::post('/{user}/activate', [SupplierApprovalController::class, 'activate'])
+                ->middleware('permission:suppliers.approve')
+                ->name('activate');
+
+
+            Route::post('/{user}/delete', [SupplierApprovalController::class, 'delete'])
+                ->middleware('permission:suppliers.reject')
+                ->name('delete');
         });
 
     Route::prefix('companies')
@@ -90,4 +141,23 @@ Route::middleware('auth')->group(function () {
             'size' => 'sm|md|lg',
         ])
         ->name('files.thumbnail');
+
+    Route::prefix('team-structure')
+        ->middleware('permission:team.structure.view')
+        ->group(function () {
+            Route::get('/', [TeamTreeController::class, 'index'])
+                ->name('team.structure');
+
+            Route::get('/root', [TeamTreeController::class, 'root'])
+                ->name('team.structure.root');
+
+            Route::get('/search', [TeamTreeController::class, 'search'])
+                ->name('team.structure.search');
+
+            Route::get('/nodes/{user}/children', [TeamTreeController::class, 'children'])
+                ->name('team.structure.children');
+
+            Route::get('/nodes/{user}/path', [TeamTreeController::class, 'path'])
+                ->name('team.structure.path');
+        });
 });
