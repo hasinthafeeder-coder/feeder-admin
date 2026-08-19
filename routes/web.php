@@ -7,6 +7,8 @@ use App\Http\Controllers\Reseller\ResellerApprovalController;
 use App\Http\Controllers\Supplier\SupplierController;
 use App\Http\Controllers\Supplier\SupplierApprovalController;
 use App\Http\Controllers\Company\CompanyBankAccountController;
+use App\Http\Controllers\Reseller\ResellerFinancialController;
+use App\Http\Controllers\Settings\FinancialSettingsController;
 use App\Http\Controllers\Team\TeamTreeController;
 
 require __DIR__ . '/auth.php';
@@ -64,6 +66,26 @@ Route::middleware('auth')->group(function () {
             Route::post('/{user}/referral/deactivate', [ResellerController::class, 'deactivateReferralLink'])
                 ->middleware('permission:referrals.deactivate')
                 ->name('referral.deactivate');
+
+            Route::post('/{user}/financial/service-charge', [ResellerFinancialController::class, 'updateServiceCharge'])
+                ->middleware('permission:resellers.financial.update')
+                ->name('financial.service-charge.update');
+
+            Route::delete('/{user}/financial/service-charge', [ResellerFinancialController::class, 'clearServiceCharge'])
+                ->middleware('permission:resellers.financial.update')
+                ->name('financial.service-charge.clear');
+        });
+
+    Route::prefix('settings')
+        ->name('settings.')
+        ->middleware('permission:settings.view')
+        ->group(function () {
+            Route::get('/financial', [FinancialSettingsController::class, 'index'])
+                ->name('financial');
+
+            Route::post('/financial', [FinancialSettingsController::class, 'update'])
+                ->middleware('permission:settings.financial.update')
+                ->name('financial.update');
         });
 
     // Supplier Management Routes

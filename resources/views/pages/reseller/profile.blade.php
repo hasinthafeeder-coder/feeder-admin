@@ -117,76 +117,127 @@
                 </div>
 
                 @php
-                    $referralCode = $reseller->referralCode;
-                    $referralLink = $referralCode ? url('/auth/register?ref=' . urlencode($referralCode->code)) : null;
-                    $referralStatusClass = $referralCode && $referralCode->is_active
-                        ? 'text-success bg-success'
-                        : 'text-warning bg-warning';
-                    $referralStatusText = $referralCode ? ($referralCode->is_active ? 'Active' : 'Inactive') : 'Not Created';
-                    $activatedBy = $referralCode?->activatedByUser;
-                    $lastChangedBy = $referralCode?->lastChangedByUser;
-                    $activatedByText = $activatedBy
-                        ? ($activatedBy->profile?->first_name . ' ' . $activatedBy->profile?->last_name ?: $activatedBy->email)
-                        : 'System';
-                    $lastChangedByText = $lastChangedBy
-                        ? ($lastChangedBy->profile?->first_name . ' ' . $lastChangedBy->profile?->last_name ?: $lastChangedBy->email)
-                        : 'System';
+                    $serviceChargeService = app(\Feeder\Core\Services\ResellerServiceChargeService::class);
+
+                    $defaultServiceCharge = $serviceChargeService->getDefaultCharge();
+                    $resellerServiceOverride = $serviceChargeService->getResellerOverride($reseller);
+                    $effectiveServiceCharge = $serviceChargeService->getEffectiveCharge($reseller);
+
+                    $usesSystemDefault = $resellerServiceOverride === null;
                 @endphp
 
                 <div class="card bg-white border border-white rounded-10 p-20 mb-4">
-                    <h3 class="mb-20">Referral Link</h3>
+                    <div class="d-flex justify-content-between align-items-center mb-20">
+                        <h3 class="mb-0">Service Charge</h3>
 
-                    <div class="mb-3">
-                        <label class="form-label text-muted small">Referral Code</label>
-                        <div class="input-group">
-                            <input type="text" class="form-control" readonly value="{{ $referralCode?->code ?? 'Not created' }}">
-                        </div>
+                        @can('resellers.financial.update')
+                            <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal"
+                                data-bs-target="#updateServiceChargeModal">
+                                Edit
+                            </button>
+                        @endcan
                     </div>
 
-                    <div class="mb-3">
-                        <label class="form-label text-muted small">Registration URL</label>
-                        <div class="input-group">
-                            <input type="text" class="form-control" readonly value="{{ $referralLink ?? 'Not available' }}">
-                        </div>
+                    <ul class="p-0 mb-0 list-unstyled last-child-none">
+
+                        <li class="mb-10 fs-16 d-flex justify-content-between gap-2">
+                            <span>System default</span>
+                            <span class="text-secondary text-end">
+                                LKR {{ number_format((float) $defaultServiceCharge, 2) }}
+                            </span>
+                        </li>
+
+                        <li class="mb-10 fs-16 d-flex justify-content-between gap-2">
+                            <span>This reseller</span>
+                            <span class="text-secondary text-end">
+                                LKR {{ number_format((float) $effectiveServiceCharge, 2) }}
+                            </span>
+                        </li>
+
+                        <li class="mb-10 fs-16 d-flex justify-content-between gap-2">
+                            <span>Pricing mode</span>
+                            <span class="text-end">
+                                @if ($usesSystemDefault)
+                                    <span class="text-success bg-success bg-opacity-10 px-2 py-1 rounded">
+                                        System Default
+                                    </span>
+                                @else
+                                    <span class="text-primary bg-primary bg-opacity-10 px-2 py-1 rounded">
+                                        Custom Override
+                                    </span>
+                                @endif
+                            </span>
+                        </li>
+
+                        @if (!$usesSystemDefault)
+                            <li class="mb-0 fs-16 d-flex justify-content-between gap-2">
+                                <span>Custom charge</span>
+                                <span class="text-secondary text-end">
+                                    LKR {{ number_format((float) $resellerServiceOverride, 2) }}
+                                </span>
+                            </li>
+                        @endif
+
+                    </ul>
+                </div>
+
+                @php
+                    $referralCode = $reseller->referralCode;
+                    $referralLink = $referralCode ? url('/auth/register?ref=' . urlencode($referralCode->code)) : null;
+                    $referralStatusClass =
+                        $referralCode && $referralCode->is_active
+                            ? 'text-success bg-success'
+                            : 'text-warning bg-warning';
+                    $referralStatusText = $referralCode
+                        ? ($referralCode->is_active
+                            ? 'Active'
+                            : 'Inactive')
+                        : 'Not Created';
+                @endphp
+
+                <div class="card bg-white border border-white rounded-10 p-20 mb-4">
+                    <div class="d-flex justify-content-between align-items-center mb-20">
+                        <h3 class="mb-20">Referral</h3>
+
+                        @if ($referralCode)
+                            @if ($referralCode->is_active)
+                                @can('referrals.deactivate')
+                                    <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal"
+                                        data-bs-target="#deactivateReferralModal">
+                                        Deactivate
+                                    </button>
+                                @endcan
+                            @else
+                                @can('referrals.activate')
+                                    <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal"
+                                        data-bs-target="#activateReferralModal">
+                                        Activate
+                                    </button>
+                                @endcan
+                            @endif
+                        @endif
                     </div>
+
+                    @if ($referralLink)
+                        <div class="mb-3">
+                            <label class="form-label text-muted small">Referral Link</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" readonly value="{{ $referralLink }}">
+                                <button type="button" class="btn btn-outline-secondary"
+                                    onclick="navigator.clipboard.writeText('{{ addslashes($referralLink) }}')">Copy</button>
+                            </div>
+                        </div>
+                    @endif
+
+
 
                     <div class="d-flex justify-content-between align-items-center mb-2">
                         <span class="text-muted">Status</span>
-                        <span class="{{ $referralStatusClass }} bg-opacity-10 mt-1 fs-14 fw-normal d-inline-block default-badge">
+                        <span
+                            class="{{ $referralStatusClass }} bg-opacity-10 mt-1 fs-14 fw-normal d-inline-block default-badge">
                             {{ $referralStatusText }}
                         </span>
                     </div>
-
-                    <div class="d-flex justify-content-between align-items-center mb-2">
-                        <span class="text-muted">Activated by</span>
-                        <span class="text-secondary text-end">{{ $activatedByText }}</span>
-                    </div>
-
-                    <div class="d-flex justify-content-between align-items-center mb-2">
-                        <span class="text-muted">Last changed by</span>
-                        <span class="text-secondary text-end">{{ $lastChangedByText }}</span>
-                    </div>
-
-                    @if ($referralCode)
-                        <div class="d-flex gap-2 mt-3">
-                            @can('referrals.activate')
-                                @if (! $referralCode->is_active)
-                                    <form action="{{ route('resellers.referral.activate', $reseller->uuid) }}" method="POST" class="flex-fill">
-                                        @csrf
-                                        <button type="submit" class="btn btn-primary text-white w-100">Activate Link</button>
-                                    </form>
-                                @endif
-                            @endcan
-                            @can('referrals.deactivate')
-                                @if ($referralCode->is_active)
-                                    <form action="{{ route('resellers.referral.deactivate', $reseller->uuid) }}" method="POST" class="flex-fill">
-                                        @csrf
-                                        <button type="submit" class="btn btn-outline-secondary w-100">Deactivate Link</button>
-                                    </form>
-                                @endif
-                            @endcan
-                        </div>
-                    @endif
                 </div>
 
                 <div class="card bg-white border border-white rounded-10 p-20 mb-4">
@@ -195,14 +246,18 @@
                     <hr class="my-3">
                     <ul class="p-0 mb-0 list-unstyled last-child-none">
                         <li class="mb-10 fs-16 d-flex justify-content-between gap-2">ID: <span
-                                class="text-secondary text-end">{{ $reseller->parentReseller?->parent?->id ?? 'N/A' }}</span></li>
+                                class="text-secondary text-end">{{ $reseller->parentReseller?->parent?->id ?? 'N/A' }}</span>
+                        </li>
 
                         <li class="mb-10 fs-16 d-flex justify-content-between gap-2">Name: <span
-                                class="text-secondary text-end">{{ $reseller->parentReseller?->parent?->profile?->first_name ?? '' }} {{ $reseller->parentReseller?->parent?->profile?->last_name ?? '' }}</span></li>
+                                class="text-secondary text-end">{{ $reseller->parentReseller?->parent?->profile?->first_name ?? '' }}
+                                {{ $reseller->parentReseller?->parent?->profile?->last_name ?? '' }}</span></li>
                         <li class="mb-10 fs-16 d-flex justify-content-between gap-2">Reseller Company: <span
-                                class="text-secondary text-end">{{ $reseller->parentReseller?->parent?->company?->name ?? 'N/A' }}</span></li>
+                                class="text-secondary text-end">{{ $reseller->parentReseller?->parent?->company?->name ?? 'N/A' }}</span>
+                        </li>
                         <li class="mb-10 fs-16 d-flex justify-content-between gap-2">Active Member: <span
-                                class="text-secondary text-end">{{ $reseller->parentReseller?->parent?->status?->value ?? 'N/A' }}</span></li>
+                                class="text-secondary text-end">{{ $reseller->parentReseller?->parent?->status?->value ?? 'N/A' }}</span>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -583,6 +638,44 @@
     </div>
 
     <!-- Modals -->
+    @can('resellers.financial.update')
+        <div class="modal fade" id="updateServiceChargeModal" tabindex="-1" aria-labelledby="updateServiceChargeModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="updateServiceChargeModalLabel">Update service charge</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form action="{{ route('resellers.financial.service-charge.update', $reseller->uuid) }}" method="POST">
+                        @csrf
+                        <div class="modal-body">
+                            <label for="reseller_service_charge" class="form-label text-muted small">New service
+                                charge</label>
+                            <div class="input-group mb-3">
+                                <span class="input-group-text">LKR</span>
+                                <input id="reseller_service_charge" name="reseller_service_charge" type="number"
+                                    min="0" step="0.01" class="form-control"
+                                    value="{{ old('reseller_service_charge', $resellerServiceOverride ?? $defaultServiceCharge) }}">
+                            </div>
+
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="use_system_default" value="1"
+                                    id="use_system_default_modal"
+                                    {{ old('use_system_default', $resellerServiceOverride === null ? '1' : null) ? 'checked' : '' }}>
+                                <label class="form-check-label" for="use_system_default_modal">Use System Default</label>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-primary text-white">Save</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    @endcan
+
     <!-- Approve Modal -->
     <div class="modal fade" id="approveModal" tabindex="-1" aria-labelledby="approveModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
@@ -630,6 +723,54 @@
             </div>
         </div>
     </div>
+
+    @if ($referralCode)
+        <div class="modal fade" id="activateReferralModal" tabindex="-1" aria-labelledby="activateReferralModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="activateReferralModalLabel">Activate referral link?</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>New users will be able to register using this referral link.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <form action="{{ route('resellers.referral.activate', $reseller->uuid) }}" method="POST"
+                            style="display: inline;">
+                            @csrf
+                            <button type="submit" class="btn btn-primary text-white">Activate</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="deactivateReferralModal" tabindex="-1"
+            aria-labelledby="deactivateReferralModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="deactivateReferralModalLabel">Deactivate referral link?</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>New users will no longer be able to register using this referral link.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <form action="{{ route('resellers.referral.deactivate', $reseller->uuid) }}" method="POST"
+                            style="display: inline;">
+                            @csrf
+                            <button type="submit" class="btn btn-outline-secondary">Deactivate</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
 
     <!-- Suspend Modal -->
     <div class="modal fade" id="suspendModal" tabindex="-1" aria-labelledby="suspendModalLabel" aria-hidden="true">
@@ -682,6 +823,7 @@
 
     <div class="flex-grow-1"></div>
 @endsection
+
 
 <style>
     .card {
