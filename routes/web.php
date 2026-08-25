@@ -7,6 +7,7 @@ use App\Http\Controllers\Reseller\ResellerApprovalController;
 use App\Http\Controllers\Supplier\SupplierController;
 use App\Http\Controllers\Supplier\SupplierApprovalController;
 use App\Http\Controllers\Company\CompanyBankAccountController;
+use App\Http\Controllers\Product\ProductCategoryController;
 use App\Http\Controllers\Reseller\ResellerFinancialController;
 use App\Http\Controllers\Settings\FinancialSettingsController;
 use App\Http\Controllers\Team\TeamTreeController;
@@ -156,6 +157,38 @@ Route::middleware('auth')->group(function () {
                 ->middleware('permission:companies.update')
                 ->name('bank-accounts.destroy');
         });
+
+    Route::prefix('product-categories')
+        ->name('product-categories.')
+        ->group(function () {
+            Route::get('/', [ProductCategoryController::class, 'index'])
+                ->middleware('permission:product_categories.view')
+                ->name('index');
+
+            Route::post('/', [ProductCategoryController::class, 'store'])
+                ->middleware('permission:product_categories.create')
+                ->name('store');
+
+            Route::put('/{productCategory}', [ProductCategoryController::class, 'update'])
+                ->middleware('permission:product_categories.update')
+                ->name('update');
+
+            Route::delete('/{productCategory}', [ProductCategoryController::class, 'destroy'])
+                ->middleware('permission:product_categories.delete')
+                ->name('destroy');
+
+            Route::post('/{productCategory}/activate', [ProductCategoryController::class, 'activate'])
+                ->middleware('permission:product_categories.update')
+                ->name('activate');
+
+            Route::post('/{productCategory}/deactivate', [ProductCategoryController::class, 'deactivate'])
+                ->middleware('permission:product_categories.update')
+                ->name('deactivate');
+        });
+
+    Route::get('products', function () {
+        return view('pages.products.index');
+    })->name('products');
 
     Route::get('/files/{uuid}/thumbnail/{size?}', [FileProxyController::class, 'thumbnail'])
         ->where([
