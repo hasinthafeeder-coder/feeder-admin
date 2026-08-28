@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Services\Reseller\ResellerService;
 use Feeder\Core\Models\User;
 use Feeder\Core\Services\Referral\ReferralService;
+use Feeder\Core\Services\ResellerSupplierAssignmentService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 
@@ -14,6 +15,7 @@ class ResellerController extends Controller
     public function __construct(
         protected ResellerService $resellerService,
         protected ReferralService $referralService,
+        protected ResellerSupplierAssignmentService $assignmentService,
     ) {}
 
     public function index(): View
@@ -30,8 +32,12 @@ class ResellerController extends Controller
 
     public function show(User $user): View
     {
+        $reseller = $this->resellerService->getProfile($user);
+
         return view('pages.reseller.profile', [
-            'reseller' => $this->resellerService->getProfile($user),
+            'reseller' => $reseller,
+            'assignedSuppliers' => $this->assignmentService->listAssignedSuppliers($reseller),
+            'assignableSuppliers' => $this->assignmentService->listAssignableSuppliers($reseller),
         ]);
     }
 

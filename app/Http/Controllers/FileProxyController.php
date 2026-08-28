@@ -15,4 +15,9 @@ class FileProxyController extends Controller
     {
         return $this->fileProxyService->thumbnail($uuid, $size);
     }
+
+    public function view(string $uuid): Response
+    {
+        return $this->fileProxyService->view($uuid);
+    }
 }

@@ -21,6 +21,22 @@
             <a href="{{ route('resellers.index') }}" class="btn btn-outline-secondary">Back to List</a>
         </div>
 
+        @if (session('success'))
+            <div class="alert alert-success" role="alert">
+                {{ session('success') }}
+            </div>
+        @endif
+
+        @if ($errors->any())
+            <div class="alert alert-danger" role="alert">
+                <ul class="mb-0 ps-3">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
         <div class="row">
             <div class="col-xxl-3 col-xxxl-3">
                 <div class="card bg-white border border-white rounded-10 p-20 mb-4">
@@ -460,27 +476,32 @@
                     <div class="ustify-content-between align-items-center flex-wrap gap-3 p-20">
                         <h3>Suppliers</h3>
 
-                        <div class="row">
-                            <form class="d-flex align-items-stretch justify-content-between mt-3 w-100">
-                                <div class="col-lg-8">
-                                    <div class="form-floating h-100">
-                                        <select class="form-select form-control h-100" id="floatingSelectSupplier1"
-                                            aria-label="Floating label select example">
-                                            <option selected>Select</option>
-                                            <option value="1">ABC Supplier</option>
-                                            <option value="2">XYZ Supplier</option>
-                                            <option value="3">LMN Supplier</option>
-                                            <option value="4">OPQ Supplier</option>
-                                            <option value="5">RST Supplier</option>
-                                        </select>
-                                        <label for="floatingSelectSupplier1">Supplier Name</label>
+                        @can('resellers.suppliers.assign')
+                            <div class="row">
+                                <form class="d-flex align-items-stretch justify-content-between mt-3 w-100"
+                                    action="{{ route('resellers.suppliers.store', $reseller) }}" method="POST">
+                                    @csrf
+                                    <div class="col-lg-8">
+                                        <div class="form-floating h-100">
+                                            <select class="form-select form-control h-100" id="floatingSelectSupplier1"
+                                                name="supplier" aria-label="Floating label select example">
+                                                <option value="" selected>Select</option>
+                                                <option value="all">Select All Suppliers</option>
+                                                @foreach ($assignableSuppliers as $supplierOption)
+                                                    <option value="{{ $supplierOption->uuid }}">
+                                                        {{ $supplierOption->company?->name ?? $supplierOption->email }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                            <label for="floatingSelectSupplier1">Supplier Name</label>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-lg-3">
-                                    <button type="button" class="btn btn-primary text-white w-100 h-100">Add</button>
-                                </div>
-                            </form>
-                        </div>
+                                    <div class="col-lg-3">
+                                        <button type="submit" class="btn btn-primary text-white w-100 h-100">Add</button>
+                                    </div>
+                                </form>
+                            </div>
+                        @endcan
                     </div>
 
                     <div class="default-table-area mx-minus-1 table-all-projects">
@@ -495,111 +516,40 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td class="text-body">#951</td>
-                                        <td class="text-body">Hotel management system</td>
-                                        <td class="text-secondary">12</td>
-                                        <td>
-                                            <div class="d-flex justify-content-end" style="gap: 12px;">
-                                                <button class="bg-transparent p-0 border-0 hover-text-danger"
-                                                    data-bs-toggle="tooltip" data-bs-placement="top"
-                                                    data-bs-title="Delete">
-                                                    <i
-                                                        class="material-symbols-outlined fs-16 fw-normal text-body">delete</i>
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="text-body">#547</td>
-                                        <td class="text-body">Product development</td>
-                                        <td class="text-secondary">Beja Ltd</td>
-                                        <td>
-                                            <div class="d-flex justify-content-end" style="gap: 12px;">
-                                                <button class="bg-transparent p-0 border-0 hover-text-danger"
-                                                    data-bs-toggle="tooltip" data-bs-placement="top"
-                                                    data-bs-title="Delete">
-                                                    <i
-                                                        class="material-symbols-outlined fs-16 fw-normal text-body">delete</i>
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="text-body">#658</td>
-                                        <td class="text-body">Python upgrade</td>
-                                        <td class="text-secondary">Aegis Industries</td>
-                                        <td>
-                                            <div class="d-flex justify-content-end" style="gap: 12px;">
-                                                <button class="bg-transparent p-0 border-0 hover-text-danger"
-                                                    data-bs-toggle="tooltip" data-bs-placement="top"
-                                                    data-bs-title="Delete">
-                                                    <i
-                                                        class="material-symbols-outlined fs-16 fw-normal text-body">delete</i>
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="text-body">#658</td>
-                                        <td class="text-body">Python upgrade</td>
-                                        <td class="text-secondary">Aegis Industries</td>
-                                        <td>
-                                            <div class="d-flex justify-content-end" style="gap: 12px;">
-                                                <button class="bg-transparent p-0 border-0 hover-text-danger"
-                                                    data-bs-toggle="tooltip" data-bs-placement="top"
-                                                    data-bs-title="Delete">
-                                                    <i
-                                                        class="material-symbols-outlined fs-16 fw-normal text-body">delete</i>
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="text-body">#658</td>
-                                        <td class="text-body">Python upgrade</td>
-                                        <td class="text-secondary">Aegis Industries</td>
-                                        <td>
-                                            <div class="d-flex justify-content-end" style="gap: 12px;">
-                                                <button class="bg-transparent p-0 border-0 hover-text-danger"
-                                                    data-bs-toggle="tooltip" data-bs-placement="top"
-                                                    data-bs-title="Delete">
-                                                    <i
-                                                        class="material-symbols-outlined fs-16 fw-normal text-body">delete</i>
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="text-body">#658</td>
-                                        <td class="text-body">Python upgrade</td>
-                                        <td class="text-secondary">Aegis Industries</td>
-                                        <td>
-                                            <div class="d-flex justify-content-end" style="gap: 12px;">
-                                                <button class="bg-transparent p-0 border-0 hover-text-danger"
-                                                    data-bs-toggle="tooltip" data-bs-placement="top"
-                                                    data-bs-title="Delete">
-                                                    <i
-                                                        class="material-symbols-outlined fs-16 fw-normal text-body">delete</i>
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="text-body">#658</td>
-                                        <td class="text-body">Python upgrade</td>
-                                        <td class="text-secondary">Aegis Industries</td>
-                                        <td>
-                                            <div class="d-flex justify-content-end" style="gap: 12px;">
-                                                <button class="bg-transparent p-0 border-0 hover-text-danger"
-                                                    data-bs-toggle="tooltip" data-bs-placement="top"
-                                                    data-bs-title="Delete">
-                                                    <i
-                                                        class="material-symbols-outlined fs-16 fw-normal text-body">delete</i>
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
+                                    @forelse ($assignedSuppliers as $assignedSupplier)
+                                        <tr>
+                                            <td class="text-body">#{{ $loop->iteration }}</td>
+                                            <td class="text-body">
+                                                {{ $assignedSupplier->company?->name ?? $assignedSupplier->email }}</td>
+                                            <td class="text-secondary">{{ $assignedSupplier->id }}</td>
+                                            <td>
+                                                <div class="d-flex justify-content-end" style="gap: 12px;">
+                                                    @can('resellers.suppliers.assign')
+                                                        <form
+                                                            action="{{ route('resellers.suppliers.destroy', ['user' => $reseller, 'supplier' => $assignedSupplier]) }}"
+                                                            method="POST">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit"
+                                                                class="bg-transparent p-0 border-0 hover-text-danger"
+                                                                data-bs-toggle="tooltip" data-bs-placement="top"
+                                                                data-bs-title="Delete"
+                                                                onclick="return confirm('Remove this supplier assignment?')">
+                                                                <i
+                                                                    class="material-symbols-outlined fs-16 fw-normal text-body">delete</i>
+                                                            </button>
+                                                        </form>
+                                                    @endcan
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @empty
+                                        <tr>
+                                            <td colspan="4" class="text-center">
+                                                No suppliers assigned.
+                                            </td>
+                                        </tr>
+                                    @endforelse
                                 </tbody>
                             </table>
                         </div>

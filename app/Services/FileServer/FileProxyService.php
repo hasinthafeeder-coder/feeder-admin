@@ -15,13 +15,14 @@ class FileProxyService
             'size' => $size,
         ]);
 
-        if (! $response->successful()) {
-            abort($response->status());
-        }
+        return $this->toResponse($response);
+    }
 
-        return response($response->body(), $response->status())
-            ->header('Content-Type', $this->contentType($response))
-            ->header('Cache-Control', $this->cacheControl($response));
+    public function view(string $uuid): Response
+    {
+        $response = $this->client()->get("/api/files/{$uuid}/view");
+
+        return $this->toResponse($response);
     }
 
     private function client(): PendingRequest
@@ -31,6 +32,17 @@ class FileProxyService
             ->withToken(config('feeder.file_server.api_key'));
     }
 
+    private function toResponse(ClientResponse $response): Response
+    {
+        if (! $response->successful()) {
+            abort($response->status());
+        }
+
+        return response($response->body(), $response->status())
+            ->header('Content-Type', $this->contentType($response))
+            ->header('Cache-Control', $this->cacheControl($response));
+    }
+
     private function contentType(ClientResponse $response): string
     {
         return $response->header('Content-Type') ?: 'application/octet-stream';
@@ -38,6 +50,6 @@ class FileProxyService
 
     private function cacheControl(ClientResponse $response): string
     {
-        return $response->header('Cache-Control') ?: 'public, max-age=31536000';
+        return $response->header('Cache-Control') ?: 'private, max-age=3600';
     }
 }

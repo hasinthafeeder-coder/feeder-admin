@@ -1,18 +1,20 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\FileProxyController;
-use App\Http\Controllers\Reseller\ResellerController;
-use App\Http\Controllers\Reseller\ResellerApprovalController;
-use App\Http\Controllers\Supplier\SupplierController;
-use App\Http\Controllers\Supplier\SupplierApprovalController;
 use App\Http\Controllers\Company\CompanyBankAccountController;
+use App\Http\Controllers\FileProxyController;
 use App\Http\Controllers\Product\ProductCategoryController;
+use App\Http\Controllers\Product\ProductController;
+use App\Http\Controllers\Reseller\ResellerApprovalController;
+use App\Http\Controllers\Reseller\ResellerController;
 use App\Http\Controllers\Reseller\ResellerFinancialController;
+use App\Http\Controllers\Reseller\ResellerSupplierAssignmentController;
 use App\Http\Controllers\Settings\FinancialSettingsController;
+use App\Http\Controllers\Supplier\SupplierApprovalController;
+use App\Http\Controllers\Supplier\SupplierController;
 use App\Http\Controllers\Team\TeamTreeController;
+use Illuminate\Support\Facades\Route;
 
-require __DIR__ . '/auth.php';
+require __DIR__.'/auth.php';
 
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', function () {
@@ -30,31 +32,25 @@ Route::middleware('auth')->group(function () {
                 ->middleware('permission:resellers.view')
                 ->name('index');
 
-
             Route::get('/{user}', [ResellerController::class, 'show'])
                 ->middleware('permission:resellers.view')
                 ->name('show');
-
 
             Route::post('/{user}/approve', [ResellerApprovalController::class, 'approve'])
                 ->middleware('permission:resellers.approve')
                 ->name('approve');
 
-
             Route::post('/{user}/reject', [ResellerApprovalController::class, 'reject'])
                 ->middleware('permission:resellers.reject')
                 ->name('reject');
-
 
             Route::post('/{user}/suspend', [ResellerApprovalController::class, 'suspend'])
                 ->middleware('permission:resellers.suspend')
                 ->name('suspend');
 
-
             Route::post('/{user}/activate', [ResellerApprovalController::class, 'activate'])
                 ->middleware('permission:resellers.approve')
                 ->name('activate');
-
 
             Route::post('/{user}/delete', [ResellerApprovalController::class, 'delete'])
                 ->middleware('permission:resellers.reject')
@@ -75,6 +71,14 @@ Route::middleware('auth')->group(function () {
             Route::delete('/{user}/financial/service-charge', [ResellerFinancialController::class, 'clearServiceCharge'])
                 ->middleware('permission:resellers.financial.update')
                 ->name('financial.service-charge.clear');
+
+            Route::post('/{user}/suppliers', [ResellerSupplierAssignmentController::class, 'store'])
+                ->middleware('permission:resellers.suppliers.assign')
+                ->name('suppliers.store');
+
+            Route::delete('/{user}/suppliers/{supplier}', [ResellerSupplierAssignmentController::class, 'destroy'])
+                ->middleware('permission:resellers.suppliers.assign')
+                ->name('suppliers.destroy');
         });
 
     Route::prefix('settings')
@@ -98,31 +102,25 @@ Route::middleware('auth')->group(function () {
                 ->middleware('permission:suppliers.view')
                 ->name('index');
 
-
             Route::get('/{user}', [SupplierController::class, 'show'])
                 ->middleware('permission:suppliers.view')
                 ->name('show');
-
 
             Route::post('/{user}/approve', [SupplierApprovalController::class, 'approve'])
                 ->middleware('permission:suppliers.approve')
                 ->name('approve');
 
-
             Route::post('/{user}/reject', [SupplierApprovalController::class, 'reject'])
                 ->middleware('permission:suppliers.reject')
                 ->name('reject');
-
 
             Route::post('/{user}/suspend', [SupplierApprovalController::class, 'suspend'])
                 ->middleware('permission:suppliers.suspend')
                 ->name('suspend');
 
-
             Route::post('/{user}/activate', [SupplierApprovalController::class, 'activate'])
                 ->middleware('permission:suppliers.approve')
                 ->name('activate');
-
 
             Route::post('/{user}/delete', [SupplierApprovalController::class, 'delete'])
                 ->middleware('permission:suppliers.reject')
@@ -141,14 +139,12 @@ Route::middleware('auth')->group(function () {
                 ->middleware('permission:companies.update')
                 ->name('bank-accounts.store');
 
-
             Route::put(
                 '/bank-accounts/{bankAccount}',
                 [CompanyBankAccountController::class, 'update']
             )
                 ->middleware('permission:companies.update')
                 ->name('bank-accounts.update');
-
 
             Route::delete(
                 '/bank-accounts/{bankAccount}',
@@ -186,9 +182,45 @@ Route::middleware('auth')->group(function () {
                 ->name('deactivate');
         });
 
-    Route::get('products', function () {
-        return view('pages.products.index');
-    })->name('products');
+    Route::prefix('products')
+        ->name('products.')
+        ->group(function () {
+            Route::get('/', [ProductController::class, 'index'])
+                ->middleware('permission:products.view')
+                ->name('index');
+
+            Route::get('/list', [ProductController::class, 'index'])
+                ->middleware('permission:products.view')
+                ->name('list');
+
+            Route::get('/{product}', [ProductController::class, 'show'])
+                ->middleware('permission:products.view')
+                ->name('show');
+
+            Route::get('/{product}/details', [ProductController::class, 'show'])
+                ->middleware('permission:products.view')
+                ->name('details');
+
+            Route::get('/{product}/edit', [ProductController::class, 'edit'])
+                ->middleware('permission:products.update')
+                ->name('edit');
+
+            Route::put('/{product}', [ProductController::class, 'update'])
+                ->middleware('permission:products.update')
+                ->name('update');
+
+            Route::delete('/{product}', [ProductController::class, 'destroy'])
+                ->middleware('permission:products.delete')
+                ->name('destroy');
+
+            Route::post('/{product}/deactivate', [ProductController::class, 'deactivate'])
+                ->middleware('permission:products.update')
+                ->name('deactivate');
+
+            Route::post('/{product}/activate', [ProductController::class, 'activate'])
+                ->middleware('permission:products.update')
+                ->name('activate');
+        });
 
     Route::get('/files/{uuid}/thumbnail/{size?}', [FileProxyController::class, 'thumbnail'])
         ->where([
@@ -196,6 +228,10 @@ Route::middleware('auth')->group(function () {
             'size' => 'sm|md|lg',
         ])
         ->name('files.thumbnail');
+
+    Route::get('/files/{uuid}/view', [FileProxyController::class, 'view'])
+        ->where('uuid', '[A-Za-z0-9]+')
+        ->name('files.view');
 
     Route::prefix('team-structure')
         ->middleware('permission:team.structure.view')
