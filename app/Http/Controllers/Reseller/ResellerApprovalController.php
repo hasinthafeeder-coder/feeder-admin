@@ -17,7 +17,12 @@ class ResellerApprovalController extends Controller
 
     public function approve(ApproveResellerRequest $request, User $user): RedirectResponse
     {
-        $this->approvalService->approve($user);
+        $this->approvalService->approve(
+            $user,
+            $request->validated('home_country_id'),
+            $request->validated('allowed_market_ids', []),
+            $request->user()
+        );
 
         return redirect()->back()->with('success', 'Reseller approved successfully.');
     }

@@ -9,14 +9,28 @@ use Feeder\Core\Enums\UserType;
 use Feeder\Core\Models\Company;
 use Feeder\Core\Models\Portal;
 use Feeder\Core\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use Tests\Support\UsesMysqlTestDatabase;
 use Tests\TestCase;
 
 class FinancialSettingsAccessTest extends TestCase
 {
-    use RefreshDatabase;
+    use UsesMysqlTestDatabase;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->setUpMysqlTestDatabase();
+    }
+
+    protected function tearDown(): void
+    {
+        $this->tearDownMysqlTestDatabase();
+
+        parent::tearDown();
+    }
 
     public function test_reseller_cannot_update_global_financial_settings(): void
     {
@@ -24,8 +38,9 @@ class FinancialSettingsAccessTest extends TestCase
 
         $this->actingAs($user)
             ->post(route('settings.financial.update'), [
-                'reseller_service_charge' => '90.00',
-                'introducer_bonus' => '60.00',
+                'market_company_commissions' => [],
+                'market_introducer_bonuses' => [],
+                'market_reseller_service_charges' => [],
             ])
             ->assertForbidden();
     }
@@ -37,6 +52,7 @@ class FinancialSettingsAccessTest extends TestCase
 
         $this->actingAs($actor)
             ->post(route('resellers.financial.service-charge.update', $target->uuid), [
+                'market_id' => (string) Str::uuid(),
                 'reseller_service_charge' => '120.00',
             ])
             ->assertForbidden();

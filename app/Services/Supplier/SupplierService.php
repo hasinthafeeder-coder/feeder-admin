@@ -33,7 +33,7 @@ class SupplierService
         return User::query()
             ->with([
                 'profile',
-                'company',
+                'company.operationMarket.country',
             ])
             ->where('user_type', UserType::OWNER->value)
             ->whereHas('company.portal', function ($query) {
@@ -66,6 +66,6 @@ class SupplierService
 
     public function getProfile(User $user): User
     {
-        return $user->load(['profile', 'company.address', 'company.bankAccounts']);
+        return $user->load(['profile', 'company.address', 'company.bankAccounts', 'company.operationMarket.country']);
     }
 }

@@ -23,6 +23,35 @@
                             </form>
                         </div>
 
+                        @if (session('success'))
+                            <div class="alert alert-success" role="alert">
+                                {{ session('success') }}
+                            </div>
+                        @endif
+
+                        @can('resellers.markets.update')
+                            <form id="bulkMarketForm" method="POST" class="d-none">
+                                @csrf
+                                <input type="hidden" name="reseller_ids" id="bulkResellerIds">
+                                <input type="hidden" name="market_id" id="bulkMarketId">
+                            </form>
+
+                            <div class="d-flex flex-wrap align-items-center gap-2 mb-4">
+                                <select id="bulkMarketSelect" class="form-select" style="max-width: 240px;">
+                                    <option value="" selected disabled>Select market</option>
+                                    @foreach ($activeMarkets as $market)
+                                        <option value="{{ $market->uuid }}">{{ $market->name }}</option>
+                                    @endforeach
+                                </select>
+                                <button type="button" class="btn btn-primary text-white" id="bulkGrantMarketBtn">
+                                    Grant Market Access
+                                </button>
+                                <button type="button" class="btn btn-outline-secondary" id="bulkRevokeMarketBtn">
+                                    Remove Market Access
+                                </button>
+                            </div>
+                        @endcan
+
                         <!-- Tabs Navigation -->
                         <ul class="nav nav-tabs mb-4" id="resellerTabs" role="tablist">
                             <li class="nav-item" role="presentation">
@@ -141,10 +170,57 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Tooltip initialization
         const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
         tooltipTriggerList.map(function(tooltipTriggerEl) {
             return new bootstrap.Tooltip(tooltipTriggerEl);
         });
+
+        const bulkGrantBtn = document.getElementById('bulkGrantMarketBtn');
+        const bulkRevokeBtn = document.getElementById('bulkRevokeMarketBtn');
+        const bulkMarketSelect = document.getElementById('bulkMarketSelect');
+        const bulkForm = document.getElementById('bulkMarketForm');
+        const bulkResellerIds = document.getElementById('bulkResellerIds');
+        const bulkMarketId = document.getElementById('bulkMarketId');
+
+        function selectedResellerCompanyIds() {
+            return Array.from(document.querySelectorAll('.reseller-bulk-checkbox:checked'))
+                .map((checkbox) => checkbox.value);
+        }
+
+        function submitBulkAction(action) {
+            const ids = selectedResellerCompanyIds();
+            const marketUuid = bulkMarketSelect ? bulkMarketSelect.value : '';
+
+            if (ids.length === 0) {
+                alert('Select at least one reseller.');
+                return;
+            }
+
+            if (!marketUuid) {
+                alert('Select a market.');
+                return;
+            }
+
+            if (!bulkForm || !bulkResellerIds || !bulkMarketId) {
+                return;
+            }
+
+            bulkResellerIds.value = ids.join(',');
+            bulkMarketId.value = marketUuid;
+            bulkForm.action = action;
+            bulkForm.submit();
+        }
+
+        if (bulkGrantBtn) {
+            bulkGrantBtn.addEventListener('click', function() {
+                submitBulkAction(@json(route('resellers.bulk.markets.grant')));
+            });
+        }
+
+        if (bulkRevokeBtn) {
+            bulkRevokeBtn.addEventListener('click', function() {
+                submitBulkAction(@json(route('resellers.bulk.markets.revoke')));
+            });
+        }
     });
 </script>

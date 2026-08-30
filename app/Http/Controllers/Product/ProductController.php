@@ -3,11 +3,17 @@
 namespace App\Http\Controllers\Product;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Product\IndexProductRequest;
 use App\Http\Requests\Product\UpdateProductRequest;
 use App\Services\FileServerService;
+use App\Services\Product\ProductListService;
 use Feeder\Core\Enums\ProductStatus;
+use Feeder\Core\Models\Currency;
+use Feeder\Core\Models\Market;
 use Feeder\Core\Models\Product;
 use Feeder\Core\Models\ProductCategory;
+use Feeder\Core\Services\MarketDefaultCompanyCommissionService;
+use Feeder\Core\Services\ProductMarketLanguageService;
 use Feeder\Core\Services\ProductService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
@@ -21,25 +27,24 @@ class ProductController extends Controller
     public function __construct(
         private readonly ProductService $productService,
         private readonly FileServerService $fileServerService,
+        private readonly MarketDefaultCompanyCommissionService $marketCommissionService,
+        private readonly ProductMarketLanguageService $productLanguageService,
+        private readonly ProductListService $productListService,
     ) {}
 
-    public function index(): View
+    public function index(IndexProductRequest $request): View
     {
-        $products = Product::query()
-            ->with(['category', 'variants', 'images.file', 'supplier.company'])
-            ->latest()
-            ->get();
-
-        $counts = [
-            'all' => $products->count(),
-            'active' => $products->where('status', ProductStatus::ACTIVE)->count(),
-            'draft' => $products->where('status', ProductStatus::DRAFT)->count(),
-            'inactive' => $products->where('status', ProductStatus::INACTIVE)->count(),
-        ];
-
         return view('pages.products.list', [
-            'products' => $products,
-            'counts' => $counts,
+            'products' => $this->productListService->paginate($request),
+            'counts' => $this->productListService->counts($request),
+            'markets' => $this->productListService->marketFilterOptions(),
+            'suppliers' => $this->productListService->supplierFilterOptions(),
+            'filters' => [
+                'search' => $request->input('search', ''),
+                'market_id' => $request->input('market_id', ''),
+                'supplier_id' => $request->input('supplier_id', ''),
+                'status' => $request->input('status', ''),
+            ],
         ]);
     }
 
@@ -49,6 +54,8 @@ class ProductController extends Controller
             'supplier.company',
             'supplier.profile',
             'category',
+            'market.country',
+            'market.currency',
             'descriptions',
             'variants',
             'images.file',
@@ -57,6 +64,7 @@ class ProductController extends Controller
 
         return view('pages.products.details', [
             'product' => $product,
+            'productLanguages' => $this->productLanguageService->languagesForMarket($product->market),
         ]);
     }
 
@@ -65,6 +73,8 @@ class ProductController extends Controller
         $product->load([
             'supplier.company',
             'category',
+            'market.country',
+            'market.currency',
             'descriptions',
             'variants',
             'images.file',
@@ -150,25 +160,45 @@ class ProductController extends Controller
             'product' => $product,
             'categories' => $categories,
             'rootCategories' => $categories->filter(fn ($category) => empty($category->parent_id))->values(),
+            'productMarketContext' => $this->productMarketContext($product),
+            'defaultCompanyCommission' => $this->resolveDefaultCompanyCommission($product->market),
+            'productLanguages' => $this->productLanguageService->languagesForMarket($product->market),
         ];
+    }
+
+    /**
+     * @return array{country_name: ?string, currency: ?Currency, is_complete: bool}
+     */
+    private function productMarketContext(Product $product): array
+    {
+        $product->loadMissing('market.country', 'market.currency');
+        $market = $product->market;
+
+        return [
+            'country_name' => $market?->country?->name,
+            'currency' => $market?->currency,
+            'is_complete' => $market !== null
+                && $market->country !== null
+                && $market->currency !== null
+                && filled($market->currency->iso_code),
+        ];
+    }
+
+    private function resolveDefaultCompanyCommission(?Market $market): string
+    {
+        if ($market === null) {
+            return '0.00';
+        }
+
+        return $this->marketCommissionService->getDefaultCompanyCommission($market);
     }
 
     private function extractDescriptions(UpdateProductRequest $request): array
     {
-        $descriptions = [];
-
-        foreach (['en', 'si', 'ta'] as $locale) {
-            $value = $request->input('descriptions.'.$locale);
-
-            if ($value !== null && $value !== '') {
-                $descriptions[] = [
-                    'language_code' => $locale,
-                    'description' => $value,
-                ];
-            }
-        }
-
-        return $descriptions;
+        return $this->productLanguageService->normalizeDescriptionsForMarket(
+            $request->resolvedProductMarket(),
+            (array) $request->input('descriptions', [])
+        );
     }
 
     private function extractVariants(UpdateProductRequest $request, int $adminId): array
@@ -189,7 +219,7 @@ class ProductController extends Controller
                 'suggested_price' => $priceLocked
                     ? $sellingPrice
                     : ($variant['suggested_price'] ?? null),
-                'company_commission' => $variant['company_commission'] ?? 150.00,
+                'company_commission' => $variant['company_commission'] ?? null,
                 'sort_order' => $index,
                 'is_active' => true,
                 'updated_by' => $adminId,

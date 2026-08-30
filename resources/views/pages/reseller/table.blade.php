@@ -4,6 +4,11 @@
             <table class="table align-middle w-100">
                 <thead>
                     <tr>
+                        @can('resellers.markets.update')
+                            <th scope="col" class="fw-medium pe-0">
+                                <input type="checkbox" class="form-check-input" id="selectAllResellers-{{ $status }}">
+                            </th>
+                        @endcan
                         <th scope="col" class="fw-medium pe-0 rtl-pe">#</th>
                         <th scope="col" class="fw-medium">Company</th>
                         <th scope="col" class="fw-medium">Reseller</th>
@@ -24,9 +29,30 @@
                                 : asset('assets/images/user15.jpg');
                         @endphp
                         <tr>
+                            @can('resellers.markets.update')
+                                <td class="pe-0">
+                                    @if ($reseller->company)
+                                        <input type="checkbox" class="form-check-input reseller-bulk-checkbox"
+                                            value="{{ $reseller->company->id }}">
+                                    @endif
+                                </td>
+                            @endcan
                             <td class="text-body pe-0 rtl-pe">#{{ $reseller->id }}</td>
                             <td class="text-body">
-                                {{ $reseller->company?->name ?? 'N/A' }}
+                                <div>{{ $reseller->company?->name ?? 'N/A' }}</div>
+                                @php
+                                    $marketCountryCodes = $reseller->company?->allowedMarkets
+                                        ?->pluck('country.iso_code')
+                                        ->filter()
+                                        ->map(fn ($code) => strtoupper((string) $code))
+                                        ->unique()
+                                        ->values();
+                                @endphp
+                                @if ($marketCountryCodes && $marketCountryCodes->isNotEmpty())
+                                    <small class="text-muted text-uppercase">{{ $marketCountryCodes->implode(' • ') }}</small>
+                                @else
+                                    <small class="text-muted">Market unavailable</small>
+                                @endif
                             </td>
                             <td>
                                 <div class="d-flex align-items-center">
@@ -66,9 +92,12 @@
                             </td>
                             <td>
                                 <div class="d-flex justify-content-end" style="gap: 12px;">
-                                    <a href="{{ route('resellers.show', $reseller->uuid) }}"
-                                        class="bg-transparent p-0 border-0" data-bs-toggle="tooltip"
-                                        data-bs-placement="top" data-bs-title="View"
+                                    <a href="{{ route('resellers.show', ['user' => $reseller->uuid]) }}"
+                                        class="bg-transparent p-0 border-0 d-inline-flex align-items-center"
+                                        data-bs-toggle="tooltip"
+                                        data-bs-placement="top"
+                                        data-bs-title="View profile"
+                                        aria-label="View reseller profile"
                                         style="cursor: pointer; text-decoration: none;">
                                         <i class="material-symbols-outlined fs-16 fw-normal"
                                             style="color: #EF4923;">visibility</i>
@@ -129,3 +158,27 @@
         No resellers found in this status.
     </div>
 @endif
+
+@can('resellers.markets.update')
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const master = document.getElementById('selectAllResellers-{{ $status }}');
+
+            if (!master) {
+                return;
+            }
+
+            master.addEventListener('change', function() {
+                const pane = master.closest('.tab-pane');
+
+                if (!pane) {
+                    return;
+                }
+
+                pane.querySelectorAll('.reseller-bulk-checkbox').forEach((checkbox) => {
+                    checkbox.checked = master.checked;
+                });
+            });
+        });
+    </script>
+@endcan

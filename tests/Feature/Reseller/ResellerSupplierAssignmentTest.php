@@ -10,16 +10,19 @@ use Feeder\Core\Enums\UserStatus;
 use Feeder\Core\Enums\UserType;
 use Feeder\Core\Models\Company;
 use Feeder\Core\Models\Portal;
+use Feeder\Core\Models\ResellerMarketAccess;
 use Feeder\Core\Models\ResellerSupplierAssignment;
 use Illuminate\Database\UniqueConstraintViolationException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Mockery;
+use Tests\Support\SetsUpMarketData;
 use Tests\TestCase;
 
 class ResellerSupplierAssignmentTest extends TestCase
 {
+    use SetsUpMarketData;
     /**
      * @var list<string>
      */
@@ -41,6 +44,8 @@ class ResellerSupplierAssignmentTest extends TestCase
         DB::purge('mysql');
         DB::reconnect('mysql');
         DB::beginTransaction();
+
+        $this->seedMarketLookups();
     }
 
     protected function tearDown(): void
@@ -392,6 +397,14 @@ class ResellerSupplierAssignmentTest extends TestCase
         ]);
 
         $company->forceFill(['owner_user_id' => $user->id])->save();
+
+        if ($portalCode === PortalCode::SUPPLIER) {
+            $this->configureSupplierCompany($company, 'lk');
+        }
+
+        if ($portalCode === PortalCode::RESELLER) {
+            $this->configureResellerCompany($company, ['lk']);
+        }
 
         return $user->fresh('company');
     }

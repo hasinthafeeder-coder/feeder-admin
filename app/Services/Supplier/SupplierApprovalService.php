@@ -3,19 +3,27 @@
 namespace App\Services\Supplier;
 
 use Feeder\Core\Enums\CompanyStatus;
+use Feeder\Core\Enums\PortalCode;
 use Feeder\Core\Enums\UserStatus;
 use Feeder\Core\Models\User;
+use Feeder\Core\Services\PortalOwnerRoleService;
 use Illuminate\Support\Facades\DB;
 
 class SupplierApprovalService
 {
+    public function __construct(
+        private readonly PortalOwnerRoleService $portalOwnerRoleService,
+    ) {}
+
     public function approve(User $user): bool
     {
-        return $this->updateStatus(
-            $user,
-            UserStatus::ACTIVE,
-            CompanyStatus::ACTIVE
-        );
+        return DB::transaction(function () use ($user): bool {
+            $this->portalOwnerRoleService->assignOwnerRole($user, PortalCode::SUPPLIER);
+
+            $this->applyStatus($user, UserStatus::ACTIVE, CompanyStatus::ACTIVE);
+
+            return true;
+        });
     }
 
     public function reject(User $user): bool
@@ -62,14 +70,19 @@ class SupplierApprovalService
 
     protected function updateStatus(User $user, UserStatus $userStatus, CompanyStatus $companyStatus): bool
     {
-        return DB::transaction(function () use ($user, $userStatus, $companyStatus) {
-            $user->update(['status' => $userStatus->value]);
-
-            if ($user->company) {
-                $user->company->update(['status' => $companyStatus->value]);
-            }
+        return DB::transaction(function () use ($user, $userStatus, $companyStatus): bool {
+            $this->applyStatus($user, $userStatus, $companyStatus);
 
             return true;
         });
+    }
+
+    protected function applyStatus(User $user, UserStatus $userStatus, CompanyStatus $companyStatus): void
+    {
+        $user->update(['status' => $userStatus->value]);
+
+        if ($user->company) {
+            $user->company->update(['status' => $companyStatus->value]);
+        }
     }
 }

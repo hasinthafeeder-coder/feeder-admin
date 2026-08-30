@@ -26,7 +26,15 @@
                         <tr>
                             <td class="text-body pe-0 rtl-pe">#{{ $supplier->id }}</td>
                             <td class="text-body">
-                                {{ $supplier->company?->name ?? 'N/A' }}
+                                <div>{{ $supplier->company?->name ?? 'N/A' }}</div>
+                                @php
+                                    $operationCountryCode = $supplier->company?->operationMarket?->country?->iso_code;
+                                @endphp
+                                @if ($operationCountryCode)
+                                    <small class="text-muted text-uppercase">{{ $operationCountryCode }}</small>
+                                @else
+                                    <small class="text-muted">Market unavailable</small>
+                                @endif
                             </td>
                             <td>
                                 <div class="d-flex align-items-center">

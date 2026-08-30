@@ -1,8 +1,13 @@
 ﻿@extends('layout_main.app')
 
 @php
+    use Feeder\Core\Support\CurrencyDisplay;
+
     $counts = $counts ?? ['all' => 0, 'active' => 0, 'draft' => 0, 'inactive' => 0];
-    $products = $products ?? collect();
+    $products = $products ?? null;
+    $markets = $markets ?? collect();
+    $suppliers = $suppliers ?? collect();
+    $filters = $filters ?? ['search' => '', 'market_id' => '', 'supplier_id' => '', 'status' => ''];
 @endphp
 
 @section('content')
@@ -33,27 +38,68 @@
         @endif
 
         <div class="card bg-white rounded-10 border border-white mb-4">
+            <div class="p-20 border-bottom">
+                <form method="GET" action="{{ route('products.index') }}" class="row g-3 align-items-end">
+                    <div class="col-12 col-md-6 col-lg-3">
+                        <label for="productSearch" class="label fs-14 mb-2">Search</label>
+                        <input type="text" class="form-control" id="productSearch" name="search"
+                            value="{{ $filters['search'] }}" placeholder="Name, slug, supplier...">
+                    </div>
+                    <div class="col-6 col-md-3 col-lg-2">
+                        <label for="productMarket" class="label fs-14 mb-2">Market</label>
+                        <select class="form-select form-control" id="productMarket" name="market_id">
+                            <option value="">All Markets</option>
+                            @foreach ($markets as $market)
+                                <option value="{{ $market->id }}"
+                                    @selected((string) $filters['market_id'] === (string) $market->id)>
+                                    {{ $market->country?->name ?? $market->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-6 col-md-3 col-lg-2">
+                        <label for="productSupplier" class="label fs-14 mb-2">Supplier</label>
+                        <select class="form-select form-control" id="productSupplier" name="supplier_id">
+                            <option value="">All Suppliers</option>
+                            @foreach ($suppliers as $supplier)
+                                <option value="{{ $supplier->id }}"
+                                    @selected((string) $filters['supplier_id'] === (string) $supplier->id)>
+                                    {{ $supplier->company?->name ?? 'Supplier #'.$supplier->id }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-6 col-md-3 col-lg-2">
+                        <label for="productStatus" class="label fs-14 mb-2">Status</label>
+                        <select class="form-select form-control" id="productStatus" name="status">
+                            <option value="">All Statuses</option>
+                            <option value="DRAFT" @selected($filters['status'] === 'DRAFT')>Draft</option>
+                            <option value="ACTIVE" @selected($filters['status'] === 'ACTIVE')>Active</option>
+                            <option value="INACTIVE" @selected($filters['status'] === 'INACTIVE')>Inactive</option>
+                        </select>
+                    </div>
+                    <div class="col-12 col-md-6 col-lg-3 d-flex flex-wrap gap-2">
+                        <button type="submit" class="btn btn-primary text-white">Apply</button>
+                        <a href="{{ route('products.index') }}" class="btn btn-light border">Reset</a>
+                    </div>
+                </form>
+            </div>
+
             <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 p-20">
-                <div class="d-flex flex-wrap gap-2 gap-xxl-5 align-items-center">
-                    <form class="table-src-form position-relative m-0">
-                        <input type="text" class="form-control w-340" placeholder="Search here...">
-                        <div
-                            class="src-btn position-absolute top-50 start-0 translate-middle-y bg-transparent p-0 border-0">
-                            <span class="material-symbols-outlined">search</span>
-                        </div>
-                    </form>
-                    <ul class="p-0 mb-0 list-unstyled d-flex align-items-center flex-wrap" style="gap: 20px;">
-                        <li class="fs-16">
-                            All Products <span class="text-primary">({{ number_format($counts['all']) }})</span>
-                        </li>
-                        <li class="fs-16">
-                            Published Products <span class="text-primary">({{ number_format($counts['active']) }})</span>
-                        </li>
-                        <li class="fs-16">
-                            Drafts Products <span class="text-primary">({{ number_format($counts['draft']) }})</span>
-                        </li>
-                    </ul>
-                </div>
+                <ul class="p-0 mb-0 list-unstyled d-flex align-items-center flex-wrap" style="gap: 20px;">
+                    <li class="fs-16">
+                        All Products <span class="text-primary">({{ number_format($counts['all']) }})</span>
+                    </li>
+                    <li class="fs-16">
+                        Published Products <span class="text-primary">({{ number_format($counts['active']) }})</span>
+                    </li>
+                    <li class="fs-16">
+                        Drafts Products <span class="text-primary">({{ number_format($counts['draft']) }})</span>
+                    </li>
+                    <li class="fs-16">
+                        Inactive Products <span class="text-primary">({{ number_format($counts['inactive']) }})</span>
+                    </li>
+                </ul>
             </div>
 
             <div class="default-table-area mx-minus-1 table-product-list">
@@ -69,6 +115,7 @@
                                 <th scope="col" class="fw-medium ps-0">Product ID</th>
                                 <th scope="col" class="fw-medium">Product</th>
                                 <th scope="col" class="fw-medium">Supplier</th>
+                                <th scope="col" class="fw-medium">Market</th>
                                 <th scope="col" class="fw-medium">Category</th>
                                 <th scope="col" class="fw-medium">Variants</th>
                                 <th scope="col" class="fw-medium">Created</th>
@@ -80,6 +127,7 @@
                                 @php
                                     $primaryImage = $product->images->firstWhere('is_primary', true) ?? $product->images->first();
                                     $imageUuid = $primaryImage?->file_uuid;
+                                    $productCurrency = CurrencyDisplay::currencyFromMarket($product->market);
                                     $statusValue = $product->status instanceof \Feeder\Core\Enums\ProductStatus
                                         ? $product->status->value
                                         : (string) $product->status;
@@ -119,6 +167,17 @@
                                         </div>
                                     </td>
                                     <td class="text-body">{{ $product->supplierCompanyName() }}</td>
+                                    <td class="text-body">
+                                        @if ($product->market?->country?->iso_code && $productCurrency)
+                                            <div>{{ $product->market->country->name }}</div>
+                                            <span class="badge bg-light text-body border mt-1">
+                                                {{ $product->market->country->iso_code }} &bull;
+                                                {{ CurrencyDisplay::inputLabel($productCurrency) }}
+                                            </span>
+                                        @else
+                                            <span class="text-warning">Market unavailable</span>
+                                        @endif
+                                    </td>
                                     <td class="text-body">{{ $product->category?->name ?? '—' }}</td>
                                     <td class="text-body">{{ $product->variants->count() }}</td>
                                     <td class="text-body">{{ optional($product->created_at)->format('M d, Y') ?? '—' }}</td>
@@ -155,35 +214,64 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="8" class="text-center text-muted py-5">No products found.</td>
+                                    <td colspan="9" class="text-center text-muted py-5">No products found.</td>
                                 </tr>
                             @endforelse
                         </tbody>
                     </table>
                 </div>
 
-                <div
-                    class="d-flex justify-content-center justify-content-sm-between align-items-center text-center flex-wrap gap-2 showing-wrap pt-15 p-20">
-                    <span class="fs-15">Showing {{ $products->count() }} of {{ $counts['all'] }} entries</span>
+                @if ($products && $products->total() > 0)
+                    <div
+                        class="d-flex justify-content-center justify-content-sm-between align-items-center text-center flex-wrap gap-2 showing-wrap pt-15 p-20">
+                        <span class="fs-15">
+                            Showing {{ $products->firstItem() }} to {{ $products->lastItem() }}
+                            of {{ $products->total() }} entries
+                        </span>
 
-                    <nav class="custom-pagination" aria-label="Page navigation example">
-                        <ul class="pagination mb-0 justify-content-center">
-                            <li class="page-item">
-                                <button class="page-link icon" aria-label="Previous" disabled>
-                                    <i class="material-symbols-outlined">west</i>
-                                </button>
-                            </li>
-                            <li class="page-item">
-                                <button class="page-link active">1</button>
-                            </li>
-                            <li class="page-item">
-                                <button class="page-link icon" aria-label="Next" disabled>
-                                    <i class="material-symbols-outlined">east</i>
-                                </button>
-                            </li>
-                        </ul>
-                    </nav>
-                </div>
+                        <nav class="custom-pagination" aria-label="Product list pagination">
+                            <ul class="pagination mb-0 justify-content-center">
+                                @if ($products->onFirstPage())
+                                    <li class="page-item disabled">
+                                        <span class="page-link icon">
+                                            <i class="material-symbols-outlined">west</i>
+                                        </span>
+                                    </li>
+                                @else
+                                    <li class="page-item">
+                                        <a class="page-link icon" href="{{ $products->previousPageUrl() }}" aria-label="Previous">
+                                            <i class="material-symbols-outlined">west</i>
+                                        </a>
+                                    </li>
+                                @endif
+
+                                @foreach ($products->getUrlRange(1, $products->lastPage()) as $page => $url)
+                                    <li class="page-item {{ $page == $products->currentPage() ? 'active' : '' }}">
+                                        @if ($page == $products->currentPage())
+                                            <span class="page-link">{{ $page }}</span>
+                                        @else
+                                            <a class="page-link" href="{{ $url }}">{{ $page }}</a>
+                                        @endif
+                                    </li>
+                                @endforeach
+
+                                @if ($products->hasMorePages())
+                                    <li class="page-item">
+                                        <a class="page-link icon" href="{{ $products->nextPageUrl() }}" aria-label="Next">
+                                            <i class="material-symbols-outlined">east</i>
+                                        </a>
+                                    </li>
+                                @else
+                                    <li class="page-item disabled">
+                                        <span class="page-link icon">
+                                            <i class="material-symbols-outlined">east</i>
+                                        </span>
+                                    </li>
+                                @endif
+                            </ul>
+                        </nav>
+                    </div>
+                @endif
             </div>
         </div>
     </div>

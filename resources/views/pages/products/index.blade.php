@@ -1,6 +1,8 @@
 ﻿@extends('layout_main.app')
 
 @php
+    use Feeder\Core\Support\CurrencyDisplay;
+
     $product = $product ?? null;
     $productStatus = old(
         'status',
@@ -67,6 +69,9 @@
         'INACTIVE' => 'bg-danger-subtle text-danger border border-danger border-opacity-10',
         default => 'bg-primary-subtle text-primary border border-primary border-opacity-10',
     };
+
+    $formCurrency = $productMarketContext['currency'] ?? null;
+    $formCurrencyIso = CurrencyDisplay::inputLabel($formCurrency);
 @endphp
 
 @section('content')
@@ -93,6 +98,27 @@
                         <li>{{ $error }}</li>
                     @endforeach
                 </ul>
+            </div>
+        @endif
+
+        @if (isset($productMarketContext))
+            <div class="alert alert-light border rounded-10 mb-4">
+                <div class="fw-medium mb-1">Product Market</div>
+                @if ($productMarketContext['is_complete'])
+                    <div class="fs-16">{{ $productMarketContext['country_name'] }}</div>
+                    <div class="mt-2 fs-14">
+                        Currency: {{ CurrencyDisplay::formatCurrencyDescriptor($productMarketContext['currency']) }}
+                    </div>
+                    @if ($productMarketContext['is_complete'])
+                        <div class="mt-2 fs-14">
+                            Market default for new variants:
+                            {{ CurrencyDisplay::formatAmount($productMarketContext['currency'], $defaultCompanyCommission) }}
+                        </div>
+                    @endif
+                @else
+                    <div class="fs-16 text-warning">Market information unavailable</div>
+                    <p class="mb-0 text-muted fs-14">This product does not have a complete market assignment.</p>
+                @endif
             </div>
         @endif
 
@@ -157,29 +183,10 @@
                             </div>
 
                             <div class="col-12">
-                                <div class="form-group mb-0">
-                                    <label class="label fs-16 mb-2">Description</label>
-                                    <ul class="nav nav-tabs nav-tabs-separator" id="descriptionTabs" role="tablist">
-                                        <li class="nav-item"><button class="nav-link active" id="lang-en-tab"
-                                                data-bs-toggle="tab" data-bs-target="#lang-en"
-                                                type="button">English</button></li>
-                                        <li class="nav-item"><button class="nav-link" id="lang-si-tab" data-bs-toggle="tab"
-                                                data-bs-target="#lang-si" type="button">Sinhala</button></li>
-                                        <li class="nav-item"><button class="nav-link" id="lang-ta-tab" data-bs-toggle="tab"
-                                                data-bs-target="#lang-ta" type="button">Tamil</button></li>
-                                    </ul>
-                                    <div class="tab-content border border-top-0 rounded-bottom-10 p-3 pt-0 bg-white">
-                                        <div class="tab-pane fade show active" id="lang-en">
-                                            <textarea class="form-control" rows="7" name="descriptions[en]" placeholder="English description">{{ old('descriptions.en', $product?->descriptions->firstWhere('language_code', 'en')?->description ?? '') }}</textarea>
-                                        </div>
-                                        <div class="tab-pane fade" id="lang-si">
-                                            <textarea class="form-control" rows="7" name="descriptions[si]" placeholder="Sinhala description">{{ old('descriptions.si', $product?->descriptions->firstWhere('language_code', 'si')?->description ?? '') }}</textarea>
-                                        </div>
-                                        <div class="tab-pane fade" id="lang-ta">
-                                            <textarea class="form-control" rows="7" name="descriptions[ta]" placeholder="Tamil description">{{ old('descriptions.ta', $product?->descriptions->firstWhere('language_code', 'ta')?->description ?? '') }}</textarea>
-                                        </div>
-                                    </div>
-                                </div>
+                                @include('pages.products.partials.description-fields', [
+                                    'productLanguages' => $productLanguages ?? [],
+                                    'product' => $product,
+                                ])
                             </div>
 
                             <div class="col-lg-6">
@@ -466,6 +473,8 @@
             const variantList = document.getElementById('variantList');
             const addVariantBtn = document.getElementById('addVariantBtn');
             const existingVariants = @json($product?->variants ?? []);
+            const currencyIsoCode = @json($formCurrencyIso);
+            const defaultCompanyCommission = @json($defaultCompanyCommission);
 
             const existingImagePreviews = @json($existingImagePreviews);
             const maxProductImages = 4;
@@ -693,7 +702,7 @@
                 const variantSuggested = isPriceLocked()
                     ? (variantSelling || variant?.suggested_price || '')
                     : (variant?.suggested_price ?? '');
-                const variantCommission = variant?.company_commission ?? 150;
+                const variantCommission = variant?.company_commission ?? defaultCompanyCommission;
                 row.innerHTML = `
                     <div class="variant-header d-flex justify-content-between align-items-center">
                         <div><h5 class="mb-0">Variant ${variantCount}</h5></div>
@@ -715,14 +724,14 @@
                             <div class="col-lg-6">
                                 <label class="label fs-14 mb-2">Cost</label>
                                 <div class="input-group">
-                                    <span class="input-group-text">LKR</span>
+                                    <span class="input-group-text">${currencyIsoCode}</span>
                                     <input type="number" min="0" step="0.01" class="form-control" name="variants[${variantIndex}][cost]" value="${variantCost}" placeholder="0.00" required>
                                 </div>
                             </div>
                             <div class="col-lg-6">
                                 <label class="label fs-14 mb-2">Selling Price</label>
                                 <div class="input-group">
-                                    <span class="input-group-text">LKR</span>
+                                    <span class="input-group-text">${currencyIsoCode}</span>
                                     <input type="number" min="0" step="0.01" class="form-control variant-selling-price" name="variants[${variantIndex}][selling_price]" value="${variantSelling}" placeholder="0.00" required>
                                 </div>
                             </div>
@@ -733,15 +742,15 @@
                             <div class="col-lg-6">
                                 <label class="label fs-14 mb-2">Suggested Price</label>
                                 <div class="input-group">
-                                    <span class="input-group-text">LKR</span>
+                                    <span class="input-group-text">${currencyIsoCode}</span>
                                     <input type="number" min="0" step="0.01" class="form-control variant-suggested-price" name="variants[${variantIndex}][suggested_price]" value="${variantSuggested}" placeholder="0.00">
                                 </div>
                             </div>
                             <div class="col-lg-6">
                                 <label class="label fs-14 mb-2">Company Commission</label>
                                 <div class="input-group">
-                                    <span class="input-group-text">LKR</span>
-                                    <input type="number" min="0" step="0.01" class="form-control" name="variants[${variantIndex}][company_commission]" value="${variantCommission}" placeholder="150.00" required>
+                                    <span class="input-group-text">${currencyIsoCode}</span>
+                                    <input type="number" min="0" step="0.01" class="form-control" name="variants[${variantIndex}][company_commission]" value="${variantCommission}" placeholder="${defaultCompanyCommission}" required>
                                 </div>
                             </div>
                         </div>

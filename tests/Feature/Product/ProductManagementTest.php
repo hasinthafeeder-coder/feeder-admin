@@ -19,10 +19,12 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Mockery;
+use Tests\Support\SetsUpMarketData;
 use Tests\TestCase;
 
 class ProductManagementTest extends TestCase
 {
+    use SetsUpMarketData;
     /**
      * @var list<string>
      */
@@ -44,6 +46,8 @@ class ProductManagementTest extends TestCase
         DB::purge('mysql');
         DB::reconnect('mysql');
         DB::beginTransaction();
+
+        $this->seedMarketLookups();
     }
 
     protected function tearDown(): void
@@ -347,6 +351,7 @@ class ProductManagementTest extends TestCase
         ]);
 
         $company->forceFill(['owner_user_id' => $user->id])->save();
+        $this->configureSupplierCompany($company, 'lk');
 
         return $user;
     }
@@ -369,6 +374,7 @@ class ProductManagementTest extends TestCase
             'uuid' => (string) Str::uuid(),
             'supplier_id' => $supplier->id,
             'category_id' => $categoryId,
+            'market_id' => $this->marketByCode('lk')->id,
             'name' => $productName,
             'slug' => Str::slug($productName).'-'.Str::lower(Str::random(6)),
             'status' => $status,
@@ -403,7 +409,7 @@ class ProductManagementTest extends TestCase
         ]);
 
         return [
-            'product' => $product->fresh(['category', 'variants', 'descriptions', 'supplier.company', 'images.file']),
+            'product' => $product->fresh(['category', 'variants', 'descriptions', 'supplier.company', 'market.country', 'market.currency', 'images.file']),
             'supplier' => $supplier,
         ];
     }

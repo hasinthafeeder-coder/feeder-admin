@@ -33,7 +33,7 @@ class ResellerService
         return User::query()
             ->with([
                 'profile',
-                'company',
+                'company.allowedMarkets.country',
             ])
             ->where('user_type', UserType::OWNER->value)
             ->whereHas('company.portal', function ($query) {
@@ -70,6 +70,9 @@ class ResellerService
             'profile',
             'company.address',
             'company.bankAccounts',
+            'company.homeCountry',
+            'company.allowedMarkets',
+            'company.operationMarket.country',
             'referralCode',
             'referralCode.activatedByUser.profile',
             'referralCode.lastChangedByUser.profile',

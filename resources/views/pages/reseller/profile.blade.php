@@ -17,7 +17,7 @@
         @endphp
 
         <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-4 mt-1">
-            <h3 class="mb-0">User Profile</h3>
+            <h3 class="mb-0">Reseller Profile</h3>
             <a href="{{ route('resellers.index') }}" class="btn btn-outline-secondary">Back to List</a>
         </div>
 
@@ -133,68 +133,81 @@
                 </div>
 
                 @php
-                    $serviceChargeService = app(\Feeder\Core\Services\ResellerServiceChargeService::class);
-
-                    $defaultServiceCharge = $serviceChargeService->getDefaultCharge();
-                    $resellerServiceOverride = $serviceChargeService->getResellerOverride($reseller);
-                    $effectiveServiceCharge = $serviceChargeService->getEffectiveCharge($reseller);
-
-                    $usesSystemDefault = $resellerServiceOverride === null;
+                    $selectedHomeCountryUuid = $reseller->company?->homeCountry?->uuid;
+                    $selectedMarketUuids = $reseller->company?->allowedMarkets?->pluck('uuid')->all() ?? [];
                 @endphp
 
                 <div class="card bg-white border border-white rounded-10 p-20 mb-4">
                     <div class="d-flex justify-content-between align-items-center mb-20">
-                        <h3 class="mb-0">Service Charge</h3>
-
-                        @can('resellers.financial.update')
-                            <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal"
-                                data-bs-target="#updateServiceChargeModal">
-                                Edit
-                            </button>
-                        @endcan
+                        <h3 class="mb-0">Market & Country</h3>
                     </div>
 
-                    <ul class="p-0 mb-0 list-unstyled last-child-none">
+                    @can('resellers.markets.update')
+                        @if ($reseller->status === UserStatus::ACTIVE && $reseller->company)
+                            <form action="{{ route('resellers.markets.update', $reseller) }}" method="POST">
+                                @csrf
+                                @method('PUT')
+                                <div class="mb-3">
+                                    <label class="form-label text-muted small">Home Country</label>
+                                    <select name="home_country_id" class="form-select" required>
+                                        <option value="" disabled {{ $selectedHomeCountryUuid ? '' : 'selected' }}>Select
+                                            home country</option>
+                                        @foreach ($activeCountries as $country)
+                                            <option value="{{ $country->uuid }}"
+                                                {{ $selectedHomeCountryUuid === $country->uuid ? 'selected' : '' }}>
+                                                {{ $country->name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
 
-                        <li class="mb-10 fs-16 d-flex justify-content-between gap-2">
-                            <span>System default</span>
-                            <span class="text-secondary text-end">
-                                LKR {{ number_format((float) $defaultServiceCharge, 2) }}
-                            </span>
-                        </li>
+                                <div class="mb-3">
+                                    <label class="form-label text-muted small">Allowed Selling Markets</label>
+                                    <div class="d-flex flex-column gap-2">
+                                        @foreach ($activeMarkets as $market)
+                                            <label class="d-flex align-items-center gap-2 mb-0">
+                                                <input type="checkbox" name="allowed_market_ids[]" value="{{ $market->uuid }}"
+                                                    {{ in_array($market->uuid, $selectedMarketUuids, true) ? 'checked' : '' }}>
+                                                <span>{{ $market->name }}</span>
+                                            </label>
+                                        @endforeach
+                                    </div>
+                                </div>
 
-                        <li class="mb-10 fs-16 d-flex justify-content-between gap-2">
-                            <span>This reseller</span>
-                            <span class="text-secondary text-end">
-                                LKR {{ number_format((float) $effectiveServiceCharge, 2) }}
-                            </span>
-                        </li>
-
-                        <li class="mb-10 fs-16 d-flex justify-content-between gap-2">
-                            <span>Pricing mode</span>
-                            <span class="text-end">
-                                @if ($usesSystemDefault)
-                                    <span class="text-success bg-success bg-opacity-10 px-2 py-1 rounded">
-                                        System Default
+                                <div class="d-flex justify-content-end">
+                                    <button type="submit" class="btn btn-primary text-white">Save Market Settings</button>
+                                </div>
+                            </form>
+                        @else
+                            <ul class="p-0 mb-0 list-unstyled last-child-none">
+                                <li class="mb-10 fs-16 d-flex justify-content-between gap-2">
+                                    <span>Home Country</span>
+                                    <span
+                                        class="text-secondary text-end">{{ $reseller->company?->homeCountry?->name ?? 'N/A' }}</span>
+                                </li>
+                                <li class="mb-0 fs-16 d-flex justify-content-between gap-2">
+                                    <span>Allowed Markets</span>
+                                    <span class="text-secondary text-end">
+                                        {{ $reseller->company?->allowedMarkets?->pluck('name')->join(', ') ?: 'N/A' }}
                                     </span>
-                                @else
-                                    <span class="text-primary bg-primary bg-opacity-10 px-2 py-1 rounded">
-                                        Custom Override
-                                    </span>
-                                @endif
-                            </span>
-                        </li>
-
-                        @if (!$usesSystemDefault)
+                                </li>
+                            </ul>
+                        @endif
+                    @else
+                        <ul class="p-0 mb-0 list-unstyled last-child-none">
+                            <li class="mb-10 fs-16 d-flex justify-content-between gap-2">
+                                <span>Home Country</span>
+                                <span
+                                    class="text-secondary text-end">{{ $reseller->company?->homeCountry?->name ?? 'N/A' }}</span>
+                            </li>
                             <li class="mb-0 fs-16 d-flex justify-content-between gap-2">
-                                <span>Custom charge</span>
+                                <span>Allowed Markets</span>
                                 <span class="text-secondary text-end">
-                                    LKR {{ number_format((float) $resellerServiceOverride, 2) }}
+                                    {{ $reseller->company?->allowedMarkets?->pluck('name')->join(', ') ?: 'N/A' }}
                                 </span>
                             </li>
-                        @endif
-
-                    </ul>
+                        </ul>
+                    @endcan
                 </div>
 
                 @php
@@ -556,8 +569,81 @@
                     </div>
                 </div>
 
+
+                @php
+                    use Feeder\Core\Support\CurrencyDisplay;
+                @endphp
+
+                <div class="card bg-white border border-white rounded-10 p-20 mb-4">
+                    <div class="d-flex justify-content-between align-items-center mb-20">
+                        <h3 class="mb-0">Reseller Service Charges</h3>
+                    </div>
+
+                    @if (($resellerServiceCharges ?? collect())->isEmpty())
+                        <p class="text-muted mb-0">No accessible markets are assigned to this reseller.</p>
+                    @else
+                        <div class="d-flex flex-column gap-3">
+                            @foreach ($resellerServiceCharges as $serviceChargeContext)
+                                @php
+                                    $market = $serviceChargeContext['market'];
+                                    $currencyIso = CurrencyDisplay::inputLabel($market->currency);
+                                @endphp
+                                <div class="border rounded-10 p-3">
+                                    <div class="fw-medium mb-2">
+                                        {{ $market->name }}
+                                        ({{ $currencyIso }})
+                                    </div>
+
+                                    <div class="fs-14 text-muted mb-2">
+                                        Market Default:
+                                        {{ CurrencyDisplay::formatAmount($market->currency, $serviceChargeContext['default_charge']) }}
+                                    </div>
+
+                                    <div class="fs-14 mb-3">
+                                        Current:
+                                        @if ($serviceChargeContext['uses_market_default'])
+                                            <span class="text-success">Using market default</span>
+                                        @else
+                                            <span class="text-primary">
+                                                Override:
+                                                {{ CurrencyDisplay::formatAmount($market->currency, $serviceChargeContext['override']) }}
+                                            </span>
+                                        @endif
+                                    </div>
+
+                                    @can('resellers.financial.update')
+                                        <form
+                                            action="{{ route('resellers.financial.service-charge.update', $reseller->uuid) }}"
+                                            method="POST" class="row g-2 align-items-end">
+                                            @csrf
+                                            <input type="hidden" name="market_id" value="{{ $market->uuid }}">
+                                            <div class="col-md-6">
+                                                <label class="form-label text-muted small mb-1">Override</label>
+                                                <div class="input-group">
+                                                    <span class="input-group-text">{{ $currencyIso }}</span>
+                                                    <input type="number" min="0" step="0.01" class="form-control"
+                                                        name="reseller_service_charge"
+                                                        value="{{ old('reseller_service_charge', $serviceChargeContext['override']) }}"
+                                                        placeholder="{{ $serviceChargeContext['default_charge'] }}">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 d-flex flex-wrap gap-2">
+                                                <button type="submit" class="btn btn-primary text-white btn-sm">Save</button>
+                                                <button type="submit" name="use_market_default" value="1"
+                                                    class="btn btn-outline-secondary btn-sm">
+                                                    Use Market Default
+                                                </button>
+                                            </div>
+                                        </form>
+                                    @endcan
+                                </div>
+                            @endforeach
+                        </div>
+                    @endif
+                </div>
+
                 <!-- Action Card for Active Users -->
-                @if ($reseller->status === 'ACTIVE')
+                @if ($reseller->status === UserStatus::ACTIVE)
                     <div class="card bg-white rounded-10 border border-white mb-4">
                         <div class="p-20">
                             <div class="row">
@@ -588,45 +674,6 @@
     </div>
 
     <!-- Modals -->
-    @can('resellers.financial.update')
-        <div class="modal fade" id="updateServiceChargeModal" tabindex="-1" aria-labelledby="updateServiceChargeModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="updateServiceChargeModalLabel">Update service charge</h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <form action="{{ route('resellers.financial.service-charge.update', $reseller->uuid) }}" method="POST">
-                        @csrf
-                        <div class="modal-body">
-                            <label for="reseller_service_charge" class="form-label text-muted small">New service
-                                charge</label>
-                            <div class="input-group mb-3">
-                                <span class="input-group-text">LKR</span>
-                                <input id="reseller_service_charge" name="reseller_service_charge" type="number"
-                                    min="0" step="0.01" class="form-control"
-                                    value="{{ old('reseller_service_charge', $resellerServiceOverride ?? $defaultServiceCharge) }}">
-                            </div>
-
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" name="use_system_default" value="1"
-                                    id="use_system_default_modal"
-                                    {{ old('use_system_default', $resellerServiceOverride === null ? '1' : null) ? 'checked' : '' }}>
-                                <label class="form-check-label" for="use_system_default_modal">Use System Default</label>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
-                            <button type="submit" class="btn btn-primary text-white">Save</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    @endcan
-
-    <!-- Approve Modal -->
     <div class="modal fade" id="approveModal" tabindex="-1" aria-labelledby="approveModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -636,15 +683,37 @@
                 </div>
                 <div class="modal-body">
                     <p>Are you sure you want to approve this seller?</p>
-                    <p class="text-muted">Once approved, they will have access to the platform.</p>
+                    <p class="text-muted mb-4">Assign the home country and allowed selling markets before approval.</p>
+
+                    <form id="approveResellerForm" action="{{ route('resellers.approve', $reseller->uuid) }}"
+                        method="POST">
+                        @csrf
+                        <div class="mb-3">
+                            <label class="form-label text-muted small">Home Country</label>
+                            <select name="home_country_id" class="form-select" required>
+                                <option value="" selected disabled>Select home country</option>
+                                @foreach ($activeCountries as $country)
+                                    <option value="{{ $country->uuid }}">{{ $country->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="mb-0">
+                            <label class="form-label text-muted small">Allowed Selling Markets</label>
+                            <div class="d-flex flex-column gap-2">
+                                @foreach ($activeMarkets as $market)
+                                    <label class="d-flex align-items-center gap-2 mb-0">
+                                        <input type="checkbox" name="allowed_market_ids[]" value="{{ $market->uuid }}">
+                                        <span>{{ $market->name }}</span>
+                                    </label>
+                                @endforeach
+                            </div>
+                        </div>
+                    </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <form action="{{ route('resellers.approve', $reseller->uuid) }}" method="POST"
-                        style="display: inline;">
-                        @csrf
-                        <button type="submit" class="btn btn-primary text-white">Approve</button>
-                    </form>
+                    <button type="submit" form="approveResellerForm" class="btn btn-primary text-white">Approve</button>
                 </div>
             </div>
         </div>

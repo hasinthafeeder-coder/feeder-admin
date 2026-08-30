@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Reseller;
 use App\Http\Controllers\Controller;
 use App\Services\Reseller\ResellerService;
 use Feeder\Core\Models\User;
+use Feeder\Core\Services\MarketService;
 use Feeder\Core\Services\Referral\ReferralService;
+use Feeder\Core\Services\ResellerServiceChargeService;
 use Feeder\Core\Services\ResellerSupplierAssignmentService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
@@ -16,6 +18,8 @@ class ResellerController extends Controller
         protected ResellerService $resellerService,
         protected ReferralService $referralService,
         protected ResellerSupplierAssignmentService $assignmentService,
+        protected MarketService $marketService,
+        protected ResellerServiceChargeService $serviceChargeService,
     ) {}
 
     public function index(): View
@@ -27,6 +31,8 @@ class ResellerController extends Controller
             'active' => $resellers['ACTIVE'],
             'rejected' => $resellers['REJECTED'],
             'suspended' => $resellers['SUSPENDED'],
+            'activeCountries' => $this->marketService->listActiveCountries(),
+            'activeMarkets' => $this->marketService->listActiveMarkets(),
         ]);
     }
 
@@ -38,6 +44,9 @@ class ResellerController extends Controller
             'reseller' => $reseller,
             'assignedSuppliers' => $this->assignmentService->listAssignedSuppliers($reseller),
             'assignableSuppliers' => $this->assignmentService->listAssignableSuppliers($reseller),
+            'activeCountries' => $this->marketService->listActiveCountries(),
+            'activeMarkets' => $this->marketService->listActiveMarkets(),
+            'resellerServiceCharges' => $this->serviceChargeService->buildResellerProfileContext($reseller),
         ]);
     }
 

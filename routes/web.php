@@ -5,8 +5,10 @@ use App\Http\Controllers\FileProxyController;
 use App\Http\Controllers\Product\ProductCategoryController;
 use App\Http\Controllers\Product\ProductController;
 use App\Http\Controllers\Reseller\ResellerApprovalController;
+use App\Http\Controllers\Reseller\ResellerBulkMarketController;
 use App\Http\Controllers\Reseller\ResellerController;
 use App\Http\Controllers\Reseller\ResellerFinancialController;
+use App\Http\Controllers\Reseller\ResellerMarketAccessController;
 use App\Http\Controllers\Reseller\ResellerSupplierAssignmentController;
 use App\Http\Controllers\Settings\FinancialSettingsController;
 use App\Http\Controllers\Supplier\SupplierApprovalController;
@@ -31,6 +33,14 @@ Route::middleware('auth')->group(function () {
             Route::get('/', [ResellerController::class, 'index'])
                 ->middleware('permission:resellers.view')
                 ->name('index');
+
+            Route::post('/bulk/markets/grant', [ResellerBulkMarketController::class, 'grant'])
+                ->middleware('permission:resellers.markets.update')
+                ->name('bulk.markets.grant');
+
+            Route::post('/bulk/markets/revoke', [ResellerBulkMarketController::class, 'revoke'])
+                ->middleware('permission:resellers.markets.update')
+                ->name('bulk.markets.revoke');
 
             Route::get('/{user}', [ResellerController::class, 'show'])
                 ->middleware('permission:resellers.view')
@@ -67,6 +77,10 @@ Route::middleware('auth')->group(function () {
             Route::post('/{user}/financial/service-charge', [ResellerFinancialController::class, 'updateServiceCharge'])
                 ->middleware('permission:resellers.financial.update')
                 ->name('financial.service-charge.update');
+
+            Route::put('/{user}/markets', [ResellerMarketAccessController::class, 'update'])
+                ->middleware('permission:resellers.markets.update')
+                ->name('markets.update');
 
             Route::delete('/{user}/financial/service-charge', [ResellerFinancialController::class, 'clearServiceCharge'])
                 ->middleware('permission:resellers.financial.update')

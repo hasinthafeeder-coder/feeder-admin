@@ -113,6 +113,9 @@
                         <li class="mb-10 fs-16 d-flex justify-content-between gap-2">BR: <span
                                 class="text-secondary text-end"><a
                                     href="#">{{ $supplier->company?->registration_number ?? 'N/A' }}</a></span></li>
+                        <li class="mb-10 fs-16 d-flex justify-content-between gap-2">Operation Country: <span
+                                class="text-secondary text-end">{{ $supplier->company?->operationMarket?->country?->name ?? 'N/A' }}</span>
+                        </li>
                     </ul>
                 </div>
 
