@@ -47,6 +47,9 @@
                                             {{ $supplier->profile?->first_name ?? '' }}
                                             {{ $supplier->profile?->last_name ?? '' }}
                                         </h4>
+                                        <small class="text-muted">
+                                            {{ ($supplier->company?->supplier_type ?? \Feeder\Core\Enums\SupplierType::STANDARD)->label() }}
+                                        </small>
                                     </div>
                                 </div>
                             </td>

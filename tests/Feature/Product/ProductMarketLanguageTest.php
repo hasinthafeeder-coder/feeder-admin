@@ -2,6 +2,9 @@
 
 namespace Tests\Feature\Product;
 
+use Feeder\Core\Models\Market;
+use Feeder\Core\Models\Product;
+use Feeder\Core\Models\ProductDescription;
 use Feeder\Core\Services\ProductMarketLanguageService;
 use Tests\Support\SetsUpMarketData;
 use Tests\Support\UsesMysqlTestDatabase;
@@ -76,5 +79,37 @@ class ProductMarketLanguageTest extends TestCase
         $codes = $service->languageCodesForMarket('th');
 
         $this->assertSame(['en'], $codes);
+    }
+
+    public function test_resolve_description_uses_first_available_market_language(): void
+    {
+        $service = app(ProductMarketLanguageService::class);
+        $market = Market::query()->where('code', 'lk')->firstOrFail();
+
+        $product = new Product(['market_id' => $market->id]);
+        $product->setRelation('market', $market);
+
+        $product->setRelation('descriptions', collect([
+            new ProductDescription(['language_code' => 'en', 'description' => '']),
+            new ProductDescription(['language_code' => 'si', 'description' => 'Sinhala text']),
+        ]));
+
+        $this->assertSame('Sinhala text', $service->resolveDescriptionForDisplay($product));
+    }
+
+    public function test_resolve_description_falls_back_to_english(): void
+    {
+        $service = app(ProductMarketLanguageService::class);
+        $market = Market::query()->where('code', 'lk')->firstOrFail();
+
+        $product = new Product(['market_id' => $market->id]);
+        $product->setRelation('market', $market);
+
+        $product->setRelation('descriptions', collect([
+            new ProductDescription(['language_code' => 'en', 'description' => 'English text']),
+            new ProductDescription(['language_code' => 'si', 'description' => 'Sinhala text']),
+        ]));
+
+        $this->assertSame('English text', $service->resolveDescriptionForDisplay($product));
     }
 }

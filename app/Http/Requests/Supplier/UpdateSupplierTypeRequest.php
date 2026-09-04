@@ -3,12 +3,10 @@
 namespace App\Http\Requests\Supplier;
 
 use Feeder\Core\Enums\SupplierType;
-use Feeder\Core\Enums\UserStatus;
-use Feeder\Core\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class ApproveSupplierRequest extends FormRequest
+class UpdateSupplierTypeRequest extends FormRequest
 {
     public function authorize(): bool
     {
@@ -17,19 +15,12 @@ class ApproveSupplierRequest extends FormRequest
 
     public function rules(): array
     {
-        /** @var User|null $user */
-        $user = $this->route('user');
-
-        if ($user && $user->status === UserStatus::PENDING) {
-            return [
-                'supplier_type' => [
-                    'required',
-                    Rule::enum(SupplierType::class),
-                ],
-            ];
-        }
-
-        return [];
+        return [
+            'supplier_type' => [
+                'required',
+                Rule::enum(SupplierType::class),
+            ],
+        ];
     }
 
     public function messages(): array

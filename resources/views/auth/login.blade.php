@@ -46,7 +46,7 @@
                         <div class="text-center mb-4">
                             <img src="{{ asset('assets/img/feeder.png') }}" alt="FEEDER" class="d-block mx-auto mb-3"
                                 style="max-width: 220px; width: 100%; height: auto;">
-                            <h3 class="fs-26 fw-medium" style="margin-bottom: 6px;">Sign In</h3>
+                            <h3 class="fs-26 fw-medium" style="margin-bottom: 6px;">Admin Portal</h3>
                         </div>
 
                         <form method="POST" action="{{ route('login.store') }}">

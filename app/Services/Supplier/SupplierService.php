@@ -3,10 +3,12 @@
 namespace App\Services\Supplier;
 
 use Feeder\Core\Enums\PortalCode;
+use Feeder\Core\Enums\SupplierType;
 use Feeder\Core\Enums\UserStatus;
 use Feeder\Core\Enums\UserType;
 use Feeder\Core\Models\User;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Validation\ValidationException;
 
 class SupplierService
 {
@@ -67,5 +69,18 @@ class SupplierService
     public function getProfile(User $user): User
     {
         return $user->load(['profile', 'company.address', 'company.bankAccounts', 'company.operationMarket.country']);
+    }
+
+    public function updateSupplierType(User $user, SupplierType $supplierType): void
+    {
+        $user->loadMissing('company.portal');
+
+        if (! $user->isSupplier() || ! $user->company) {
+            throw ValidationException::withMessages([
+                'supplier_type' => 'Supplier company could not be found.',
+            ]);
+        }
+
+        $user->company->update(['supplier_type' => $supplierType->value]);
     }
 }

@@ -8,6 +8,8 @@ use App\Http\Requests\Supplier\ApproveSupplierRequest;
 use App\Http\Requests\Supplier\RejectSupplierRequest;
 use App\Http\Requests\Supplier\SuspendSupplierRequest;
 use App\Services\Supplier\SupplierApprovalService;
+use Feeder\Core\Enums\SupplierType;
+use Feeder\Core\Enums\UserStatus;
 use Feeder\Core\Models\User;
 use Illuminate\Http\RedirectResponse;
 
@@ -17,7 +19,11 @@ class SupplierApprovalController extends Controller
 
     public function approve(ApproveSupplierRequest $request, User $user): RedirectResponse
     {
-        $this->approvalService->approve($user);
+        $supplierType = $user->status === UserStatus::PENDING
+            ? SupplierType::from($request->validated('supplier_type'))
+            : null;
+
+        $this->approvalService->approve($user, $supplierType);
 
         return redirect()->back()->with('success', 'Supplier approved successfully.');
     }

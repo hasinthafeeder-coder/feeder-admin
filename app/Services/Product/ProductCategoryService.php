@@ -2,7 +2,9 @@
 
 namespace App\Services\Product;
 
+use Feeder\Core\Models\Product;
 use Feeder\Core\Models\ProductCategory;
+use Feeder\Core\Support\ProductCategoryTree;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -19,26 +21,7 @@ class ProductCategoryService
 
     public function buildTree(?Collection $categories = null): Collection
     {
-        $records = $categories ?? $this->listForTree();
-
-        $records->each(function (ProductCategory $category) {
-            $category->setRelation('children', collect());
-        });
-
-        $byId = $records->keyBy('id');
-
-        foreach ($records as $category) {
-            if (empty($category->parent_id) || ! $byId->has($category->parent_id)) {
-                continue;
-            }
-
-            $parent = $byId->get($category->parent_id);
-            $children = $parent->getRelation('children') ?? collect();
-            $children->push($category);
-            $parent->setRelation('children', $children);
-        }
-
-        return $records->filter(fn (ProductCategory $category) => empty($category->parent_id));
+        return ProductCategoryTree::build($categories ?? $this->listForTree());
     }
 
     public function create(array $data): ProductCategory
@@ -93,6 +76,12 @@ class ProductCategoryService
             ]);
         }
 
+        if ($this->categoryHasProducts($category)) {
+            throw ValidationException::withMessages([
+                'category' => ['Cannot delete this category because it is assigned to one or more products. Reassign or remove those products first.'],
+            ]);
+        }
+
         return $category->delete();
     }
 
@@ -114,6 +103,14 @@ class ProductCategoryService
         ]);
 
         return $category->fresh();
+    }
+
+    protected function categoryHasProducts(ProductCategory $category): bool
+    {
+        return Product::query()
+            ->withTrashed()
+            ->where('category_id', $category->id)
+            ->exists();
     }
 
     protected function validateName(mixed $name): string

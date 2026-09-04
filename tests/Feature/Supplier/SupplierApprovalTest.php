@@ -5,6 +5,7 @@ namespace Tests\Feature\Supplier;
 use App\Services\Supplier\SupplierApprovalService;
 use Feeder\Core\Enums\CompanyStatus;
 use Feeder\Core\Enums\PortalCode;
+use Feeder\Core\Enums\SupplierType;
 use Feeder\Core\Enums\UserStatus;
 use Feeder\Core\Enums\UserType;
 use Feeder\Core\Models\Company;
@@ -49,6 +50,32 @@ class SupplierApprovalTest extends TestCase
         $this->assertSame($ownerRole->id, $supplier->role_id);
         $this->assertSame(UserStatus::ACTIVE, $supplier->status);
         $this->assertSame(CompanyStatus::ACTIVE, $company->status);
+    }
+
+    public function test_pending_supplier_approval_persists_selected_supplier_type(): void
+    {
+        $this->ensureOwnerRole(PortalCode::SUPPLIER);
+        $supplier = $this->makePendingSupplier();
+
+        app(SupplierApprovalService::class)->approve($supplier, SupplierType::PRO);
+
+        $company = $supplier->company->fresh();
+
+        $this->assertSame(SupplierType::PRO, $company->supplier_type);
+        $this->assertTrue($supplier->fresh()->is_pro);
+    }
+
+    public function test_pending_supplier_approval_defaults_to_standard_supplier_type(): void
+    {
+        $this->ensureOwnerRole(PortalCode::SUPPLIER);
+        $supplier = $this->makePendingSupplier();
+
+        app(SupplierApprovalService::class)->approve($supplier, SupplierType::STANDARD);
+
+        $company = $supplier->company->fresh();
+
+        $this->assertSame(SupplierType::STANDARD, $company->supplier_type);
+        $this->assertFalse($supplier->fresh()->is_pro);
     }
 
     public function test_supplier_approval_fails_safely_when_owner_role_cannot_be_resolved(): void

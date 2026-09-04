@@ -4,6 +4,7 @@ use App\Http\Controllers\Company\CompanyBankAccountController;
 use App\Http\Controllers\FileProxyController;
 use App\Http\Controllers\Product\ProductCategoryController;
 use App\Http\Controllers\Product\ProductController;
+use App\Http\Controllers\Stock\StockController;
 use App\Http\Controllers\Reseller\ResellerApprovalController;
 use App\Http\Controllers\Reseller\ResellerBulkMarketController;
 use App\Http\Controllers\Reseller\ResellerController;
@@ -13,6 +14,7 @@ use App\Http\Controllers\Reseller\ResellerSupplierAssignmentController;
 use App\Http\Controllers\Settings\FinancialSettingsController;
 use App\Http\Controllers\Supplier\SupplierApprovalController;
 use App\Http\Controllers\Supplier\SupplierController;
+use App\Http\Controllers\Supplier\SupplierTypeController;
 use App\Http\Controllers\Team\TeamTreeController;
 use Illuminate\Support\Facades\Route;
 
@@ -119,6 +121,10 @@ Route::middleware('auth')->group(function () {
             Route::get('/{user}', [SupplierController::class, 'show'])
                 ->middleware('permission:suppliers.view')
                 ->name('show');
+
+            Route::put('/{user}/supplier-type', [SupplierTypeController::class, 'update'])
+                ->middleware('permission:suppliers.approve')
+                ->name('supplier-type.update');
 
             Route::post('/{user}/approve', [SupplierApprovalController::class, 'approve'])
                 ->middleware('permission:suppliers.approve')
@@ -234,6 +240,14 @@ Route::middleware('auth')->group(function () {
             Route::post('/{product}/activate', [ProductController::class, 'activate'])
                 ->middleware('permission:products.update')
                 ->name('activate');
+        });
+
+    Route::prefix('stock')
+        ->name('stock.')
+        ->group(function () {
+            Route::get('/', [StockController::class, 'index'])
+                ->middleware('permission:stock.view')
+                ->name('index');
         });
 
     Route::get('/files/{uuid}/thumbnail/{size?}', [FileProxyController::class, 'thumbnail'])

@@ -117,6 +117,7 @@
                                 <th scope="col" class="fw-medium">Supplier</th>
                                 <th scope="col" class="fw-medium">Market</th>
                                 <th scope="col" class="fw-medium">Category</th>
+                                <th scope="col" class="fw-medium">Price</th>
                                 <th scope="col" class="fw-medium">Variants</th>
                                 <th scope="col" class="fw-medium">Created</th>
                                 <th scope="col" class="fw-medium">Action</th>
@@ -125,6 +126,7 @@
                         <tbody>
                             @forelse ($products as $product)
                                 @php
+                                    $primaryVariant = $product->variants->first();
                                     $primaryImage = $product->images->firstWhere('is_primary', true) ?? $product->images->first();
                                     $imageUuid = $primaryImage?->file_uuid;
                                     $productCurrency = CurrencyDisplay::currencyFromMarket($product->market);
@@ -179,6 +181,18 @@
                                         @endif
                                     </td>
                                     <td class="text-body">{{ $product->category?->name ?? '—' }}</td>
+                                    <td class="text-body">
+                                        {{ $primaryVariant
+                                            ? CurrencyDisplay::formatProductVariantListPrice(
+                                                $productCurrency,
+                                                (bool) $product->price_locked,
+                                                $primaryVariant->selling_price,
+                                                $primaryVariant->suggested_price,
+                                                $primaryVariant->suggested_price_min,
+                                                $primaryVariant->suggested_price_max,
+                                            )
+                                            : '—' }}
+                                    </td>
                                     <td class="text-body">{{ $product->variants->count() }}</td>
                                     <td class="text-body">{{ optional($product->created_at)->format('M d, Y') ?? '—' }}</td>
                                     <td>
@@ -214,64 +228,17 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="9" class="text-center text-muted py-5">No products found.</td>
+                                    <td colspan="10" class="text-center text-muted py-5">No products found.</td>
                                 </tr>
                             @endforelse
                         </tbody>
                     </table>
                 </div>
 
-                @if ($products && $products->total() > 0)
-                    <div
-                        class="d-flex justify-content-center justify-content-sm-between align-items-center text-center flex-wrap gap-2 showing-wrap pt-15 p-20">
-                        <span class="fs-15">
-                            Showing {{ $products->firstItem() }} to {{ $products->lastItem() }}
-                            of {{ $products->total() }} entries
-                        </span>
-
-                        <nav class="custom-pagination" aria-label="Product list pagination">
-                            <ul class="pagination mb-0 justify-content-center">
-                                @if ($products->onFirstPage())
-                                    <li class="page-item disabled">
-                                        <span class="page-link icon">
-                                            <i class="material-symbols-outlined">west</i>
-                                        </span>
-                                    </li>
-                                @else
-                                    <li class="page-item">
-                                        <a class="page-link icon" href="{{ $products->previousPageUrl() }}" aria-label="Previous">
-                                            <i class="material-symbols-outlined">west</i>
-                                        </a>
-                                    </li>
-                                @endif
-
-                                @foreach ($products->getUrlRange(1, $products->lastPage()) as $page => $url)
-                                    <li class="page-item {{ $page == $products->currentPage() ? 'active' : '' }}">
-                                        @if ($page == $products->currentPage())
-                                            <span class="page-link">{{ $page }}</span>
-                                        @else
-                                            <a class="page-link" href="{{ $url }}">{{ $page }}</a>
-                                        @endif
-                                    </li>
-                                @endforeach
-
-                                @if ($products->hasMorePages())
-                                    <li class="page-item">
-                                        <a class="page-link icon" href="{{ $products->nextPageUrl() }}" aria-label="Next">
-                                            <i class="material-symbols-outlined">east</i>
-                                        </a>
-                                    </li>
-                                @else
-                                    <li class="page-item disabled">
-                                        <span class="page-link icon">
-                                            <i class="material-symbols-outlined">east</i>
-                                        </span>
-                                    </li>
-                                @endif
-                            </ul>
-                        </nav>
-                    </div>
-                @endif
+                @include('partials.pagination', [
+                    'paginator' => $products,
+                    'ariaLabel' => 'Product list pagination',
+                ])
             </div>
         </div>
     </div>

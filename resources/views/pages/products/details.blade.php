@@ -6,7 +6,7 @@
     $product = $product ?? null;
     $images = $product?->images ?? collect();
     $variants = $product?->variants ?? collect();
-    $primaryVariant = $variants->first();
+    $priceLocked = (bool) ($product?->price_locked ?? false);
     $statusValue = $product?->status instanceof \Feeder\Core\Enums\ProductStatus
         ? $product->status->value
         : (string) ($product?->status ?? 'DRAFT');
@@ -146,27 +146,17 @@
 
                     <div class="d-flex flex-wrap gap-2 mb-4">
                         <span class="badge bg-light text-body border">Product ID: #{{ $product->id }}</span>
-                        <span class="badge bg-light text-body border">Supplier: {{ $product->supplierCompanyName() }}</span>
+                        <span class="badge bg-light text-body border">Category: {{ $product->category?->name ?? '—' }}</span>
                         @if ($productMarketCountry)
                             <span class="badge bg-light text-body border">Market: {{ $productMarketCountry }}</span>
                         @else
                             <span class="badge bg-warning-subtle text-warning border border-warning border-opacity-10">Market unavailable</span>
                         @endif
-                        <span class="badge bg-light text-body border">Category: {{ $product->category?->name ?? '—' }}</span>
                         @if ($product->system_visible)
                             <span class="badge bg-light text-body border">System Visible</span>
                         @endif
-                        @if ($product->web_visible)
-                            <span class="badge bg-light text-body border">Web Visible</span>
-                        @endif
-                        @if ($product->price_locked)
-                            <span class="badge bg-light text-body border">Price Locked</span>
-                        @endif
-                        @if ($primaryVariant?->barcode)
-                            <span class="badge bg-light text-body border">Barcode: {{ $primaryVariant->barcode }}</span>
-                        @endif
                         <span class="badge bg-light text-body border">Created: {{ optional($product->created_at)->format('M d, Y') }}</span>
-                        <span class="badge bg-light text-body border">Updated: {{ optional($product->updated_at)->format('M d, Y') }}</span>
+                        <span class="badge bg-light text-body border">Supplier: {{ $product->supplierCompanyName() }}</span>
                     </div>
 
                     <div class="mb-4">
@@ -175,39 +165,57 @@
                         </p>
                     </div>
 
+                    @if ($variants->isNotEmpty())
+                        <div class="d-flex flex-column gap-3 mb-4">
+                            @foreach ($variants as $variant)
+                                <div class="border rounded-10 p-3 bg-light-subtle">
+                                    <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+                                        <span class="fw-medium fs-16">{{ $variant->name }}</span>
+                                        @if ($variant->barcode)
+                                            <span class="badge bg-light text-body border">Barcode: {{ $variant->barcode }}</span>
+                                        @endif
+                                    </div>
+                                    <div class="row g-3">
+                                        <div class="col-md-3">
+                                            <div class="text-muted fs-13 mb-1">Cost</div>
+                                            <div class="fs-16 fw-medium">
+                                                {{ CurrencyDisplay::formatAmount($productCurrency, $variant->cost) }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="text-muted fs-13 mb-1">
+                                                {{ $priceLocked ? 'Selling Price' : 'Suggested Price Range' }}
+                                            </div>
+                                            <div class="fs-16 fw-medium">
+                                                {{ CurrencyDisplay::formatProductVariantListPrice(
+                                                    $productCurrency,
+                                                    $priceLocked,
+                                                    $variant->selling_price,
+                                                    $variant->suggested_price,
+                                                    $variant->suggested_price_min,
+                                                    $variant->suggested_price_max,
+                                                ) }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="text-muted fs-13 mb-1">Company Commission</div>
+                                            <div class="fs-16 fw-medium">
+                                                {{ CurrencyDisplay::formatAmount($productCurrency, $variant->company_commission) }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="text-muted fs-13 mb-1">Weight</div>
+                                            <div class="fs-16 fw-medium">
+                                                {{ $variant->weight !== null ? number_format((float) $variant->weight, 3) . ' kg' : '—' }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    @endif
+
                     <div class="row g-3 mb-4">
-                        <div class="col-md-6">
-                            <div class="border rounded-10 p-3 h-100 bg-light-subtle">
-                                <div class="text-muted fs-13 mb-1">Cost</div>
-                                <div class="fs-16 fw-medium">
-                                    {{ $primaryVariant ? CurrencyDisplay::formatAmount($productCurrency, $primaryVariant->cost) : '—' }}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="border rounded-10 p-3 h-100 bg-light-subtle">
-                                <div class="text-muted fs-13 mb-1">Selling Price</div>
-                                <div class="fs-16 fw-medium">
-                                    {{ $primaryVariant ? CurrencyDisplay::formatAmount($productCurrency, $primaryVariant->selling_price) : '—' }}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="border rounded-10 p-3 h-100 bg-light-subtle">
-                                <div class="text-muted fs-13 mb-1">Suggested Price</div>
-                                <div class="fs-16 fw-medium">
-                                    {{ $primaryVariant && $primaryVariant->suggested_price !== null ? CurrencyDisplay::formatAmount($productCurrency, $primaryVariant->suggested_price) : '—' }}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="border rounded-10 p-3 h-100 bg-light-subtle">
-                                <div class="text-muted fs-13 mb-1">Company Commission</div>
-                                <div class="fs-16 fw-medium">
-                                    {{ $primaryVariant ? CurrencyDisplay::formatAmount($productCurrency, $primaryVariant->company_commission) : '—' }}
-                                </div>
-                            </div>
-                        </div>
                         <div class="col-md-6">
                             <div class="border rounded-10 p-3 h-100 bg-light-subtle">
                                 <div class="text-muted fs-13 mb-1">Approximate Delivery Charge</div>
@@ -218,14 +226,6 @@
                             <div class="border rounded-10 p-3 h-100 bg-light-subtle">
                                 <div class="text-muted fs-13 mb-1">Items Sold</div>
                                 <div class="fs-16 fw-medium">—</div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="border rounded-10 p-3 h-100 bg-light-subtle">
-                                <div class="text-muted fs-13 mb-1">Weight</div>
-                                <div class="fs-16 fw-medium">
-                                    {{ $primaryVariant && $primaryVariant->weight !== null ? number_format((float) $primaryVariant->weight, 3) . ' kg' : '—' }}
-                                </div>
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -241,30 +241,6 @@
                             </div>
                         </div>
                     </div>
-
-                    @if ($variants->isNotEmpty())
-                        <div class="border rounded-10 p-3 bg-light-subtle mb-4">
-                            <div class="text-muted fs-13 mb-2">Variants</div>
-                            <div class="d-flex flex-column gap-2">
-                                @foreach ($variants as $variant)
-                                    <div class="border rounded-8 p-2 bg-white">
-                                        <div class="d-flex flex-wrap justify-content-between gap-2 mb-1">
-                                            <span class="fw-medium">{{ $variant->name }}</span>
-                                            @if ($variant->barcode)
-                                                <span class="text-body">{{ $variant->barcode }}</span>
-                                            @endif
-                                        </div>
-                                        <div class="text-body fs-13">
-                                            Cost {{ CurrencyDisplay::formatAmount($productCurrency, $variant->cost) }}
-                                            · Selling {{ CurrencyDisplay::formatAmount($productCurrency, $variant->selling_price) }}
-                                            · Suggested {{ $variant->suggested_price !== null ? CurrencyDisplay::formatAmount($productCurrency, $variant->suggested_price) : '—' }}
-                                            · Commission {{ CurrencyDisplay::formatAmount($productCurrency, $variant->company_commission) }}
-                                        </div>
-                                    </div>
-                                @endforeach
-                            </div>
-                        </div>
-                    @endif
 
                     <div class="border rounded-10 p-3 bg-light-subtle mb-4">
                         <div class="d-flex align-items-center justify-content-between gap-3 flex-wrap">

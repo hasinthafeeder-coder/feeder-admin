@@ -4,15 +4,19 @@ namespace Tests\Feature\ProductCategory;
 
 use App\Models\User;
 use App\Services\Product\ProductCategoryService;
+use Feeder\Core\Models\Product;
 use Feeder\Core\Models\ProductCategory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
+use Tests\Support\SetsUpMarketData;
 use Tests\TestCase;
 
 class ProductCategoryServiceTest extends TestCase
 {
     use RefreshDatabase;
+    use SetsUpMarketData;
 
     public function test_it_creates_a_root_category_with_audit_fields(): void
     {
@@ -87,6 +91,42 @@ class ProductCategoryServiceTest extends TestCase
         $this->expectException(ValidationException::class);
 
         app(ProductCategoryService::class)->delete($parent);
+    }
+
+    public function test_it_rejects_deleting_categories_assigned_to_products(): void
+    {
+        $this->seedMarketLookups();
+
+        $admin = $this->makeUser();
+        Auth::login($admin);
+
+        $category = ProductCategory::query()->create([
+            'id' => '55555555-5555-5555-5555-555555555555',
+            'name' => 'Assigned Category',
+            'slug' => 'assigned-category',
+            'sort_order' => 1,
+            'created_by' => $admin->id,
+            'updated_by' => $admin->id,
+        ]);
+
+        Product::query()->create([
+            'uuid' => (string) Str::uuid(),
+            'supplier_id' => $admin->id,
+            'category_id' => $category->id,
+            'market_id' => $this->marketByCode('lk')->id,
+            'name' => 'Sample Product',
+            'slug' => 'sample-product',
+            'status' => 'DRAFT',
+            'system_visible' => true,
+            'web_visible' => true,
+            'price_locked' => false,
+            'created_by' => $admin->id,
+            'updated_by' => $admin->id,
+        ]);
+
+        $this->expectException(ValidationException::class);
+
+        app(ProductCategoryService::class)->delete($category);
     }
 
     public function test_it_toggles_a_category_status(): void

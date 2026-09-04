@@ -2,6 +2,7 @@
 
 @section('content')
     @php
+        use Feeder\Core\Enums\SupplierType;
         use Feeder\Core\Enums\UserStatus;
     @endphp
 
@@ -118,6 +119,37 @@
                         </li>
                     </ul>
                 </div>
+
+                @php
+                    $currentSupplierType = $supplier->company?->supplier_type ?? SupplierType::STANDARD;
+                @endphp
+
+                @if ($supplier->status !== UserStatus::PENDING && $supplier->company)
+                    <div class="card bg-white border border-white rounded-10 p-20 mb-4">
+                        <h3 class="mb-20">Supplier Type</h3>
+
+                        @can('suppliers.approve')
+                            <form action="{{ route('suppliers.supplier-type.update', $supplier) }}" method="POST">
+                                @csrf
+                                @method('PUT')
+                                <div class="d-flex flex-column gap-2 mb-3">
+                                    @foreach (SupplierType::cases() as $supplierType)
+                                        <label class="d-flex align-items-center gap-2 mb-0">
+                                            <input type="radio" name="supplier_type" value="{{ $supplierType->value }}"
+                                                @checked(old('supplier_type', $currentSupplierType->value) === $supplierType->value)>
+                                            <span>{{ $supplierType->label() }}</span>
+                                        </label>
+                                    @endforeach
+                                </div>
+                                <div class="d-flex justify-content-end">
+                                    <button type="submit" class="btn btn-primary text-white">Save Supplier Type</button>
+                                </div>
+                            </form>
+                        @else
+                            <p class="mb-0 fs-16 text-secondary">{{ $currentSupplierType->label() }}</p>
+                        @endcan
+                    </div>
+                @endif
 
                 <div class="card bg-white border border-white rounded-10 p-20 mb-4">
                     <h3 class="">Introducer Information</h3>
@@ -523,15 +555,30 @@
                 </div>
                 <div class="modal-body">
                     <p>Are you sure you want to approve this supplier?</p>
-                    <p class="text-muted">Once approved, they will have access to the platform.</p>
+                    <p class="text-muted mb-4">Once approved, they will have access to the platform.</p>
+
+                    <form id="approveSupplierForm" action="{{ route('suppliers.approve', $supplier->uuid) }}"
+                        method="POST">
+                        @csrf
+                        @if ($supplier->status === UserStatus::PENDING)
+                            <div class="mb-0">
+                                <label class="form-label text-muted small">Supplier Type</label>
+                                <div class="d-flex flex-column gap-2">
+                                    @foreach (SupplierType::cases() as $supplierType)
+                                        <label class="d-flex align-items-center gap-2 mb-0">
+                                            <input type="radio" name="supplier_type" value="{{ $supplierType->value }}"
+                                                @checked(old('supplier_type', $supplier->company?->supplier_type?->value ?? SupplierType::STANDARD->value) === $supplierType->value)>
+                                            <span>{{ $supplierType->label() }}</span>
+                                        </label>
+                                    @endforeach
+                                </div>
+                            </div>
+                        @endif
+                    </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <form action="{{ route('suppliers.approve', $supplier->uuid) }}" method="POST"
-                        style="display: inline;">
-                        @csrf
-                        <button type="submit" class="btn btn-primary text-white">Approve</button>
-                    </form>
+                    <button type="submit" form="approveSupplierForm" class="btn btn-primary text-white">Approve</button>
                 </div>
             </div>
         </div>

@@ -4,6 +4,7 @@ namespace App\Services\Supplier;
 
 use Feeder\Core\Enums\CompanyStatus;
 use Feeder\Core\Enums\PortalCode;
+use Feeder\Core\Enums\SupplierType;
 use Feeder\Core\Enums\UserStatus;
 use Feeder\Core\Models\User;
 use Feeder\Core\Services\PortalOwnerRoleService;
@@ -15,12 +16,16 @@ class SupplierApprovalService
         private readonly PortalOwnerRoleService $portalOwnerRoleService,
     ) {}
 
-    public function approve(User $user): bool
+    public function approve(User $user, ?SupplierType $supplierType = null): bool
     {
-        return DB::transaction(function () use ($user): bool {
+        return DB::transaction(function () use ($user, $supplierType): bool {
             $this->portalOwnerRoleService->assignOwnerRole($user, PortalCode::SUPPLIER);
 
             $this->applyStatus($user, UserStatus::ACTIVE, CompanyStatus::ACTIVE);
+
+            if ($supplierType !== null && $user->company) {
+                $user->company->update(['supplier_type' => $supplierType->value]);
+            }
 
             return true;
         });
