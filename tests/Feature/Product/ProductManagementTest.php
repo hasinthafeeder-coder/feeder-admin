@@ -174,6 +174,54 @@ class ProductManagementTest extends TestCase
         $this->assertSame('Updated English description', $product->descriptionFor('en'));
     }
 
+    public function test_admin_update_without_reorder_level_does_not_reset_existing_value(): void
+    {
+        $this->allowPermissions(['products.view', 'products.update']);
+
+        $admin = $this->makeAdmin();
+        $category = $this->makeCategory();
+        $data = $this->makeSupplierProduct('Reorder Guard Co', 'Reorder Guard Product', $category->id, [
+            'status' => ProductStatus::ACTIVE,
+            'commission' => 150.00,
+        ]);
+
+        $product = $data['product'];
+        $variant = $product->variants->first();
+        $variant->forceFill(['reorder_level' => 15])->save();
+
+        $this->actingAs($admin)
+            ->put(route('products.update', $product), [
+                'name' => 'Reorder Guard Product Updated',
+                'category_id' => $category->id,
+                'save_action' => 'save',
+                'system_visible' => 1,
+                'web_visible' => 1,
+                'descriptions' => [
+                    'en' => 'Updated English description',
+                    'si' => 'Updated Sinhala description',
+                    'ta' => 'Updated Tamil description',
+                ],
+                'variants' => [
+                    [
+                        'id' => $variant->id,
+                        'name' => $variant->name,
+                        'barcode' => $variant->barcode,
+                        'cost' => $variant->cost,
+                        'selling_price' => $variant->selling_price,
+                        'weight' => $variant->weight,
+                        'suggested_price' => $variant->suggested_price,
+                        'company_commission' => '160.00',
+                    ],
+                ],
+            ])
+            ->assertRedirect(route('products.index'));
+
+        $variant->refresh();
+
+        $this->assertSame(15, (int) $variant->reorder_level);
+        $this->assertSame('160.00', (string) $variant->company_commission);
+    }
+
     public function test_admin_cannot_change_supplier_id_through_the_update_request(): void
     {
         $this->allowPermissions(['products.update']);

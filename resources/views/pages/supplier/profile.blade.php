@@ -22,6 +22,13 @@
             <a href="{{ route('suppliers.index') }}" class="btn btn-outline-secondary">Back to List</a>
         </div>
 
+        @if (session('success'))
+            <div class="alert alert-success">{{ session('success') }}</div>
+        @endif
+        @if (session('error'))
+            <div class="alert alert-danger">{{ session('error') }}</div>
+        @endif
+
         <div class="row">
             <div class="col-xxl-3 col-xxxl-3">
                 <div class="card bg-white border border-white rounded-10 p-20 mb-4">
@@ -362,6 +369,13 @@
                         </div>
                     </div>
                 </div>
+
+                @can('suppliers.courier_accounts.view')
+                    @include('pages.supplier.partials.courier-accounts', [
+                        'supplier' => $supplier,
+                        'courierAccounts' => $supplier->courier_accounts_presented ?? [],
+                    ])
+                @endcan
 
                 <div class="card bg-white rounded-10 border border-white mb-4">
                     <div class="ustify-content-between align-items-center flex-wrap gap-3 p-20">

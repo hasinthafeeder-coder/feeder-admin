@@ -7,11 +7,16 @@ use Feeder\Core\Enums\SupplierType;
 use Feeder\Core\Enums\UserStatus;
 use Feeder\Core\Enums\UserType;
 use Feeder\Core\Models\User;
+use Feeder\Core\Services\Courier\SupplierCourierAccountService;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Validation\ValidationException;
 
 class SupplierService
 {
+    public function __construct(
+        private readonly SupplierCourierAccountService $courierAccountService,
+    ) {
+    }
     public function getList(): array
     {
         $statuses = [
@@ -68,7 +73,21 @@ class SupplierService
 
     public function getProfile(User $user): User
     {
-        return $user->load(['profile', 'company.address', 'company.bankAccounts', 'company.operationMarket.country']);
+        $user = $user->load([
+            'profile',
+            'company.address',
+            'company.bankAccounts',
+            'company.operationMarket.country',
+        ]);
+
+        if (auth()->user()?->hasPermission('suppliers.courier_accounts.view')) {
+            $user->setAttribute(
+                'courier_accounts_presented',
+                $this->courierAccountService->listForSupplier($user)->all()
+            );
+        }
+
+        return $user;
     }
 
     public function updateSupplierType(User $user, SupplierType $supplierType): void

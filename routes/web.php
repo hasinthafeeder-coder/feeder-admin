@@ -14,6 +14,7 @@ use App\Http\Controllers\Reseller\ResellerSupplierAssignmentController;
 use App\Http\Controllers\Settings\FinancialSettingsController;
 use App\Http\Controllers\Supplier\SupplierApprovalController;
 use App\Http\Controllers\Supplier\SupplierController;
+use App\Http\Controllers\Supplier\SupplierCourierAccountController;
 use App\Http\Controllers\Supplier\SupplierTypeController;
 use App\Http\Controllers\Team\TeamTreeController;
 use Illuminate\Support\Facades\Route;
@@ -145,6 +146,46 @@ Route::middleware('auth')->group(function () {
             Route::post('/{user}/delete', [SupplierApprovalController::class, 'delete'])
                 ->middleware('permission:suppliers.reject')
                 ->name('delete');
+
+            Route::prefix('/{user}/courier-accounts')
+                ->name('courier-accounts.')
+                ->group(function () {
+                    Route::get('/create', [SupplierCourierAccountController::class, 'create'])
+                        ->middleware('permission:suppliers.courier_accounts.create')
+                        ->name('create');
+
+                    Route::post('/', [SupplierCourierAccountController::class, 'store'])
+                        ->middleware('permission:suppliers.courier_accounts.create')
+                        ->name('store');
+
+                    Route::get('/{courierAccount}/edit', [SupplierCourierAccountController::class, 'edit'])
+                        ->middleware('permission:suppliers.courier_accounts.update')
+                        ->name('edit');
+
+                    Route::put('/{courierAccount}', [SupplierCourierAccountController::class, 'update'])
+                        ->middleware('permission:suppliers.courier_accounts.update')
+                        ->name('update');
+
+                    Route::post('/{courierAccount}/activate', [SupplierCourierAccountController::class, 'activate'])
+                        ->middleware('permission:suppliers.courier_accounts.activate')
+                        ->name('activate');
+
+                    Route::post('/{courierAccount}/deactivate', [SupplierCourierAccountController::class, 'deactivate'])
+                        ->middleware('permission:suppliers.courier_accounts.activate')
+                        ->name('deactivate');
+
+                    Route::post('/{courierAccount}/set-default', [SupplierCourierAccountController::class, 'setDefault'])
+                        ->middleware('permission:suppliers.courier_accounts.update')
+                        ->name('set-default');
+
+                    Route::post('/{courierAccount}/clear-default', [SupplierCourierAccountController::class, 'clearDefault'])
+                        ->middleware('permission:suppliers.courier_accounts.update')
+                        ->name('clear-default');
+
+                    Route::post('/{courierAccount}/test', [SupplierCourierAccountController::class, 'test'])
+                        ->middleware('permission:suppliers.courier_accounts.test')
+                        ->name('test');
+                });
         });
 
     Route::prefix('companies')
