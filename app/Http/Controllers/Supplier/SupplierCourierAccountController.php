@@ -13,7 +13,9 @@ use Feeder\Core\Models\User;
 use Feeder\Core\Services\Courier\CourierConnectionService;
 use Feeder\Core\Services\Courier\CourierCredentialSchemaRegistry;
 use Feeder\Core\Services\Courier\Curfox\RoyalCourierAccountSetupService;
+use Feeder\Core\Services\Courier\Fardar\FardarCourierAccountSetupService;
 use Feeder\Core\Services\Courier\SupplierCourierAccountService;
+use Feeder\Core\Services\Courier\TransExpress\TransExpressCourierAccountSetupService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -25,6 +27,8 @@ class SupplierCourierAccountController extends Controller
         private readonly CourierConnectionService $connectionService,
         private readonly CourierCredentialSchemaRegistry $schemaRegistry,
         private readonly RoyalCourierAccountSetupService $royalSetupService,
+        private readonly TransExpressCourierAccountSetupService $transExpressSetupService,
+        private readonly FardarCourierAccountSetupService $fardarSetupService,
     ) {
     }
 
@@ -50,7 +54,9 @@ class SupplierCourierAccountController extends Controller
         $validated = $request->validated();
         $courier = Courier::query()->active()->where('uuid', $validated['courier_uuid'])->firstOrFail();
 
-        if (strtoupper((string) $courier->code) === 'ROYAL') {
+        $courierCode = strtoupper((string) $courier->code);
+
+        if ($courierCode === 'ROYAL') {
             $account = $this->royalSetupService->create(
                 $supplier,
                 [
@@ -67,6 +73,44 @@ class SupplierCourierAccountController extends Controller
             return redirect()
                 ->route('suppliers.show', $supplier)
                 ->with('success', 'ROYAL courier account tested and saved successfully.')
+                ->with('courier_account_uuid', $account->uuid);
+        }
+
+        if ($courierCode === 'TRANSEXPRESS') {
+            $account = $this->transExpressSetupService->create(
+                $supplier,
+                [
+                    'courier_uuid' => $validated['courier_uuid'],
+                    'account_label' => $validated['account_label'],
+                    'credentials' => $validated['credentials'] ?? [],
+                    'is_default' => (bool) ($validated['is_default'] ?? false),
+                    'is_active' => true,
+                ],
+                (int) $request->user()->id,
+            );
+
+            return redirect()
+                ->route('suppliers.show', $supplier)
+                ->with('success', 'TransExpress courier account tested and saved successfully.')
+                ->with('courier_account_uuid', $account->uuid);
+        }
+
+        if ($courierCode === 'FARDAR') {
+            $account = $this->fardarSetupService->create(
+                $supplier,
+                [
+                    'courier_uuid' => $validated['courier_uuid'],
+                    'account_label' => $validated['account_label'],
+                    'credentials' => $validated['credentials'] ?? [],
+                    'is_default' => (bool) ($validated['is_default'] ?? false),
+                    'is_active' => true,
+                ],
+                (int) $request->user()->id,
+            );
+
+            return redirect()
+                ->route('suppliers.show', $supplier)
+                ->with('success', 'Fardar Domestic courier account saved successfully. Credentials are verified on the first create-parcel request.')
                 ->with('courier_account_uuid', $account->uuid);
         }
 
@@ -114,7 +158,9 @@ class SupplierCourierAccountController extends Controller
         $account = $this->accountService->requireForSupplier($supplier, $courierAccount);
         $validated = $request->validated();
 
-        if (strtoupper((string) ($account->courier?->code ?? '')) === 'ROYAL') {
+        $accountCode = strtoupper((string) ($account->courier?->code ?? ''));
+
+        if ($accountCode === 'ROYAL') {
             $this->royalSetupService->update(
                 $account,
                 [
@@ -129,6 +175,38 @@ class SupplierCourierAccountController extends Controller
             return redirect()
                 ->route('suppliers.show', $supplier)
                 ->with('success', 'ROYAL courier account tested and saved successfully.');
+        }
+
+        if ($accountCode === 'TRANSEXPRESS') {
+            $this->transExpressSetupService->update(
+                $account,
+                [
+                    'account_label' => $validated['account_label'],
+                    'credentials' => $validated['credentials'] ?? [],
+                    'is_default' => (bool) ($validated['is_default'] ?? false),
+                ],
+                (int) $request->user()->id,
+            );
+
+            return redirect()
+                ->route('suppliers.show', $supplier)
+                ->with('success', 'TransExpress courier account tested and saved successfully.');
+        }
+
+        if ($accountCode === 'FARDAR') {
+            $this->fardarSetupService->update(
+                $account,
+                [
+                    'account_label' => $validated['account_label'],
+                    'credentials' => $validated['credentials'] ?? [],
+                    'is_default' => (bool) ($validated['is_default'] ?? false),
+                ],
+                (int) $request->user()->id,
+            );
+
+            return redirect()
+                ->route('suppliers.show', $supplier)
+                ->with('success', 'Fardar Domestic courier account saved successfully. Credentials are verified on the first create-parcel request.');
         }
 
         $this->accountService->update(

@@ -178,6 +178,26 @@
                 return uuids.indexOf(courierUuid) !== -1;
             }
 
+            function selectedCourierCode(courierUuid) {
+                if (isEdit) {
+                    return String(editCourierCode || '').toUpperCase();
+                }
+
+                if (!courierSelect) {
+                    return '';
+                }
+
+                const option = courierSelect.querySelector('option[value="' + courierUuid + '"]');
+
+                return String((option && option.dataset.code) || '').toUpperCase();
+            }
+
+            function requiresCredentialTest(courierUuid) {
+                const code = selectedCourierCode(courierUuid);
+
+                return code === 'ROYAL' || code === 'TRANSEXPRESS' || code === 'FARDAR';
+            }
+
             function resetSelect(select, placeholder) {
                 select.innerHTML = '';
                 const option = document.createElement('option');
@@ -219,6 +239,7 @@
 
             function toggleRoyalMeta(courierUuid) {
                 const show = isRoyalCourier(courierUuid);
+                const testAndSave = requiresCredentialTest(courierUuid);
                 royalMeta.classList.toggle('d-none', !show);
 
                 if (merchantInput) {
@@ -232,7 +253,7 @@
                 }
 
                 if (submitBtn) {
-                    submitBtn.textContent = show
+                    submitBtn.textContent = testAndSave
                         ? (isEdit ? 'Test & Save Changes' : 'Test & Save Account')
                         : (isEdit ? 'Save Changes' : 'Save Courier Account');
                 }

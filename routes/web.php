@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Company\CompanyBankAccountController;
 use App\Http\Controllers\FileProxyController;
+use App\Http\Controllers\Order\OrderPaymentReviewController;
 use App\Http\Controllers\Product\ProductCategoryController;
 use App\Http\Controllers\Product\ProductController;
 use App\Http\Controllers\Stock\StockController;
@@ -215,6 +216,26 @@ Route::middleware('auth')->group(function () {
                 ->name('bank-accounts.destroy');
         });
 
+    Route::prefix('orders/payment-reviews')
+        ->name('orders.payment-reviews.')
+        ->group(function () {
+            Route::get('/', [OrderPaymentReviewController::class, 'index'])
+                ->middleware('permission:orders.payment.review')
+                ->name('index');
+
+            Route::get('/{submission}', [OrderPaymentReviewController::class, 'show'])
+                ->middleware('permission:orders.payment.review')
+                ->name('show');
+
+            Route::post('/{submission}/approve', [OrderPaymentReviewController::class, 'approve'])
+                ->middleware('permission:orders.payment.approve')
+                ->name('approve');
+
+            Route::post('/{submission}/reject', [OrderPaymentReviewController::class, 'reject'])
+                ->middleware('permission:orders.payment.reject')
+                ->name('reject');
+        });
+
     Route::prefix('product-categories')
         ->name('product-categories.')
         ->group(function () {
@@ -301,6 +322,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/files/{uuid}/view', [FileProxyController::class, 'view'])
         ->where('uuid', '[A-Za-z0-9]+')
         ->name('files.view');
+
+    Route::get('/files/{uuid}/download', [FileProxyController::class, 'download'])
+        ->where('uuid', '[A-Za-z0-9]+')
+        ->name('files.download');
 
     Route::prefix('team-structure')
         ->middleware('permission:team.structure.view')

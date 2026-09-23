@@ -3,12 +3,23 @@
 namespace Tests\Feature;
 
 use App\Models\User;
+use Feeder\Core\Services\Order\OrderPaymentReviewService;
 use Illuminate\Http\Client\Request;
 use Illuminate\Support\Facades\Http;
+use Mockery;
 use Tests\TestCase;
 
 class FileProxyTest extends TestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->mock(OrderPaymentReviewService::class, function ($mock): void {
+            $mock->shouldReceive('authorizeFileAccessIfPaymentProof')->andReturnNull();
+        });
+    }
+
     public function test_thumbnail_route_proxies_remote_image_response(): void
     {
         Http::fake([
@@ -72,5 +83,42 @@ class FileProxyTest extends TestCase
         $response->assertOk();
         $response->assertHeader('Content-Type', 'application/pdf');
         $response->assertSee('binary-pdf', false);
+    }
+
+    public function test_download_route_proxies_remote_file_response(): void
+    {
+        Http::fake([
+            '127.0.0.1:8000/api/files/DWTJRJKUGP/download' => Http::response(
+                'binary-pdf-download',
+                200,
+                [
+                    'Content-Type' => 'application/pdf',
+                    'Content-Disposition' => 'attachment; filename="slip.pdf"',
+                ]
+            ),
+        ]);
+
+        $user = new User;
+        $user->forceFill([
+            'id' => 1,
+            'name' => 'Admin User',
+            'email' => 'admin@example.com',
+            'password' => 'password',
+        ]);
+
+        $response = $this
+            ->actingAs($user)
+            ->get('/files/DWTJRJKUGP/download');
+
+        $response->assertOk();
+        $response->assertHeader('Content-Type', 'application/pdf');
+        $response->assertHeader('Content-Disposition', 'attachment; filename="slip.pdf"');
+        $response->assertSee('binary-pdf-download', false);
+    }
+
+    protected function tearDown(): void
+    {
+        Mockery::close();
+        parent::tearDown();
     }
 }
