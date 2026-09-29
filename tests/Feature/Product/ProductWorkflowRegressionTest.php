@@ -156,7 +156,7 @@ class ProductWorkflowRegressionTest extends TestCase
                 ],
                 [
                     'name' => 'Large',
-                    'barcode' => 'NEW-'.strtoupper(Str::random(8)),
+                    'barcode' => '',
                     'cost' => 1200,
                     'selling_price' => 1800,
                     'weight' => 0.750,
@@ -319,7 +319,7 @@ class ProductWorkflowRegressionTest extends TestCase
             'uuid' => (string) Str::uuid(),
             'product_id' => $product->id,
             'name' => 'Default',
-            'barcode' => 'BC-'.strtoupper(Str::random(8)),
+            'barcode' => '',
             'cost' => 1000,
             'selling_price' => 1500,
             'suggested_price' => 1800,

@@ -5,6 +5,7 @@ use App\Http\Controllers\FileProxyController;
 use App\Http\Controllers\Order\OrderPaymentReviewController;
 use App\Http\Controllers\Product\ProductCategoryController;
 use App\Http\Controllers\Product\ProductController;
+use App\Http\Controllers\Testing\SupplierBarcodeTestSheetController;
 use App\Http\Controllers\Stock\StockController;
 use App\Http\Controllers\Reseller\ResellerApprovalController;
 use App\Http\Controllers\Reseller\ResellerBulkMarketController;
@@ -274,6 +275,18 @@ Route::middleware('auth')->group(function () {
             Route::get('/list', [ProductController::class, 'index'])
                 ->middleware('permission:products.view')
                 ->name('list');
+
+            Route::get('/barcode-test-sheet', [SupplierBarcodeTestSheetController::class, 'index'])
+                ->middleware('permission:products.view')
+                ->name('barcode-test-sheet');
+
+            Route::get('/barcode-test-sheet/suppliers', [SupplierBarcodeTestSheetController::class, 'suppliers'])
+                ->middleware('permission:products.view')
+                ->name('barcode-test-sheet.suppliers');
+
+            Route::get('/barcode-test-sheet/barcodes', [SupplierBarcodeTestSheetController::class, 'barcodes'])
+                ->middleware('permission:products.view')
+                ->name('barcode-test-sheet.barcodes');
 
             Route::get('/{product}', [ProductController::class, 'show'])
                 ->middleware('permission:products.view')

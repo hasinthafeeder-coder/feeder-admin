@@ -5,6 +5,7 @@ namespace Tests\Feature\Order;
 use App\Models\User;
 use App\Services\Order\AdminOrderPaymentReviewListService;
 use Feeder\Core\Authorization\Services\PermissionService;
+use Feeder\Core\Contracts\Courier\CourierBookingAdapter;
 use Feeder\Core\Enums\CompanyStatus;
 use Feeder\Core\Enums\OrderPaymentReviewStatus;
 use Feeder\Core\Enums\OrderSource;
@@ -28,7 +29,9 @@ use Feeder\Core\Models\Product;
 use Feeder\Core\Models\ProductCategory;
 use Feeder\Core\Models\ProductVariant;
 use Feeder\Core\Models\ResellerSupplierAssignment;
+use Feeder\Core\Models\Shipment;
 use Feeder\Core\Models\SupplierCourierAccount;
+use Feeder\Core\Services\Courier\CourierBookingAdapterResolver;
 use Feeder\Core\Services\Order\OrderPaymentReviewService;
 use Feeder\Core\Services\UuidService;
 use Illuminate\Http\UploadedFile;
@@ -207,12 +210,62 @@ class AdminBankTransferReviewTest extends TestCase
         $this->assertNotNull($submission->reviewed_at);
         $this->assertNotNull($order->confirmed_at);
         $this->assertNotSame($previousStatus, $order->status);
+        $this->assertDatabaseHas('shipments', ['order_id' => $order->id]);
 
         $detail = $this->actingAs($admin)->get(route('orders.payment-reviews.show', $submission));
         $detail->assertOk()
             ->assertSee('Approved')
             ->assertDontSee('id="approvePaymentModal"', false)
             ->assertDontSee('Approve Payment');
+    }
+
+    public function test_approve_payment_books_saved_courier_after_confirmation(): void
+    {
+        $this->allowPermissions([
+            OrderPaymentReviewService::PERMISSION_REVIEW,
+            OrderPaymentReviewService::PERMISSION_APPROVE,
+        ]);
+
+        $admin = $this->makeAdmin();
+        [$reseller, $order] = $this->makeReadyOrder();
+        $courier = Courier::query()->findOrFail($order->draft_courier_id);
+        $submission = $this->submitBankTransfer($reseller, $order, 'BOOK-REF');
+
+        $probe = new \stdClass;
+        $probe->calls = 0;
+        app(CourierBookingAdapterResolver::class)->register($courier->code, new class($probe) implements CourierBookingAdapter
+        {
+            public function __construct(private readonly object $probe)
+            {
+            }
+
+            public function book(
+                Order $order,
+                Courier $courier,
+                CourierService $service,
+                CourierCity $city,
+                ?SupplierCourierAccount $account,
+                float $weightKg,
+                float $courierFee,
+            ): array {
+                $this->probe->calls++;
+
+                return ['tracking_number' => 'WB-BANK-1'];
+            }
+        });
+
+        $this->actingAs($admin)
+            ->post(route('orders.payment-reviews.approve', $submission))
+            ->assertRedirect(route('orders.payment-reviews.show', $submission))
+            ->assertSessionHas('success');
+
+        $order = $order->fresh('shipment');
+        $this->assertSame(OrderStatus::CONFIRMED, $order->status);
+        $this->assertSame(1, $probe->calls);
+        $this->assertSame('WB-BANK-1', $order->shipment?->tracking_number);
+        $this->assertSame((int) $order->draft_courier_id, (int) $order->shipment?->courier_id);
+        $this->assertSame((int) $order->draft_courier_city_id, (int) $order->shipment?->courier_city_id);
+        $this->assertSame(1, Shipment::query()->where('order_id', $order->id)->count());
     }
 
     public function test_user_without_approve_permission_cannot_approve(): void
@@ -439,6 +492,21 @@ class AdminBankTransferReviewTest extends TestCase
             'draft_courier_service_id' => $setup['service']->id,
             'draft_courier_city_id' => $setup['city']->id,
         ])->save();
+
+        app(CourierBookingAdapterResolver::class)->register($setup['courier']->code, new class implements CourierBookingAdapter
+        {
+            public function book(
+                Order $order,
+                Courier $courier,
+                CourierService $service,
+                CourierCity $city,
+                ?SupplierCourierAccount $account,
+                float $weightKg,
+                float $courierFee,
+            ): array {
+                return ['tracking_number' => 'WB-ADMIN-PAY-'.((string) $order->id)];
+            }
+        });
 
         return [$reseller, $order->fresh()];
     }

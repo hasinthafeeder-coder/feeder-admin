@@ -719,7 +719,7 @@
                             </div>
                             <div class="col-lg-4">
                                 <label class="label fs-14 mb-2">Barcode</label>
-                                <input type="text" class="form-control" name="variants[${variantIndex}][barcode]" value="${variantBarcode}" placeholder="Barcode">
+                                <input type="text" class="form-control" name="variants[${variantIndex}][barcode]" value="${variantBarcode}" placeholder="Assigned on save" readonly>
                             </div>
                             <div class="col-lg-6">
                                 <label class="label fs-14 mb-2">Cost</label>
