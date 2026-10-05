@@ -35,14 +35,14 @@
         }
 
         #layout-menu .menu-link.active,
-        #layout-menu .menu-item.open>.menu-link,
+        #layout-menu .menu-link.active .title,
         #layout-menu .menu-sub .menu-link.active {
-            color: #f97316;
+            color: #EF4923;
+            font-weight: 600;
         }
 
-        #layout-menu .menu-link.active .menu-icon,
-        #layout-menu .menu-item.open>.menu-link .menu-icon {
-            color: #f97316;
+        #layout-menu .menu-link.active .menu-icon {
+            color: #EF4923;
         }
     </style>
 </head>
@@ -108,18 +108,31 @@
                     </li>
 
                     @foreach ($section->getItems() as $item)
+                        @php
+                            $isOpen = false;
+                            $isActive = false;
+
+                            if ($item->hasChildren()) {
+                                foreach ($item->getChildren() as $child) {
+                                    if ($child->getRoute() && Route::has($child->getRoute()) && request()->routeIs($child->getRoute())) {
+                                        $isOpen = true;
+                                    }
+                                }
+                            } elseif ($item->getRoute() && Route::has($item->getRoute())) {
+                                $isActive = request()->routeIs($item->getRoute());
+                            }
+
+                            $badge = $item->getBadge(auth()->user());
+                        @endphp
+
                         @if ($item->hasChildren())
-                            <li class="menu-item">
+                            <li class="menu-item {{ $isOpen ? 'open' : '' }}">
                                 <a href="javascript:void(0);" class="menu-link menu-toggle">
                                     @if ($item->getIcon())
                                         <span class="material-symbols-outlined menu-icon">{{ $item->getIcon() }}</span>
                                     @endif
 
                                     <span class="title">{{ $item->getTitle() }}</span>
-
-                                    @php
-                                        $badge = $item->getBadge(auth()->user());
-                                    @endphp
 
                                     @if ($badge !== null)
                                         <span class="count">{{ $badge }}</span>
@@ -129,8 +142,12 @@
                                 <ul class="menu-sub">
                                     @foreach ($item->getChildren() as $child)
                                         @if ($child->getRoute() && Route::has($child->getRoute()))
-                                            <li class="menu-item">
-                                                <a href="{{ route($child->getRoute()) }}" class="menu-link">
+                                            @php
+                                                $childActive = request()->routeIs($child->getRoute());
+                                            @endphp
+                                            <li class="menu-item {{ $childActive ? 'active' : '' }}">
+                                                <a href="{{ route($child->getRoute()) }}"
+                                                    class="menu-link {{ $childActive ? 'active' : '' }}">
                                                     {{ $child->getTitle() }}
                                                 </a>
                                             </li>
@@ -144,27 +161,22 @@
                                     @endforeach
                                 </ul>
                             </li>
-                        @else
-                            @if ($item->getRoute() && Route::has($item->getRoute()))
-                                <li class="menu-item">
-                                    <a href="{{ route($item->getRoute()) }}" class="menu-link">
-                                        @if ($item->getIcon())
-                                            <span
-                                                class="material-symbols-outlined menu-icon">{{ $item->getIcon() }}</span>
-                                        @endif
+                        @elseif ($item->getRoute() && Route::has($item->getRoute()))
+                            <li class="menu-item {{ $isActive ? 'active' : '' }}">
+                                <a href="{{ route($item->getRoute()) }}"
+                                    class="menu-link {{ $isActive ? 'active' : '' }}">
+                                    @if ($item->getIcon())
+                                        <span
+                                            class="material-symbols-outlined menu-icon">{{ $item->getIcon() }}</span>
+                                    @endif
 
-                                        <span class="title">{{ $item->getTitle() }}</span>
+                                    <span class="title">{{ $item->getTitle() }}</span>
 
-                                        @php
-                                            $badge = $item->getBadge(auth()->user());
-                                        @endphp
-
-                                        @if ($badge !== null)
-                                            <span class="count">{{ $badge }}</span>
-                                        @endif
-                                    </a>
-                                </li>
-                            @endif
+                                    @if ($badge !== null)
+                                        <span class="count">{{ $badge }}</span>
+                                    @endif
+                                </a>
+                            </li>
                         @endif
                     @endforeach
                 @endforeach

@@ -5458,7 +5458,7 @@ fieldset:disabled .btn {
     --bs-btn-color: var(--bs-link-color);
     --bs-btn-bg: transparent;
     --bs-btn-border-color: transparent;
-    --bs-btn-hover-color: var(--bs-link-hover-color);
+    --bs-btn-hover-color: #c7310f;
     --bs-btn-hover-border-color: transparent;
     --bs-btn-active-color: var(--bs-link-hover-color);
     --bs-btn-active-border-color: transparent;
@@ -13122,7 +13122,7 @@ fieldset:disabled .btn {
 /* rtl:end:remove */
 .text-primary {
     --bs-text-opacity: 1;
-    color: rgba(var(--bs-primary-rgb), var(--bs-text-opacity)) !important;
+    color: #ef4923 !important;
 }
 
 .text-secondary {
